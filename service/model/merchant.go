@@ -7,10 +7,14 @@ import (
 	"loante/tools"
 )
 
-type Merchant struct {
+type MerchantLittle struct {
 	bun.BaseModel `bun:"table:merchant,alias:m"`
 	Id	int	`json:"id" bun:",pk"`
 	Name	string	`json:"name"`
+}
+type Merchant struct {
+	bun.BaseModel `bun:"table:merchant,alias:m"`
+	MerchantLittle
 	Type	int	`json:"type"`
 	CnyBalance	float64	`json:"cny_balance"`
 	UsdBalance	float64	`json:"usd_balance"`

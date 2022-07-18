@@ -6,12 +6,16 @@ import (
 	"loante/global"
 )
 
-type User struct {
+type UserLittle struct {
 	bun.BaseModel `bun:"table:users,alias:u"`
-	Id	int		`json:"id"`
+	Id	int		`json:"id"  bun:",pk"`
 	Token	string		`json:"token"`
 	Phone       string		`json:"phone"`
 	AadhaarName string		`json:"aadhaar_name"`
+}
+type User struct {
+	bun.BaseModel `bun:"table:users,alias:u"`
+	UserLittle
 	PanName     string		`json:"pan_name"`
 	Gender      int		`json:"gender"`
 	New			int		`json:"new"`

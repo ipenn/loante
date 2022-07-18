@@ -51,9 +51,9 @@ func (a *utm_source)Lists(c *fiber.Ctx) error {
 
 type utmSourceCreateReq struct {
 	Id int	`json:"id"`
-	KeyWords string	`json:"keyWords"`
+	KeyWords string	`json:"key_words"`
 	Name string	`json:"name"`
-	AppToken string	`json:"appToken"`
+	AppToken string	`json:"app_token"`
 	Remark string	`json:"remark"`
 }
 func (a *utm_source)Create(c *fiber.Ctx) error {

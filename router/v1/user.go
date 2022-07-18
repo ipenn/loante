@@ -19,15 +19,15 @@ func NewUser() *user {
 
 type userQueryReq struct {
 	req.PageReq
-	StartDate      string		`query:"start_date" json:"start_date"`
-	EndDate        string		`query:"end_date" json:"end_date"`
+	StartTime    string		`query:"start_time" json:"start_time"`
+	EndTime        string		`query:"end_time" json:"end_time"`
 	Name   string		`query:"name" json:"name"`
-	Mobile string		`query:"mobile" json:"mobile"`
-	Sex    int		`query:"sex" json:"sex"`
-	Old            bool		`query:"old" json:"old"`
+	Phone string		`query:"phone" json:"phone"`
+	Gender    int		`query:"gender" json:"gender"`
+	New            int		`query:"new" json:"new"`
 	TrafficId      int		`query:"traffic_id" json:"traffic_id"`
-	MarketId       int		`query:"market_id" json:"market_id"`
-	Id             string		`query:"id" json:"id"`
+	Token       string		`query:"token" json:"token"`
+	Id             int		`query:"id" json:"id"`
 }
 
 func (a *user)UserQuery(c *fiber.Ctx) error {
@@ -35,7 +35,32 @@ func (a *user)UserQuery(c *fiber.Ctx) error {
 	if err := tools.ParseBody(c, input); err != nil {
 		return resp.Err(c, 1, err.Error())
 	}
-	lists, count := new(model.User).Page("u.id > 0", input.Page, input.Size)
+	where := "u.id > 0"
+	if len(input.Name) > 0{
+		where += fmt.Sprintf(" and aadhaar_name = '%s'", input.Name)
+	}
+	if len(input.Phone) > 0{
+		where += fmt.Sprintf(" and phone = '%s'", input.Phone)
+	}
+	if input.Gender > 0{
+		where += fmt.Sprintf(" and Gender = '%d'", input.Gender)
+	}
+	if input.New > 0{
+		where += fmt.Sprintf(" and new = '%d'", input.New)
+	}
+	if input.Token != ""{
+		where += fmt.Sprintf(" and token = '%s'", input.Token)
+	}
+	if input.Id > 0{
+		where += fmt.Sprintf(" and id = '%d'", input.Id)
+	}
+	if len(input.StartTime) > 0{
+		where += fmt.Sprintf(" and create_time >= '%s'", input.StartTime)
+	}
+	if len(input.EndTime) > 0{
+		where += fmt.Sprintf(" and create_time < '%s'", input.EndTime)
+	}
+	lists, count := new(model.User).Page(where, input.Page, input.Size)
 	return resp.OK(c, map[string]interface{}{
 		"count":count,
 		"list":lists,

@@ -155,12 +155,12 @@ func (a *system)RightsList(c *fiber.Ctx) error {
 
 
 type adminCreateReq struct {
-	AdminName string `json:"adminName" validate:"required,min=3,max=32"`
+	AdminName string `json:"admin_name" validate:"required,min=3,max=32"`
 	Password string `json:"password" validate:"required,min=3,max=32"`
-	MchId	int	`json:"mchId"`
+	MchId	int	`json:"mch_id"`
 	Mobile	string	`json:"mobile"`
 	Email	string	`json:"email"`
-	RoleId	int	`json:"roleId"`
+	RoleId	int	`json:"role_id"`
 	Id	int	`json:"roleId"`
 }
 func (a *system)AdminCreate(c *fiber.Ctx) error {
@@ -186,7 +186,7 @@ func (a *system)AdminCreate(c *fiber.Ctx) error {
 
 type roleCreateReq struct {
 	req.IdReq
-	RoleName string `json:"roleName" validate:"required,min=3,max=32"`
+	RoleName string `json:"role_name" validate:"required,min=3,max=32"`
 	Right    []int  `json:"right" validate:"required"`
 }
 //RoleCreate 角色创建

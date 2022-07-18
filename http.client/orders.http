@@ -1,0 +1,9 @@
+###
+GET {{host}}/pay_flow/repayments
+token:{{token}}
+Content-Type: application/json
+
+{
+  "page": 1,
+  "size": 10
+}

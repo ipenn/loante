@@ -6,12 +6,19 @@ import (
 	"loante/global"
 )
 
+type BorrowLittle struct {
+	bun.BaseModel `bun:"table:borrow,alias:b"`
+	Id                 	int				`json:"id" bun:",pk"`
+	Uid                	int				`json:"uid"`
+	MchId              	int				`json:"mch_id"`
+	ProductId          	int				`json:"product_id"`
+	User 				*UserLittle  	`json:"user" bun:"rel:belongs-to,join:uid=id"`
+	Merchant 			*MerchantLittle  	`json:"merchant" bun:"rel:belongs-to,join:mch_id=id"`
+	//Product 			*Product		`json:"product" bun:"rel:belongs-to,join:product_id=id"`
+}
 type Borrow struct {
 	bun.BaseModel `bun:"table:borrow,alias:b"`
-	Id                 	int			`json:"id"`
-	Uid                	int			`json:"uid"`
-	MchId              	int			`json:"mch_id"`
-	ProductId          	int			`json:"product_id"`
+	BorrowLittle
 	Postponed          	int			`json:"postponed"`
 	LoanAmount         	int			`json:"loan_amount"`
 	PostponedPeriod    	int			`json:"postponed_period"`
@@ -31,6 +38,7 @@ type Borrow struct {
 	Remark           	string		`json:"remark"`
 	CompleteTime     	string		`json:"complete_time"`
 	ActualAmount     	int			`json:"actual_amount"`
+
 }
 
 
@@ -63,8 +71,8 @@ func (a *Borrow)Update(where string)  {
 	}
 }
 
-func (a *Borrow)Page(where string, page, limit int) ([]User, int) {
-	var datas []User
+func (a *Borrow)Page(where string, page, limit int) ([]Borrow, int) {
+	var datas []Borrow
 	count, _ := global.C.DB.NewSelect().Model(&datas).Where(where).Order(fmt.Sprintf("b.id desc")).Offset((page-1)*limit).Limit(limit).ScanAndCount(global.C.Ctx)
 	return datas, count
 }

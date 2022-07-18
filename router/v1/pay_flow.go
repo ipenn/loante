@@ -24,7 +24,7 @@ type ordersQueryReq struct {
 	Id	int	`json:"id" query:"id"`
 	BorrowId	string	`json:"borrow_id" query:"borrow_id"`
 	MchId       int    `json:"mch_id" query:"mch_id"`
-	ProductName string `json:"product_name" query:"product_name"`
+	ProductId string `json:"product_id" query:"product_id"`
 	UserName    string `json:"user_name" query:"user_name"`
 	IdCardNo    string `json:"id_card_no" query:"id_card_no"`
 	UrgeId    int `json:"urge_id" query:"urge_id"`
@@ -42,6 +42,7 @@ func (a *payFlow)Repayments(c *fiber.Ctx) error {
 	if err := tools.ParseBody(c, input); err != nil {
 		return resp.Err(c, 1, err.Error())
 	}
+
 	lists, count := new(model.Orders).Page("o.id > 0", input.Page, input.Size)
 	return resp.OK(c, map[string]interface{}{
 		"count":count,

@@ -18,6 +18,13 @@ func Init() {
 	userHaddle := v1.NewUser()
 	borrowHandle := v1.NewBorrow()
 	payHandle := v1.NewPayFlow()
+
+	productHaddle := v1.NewProduct()
+	productDelayConfigHaddle := v1.NewProductDelayConfig()
+	smsTemplateHaddle := v1.NewSmsTemplate()
+	remindHaddle := v1.NewRemind()
+	urgeHaddle := v1.NewUrge()
+
 	app := fiber.New(fiber.Config{
 		//Prefork:       true,
 		CaseSensitive: true,
@@ -92,6 +99,35 @@ func Init() {
 	v.Get("/pay_flow/loan", payHandle.Loans) //放款
 	v.Get("/pay_flow/batch_loan", payHandle.BatchLoans) //批量重放款
 
+	//短信模板
+	v.Get("/sms_template", smsTemplateHaddle.SmsTemplate)
+	v.Post("/sms_template/create_or_update", smsTemplateHaddle.SmsTemplateCreateOrUpdate)
+	//产品运营
+	v.Get("/product", productHaddle.Product)
+	v.Post("/product/create_or_update", productHaddle.ProductCreateOrUpdate)
+	//产品配置
+	v.Get("/productDelayConfig", productDelayConfigHaddle.ProductDelayConfig)
+	v.Post("/productDelayConfig/create_or_update", productDelayConfigHaddle.ProductDelayConfigCreateOrUpdate)
+	//预提醒管理
+	v.Get("/remind_company", remindHaddle.RemindCompany)
+	v.Post("/remind_company/create", remindHaddle.RemindCompanyCreate)
+	v.Post("/remind_company/update", remindHaddle.RemindCompanyUpdate)
+	v.Get("/remind_group", remindHaddle.RemindGroup)
+	v.Post("/remind_group/create", remindHaddle.RemindGroupCreate)
+	v.Post("/remind_group/update", remindHaddle.RemindGroupUpdate)
+	v.Get("/remind_admin", remindHaddle.RemindAdmin)
+	v.Get("/remind_rules", remindHaddle.RemindRules)
+	v.Post("/remind_rules/create_or_update", remindHaddle.RemindRulesCreateOrUpdate)
+	//催收管理
+	v.Get("/urge_company", urgeHaddle.UrgeCompany)
+	v.Post("/urge_company/create", urgeHaddle.UrgeCompanyCreate)
+	v.Post("/urge_company/update", urgeHaddle.UrgeCompanyUpdate)
+	v.Get("/urge_group", urgeHaddle.UrgeGroup)
+	v.Post("/urge_group/create", urgeHaddle.UrgeGroupCreate)
+	v.Post("/urge_group/update", urgeHaddle.UrgeGroupUpdate)
+	v.Get("/urge_admin", urgeHaddle.UrgeAdmin)
+	v.Get("/urge_rules", urgeHaddle.UrgeRules)
+	v.Post("/urge_rules/create_or_update", urgeHaddle.UrgeRulesCreateOrUpdate)
 
 	app.Listen(fmt.Sprintf(":%d", global.C.Http.Port))
 }
