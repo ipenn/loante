@@ -1,0 +1,50 @@
+package tools
+
+import "strconv"
+
+func ToInt(t interface{}) int {
+	switch t := t.(type) {
+	case int:
+		return t
+	case string:
+		tt, _ := strconv.Atoi(t)
+		return tt
+	case float64:
+		return int(t)
+	case interface{}:
+		return t.(int)
+	}
+
+	return 0
+}
+
+func ToString(t interface{}) string {
+	switch t := t.(type) {
+	case int:
+		return strconv.Itoa(t)
+	case string:
+		return t
+	case float64:
+		return strconv.FormatFloat(t, 'f', 2, 64)
+	case interface{}:
+		return t.(string)
+	}
+
+	return ""
+}
+
+func ToFloat64(t interface{}) float64 {
+	switch t := t.(type) {
+	case int:
+		return float64(t)
+	case string:
+		tt, _ := strconv.ParseFloat(t, 64)
+		return tt
+	case float64:
+		return t
+	case interface{}:
+		return t.(float64)
+	}
+
+	return 0.00
+}
