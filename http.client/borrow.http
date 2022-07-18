@@ -1,0 +1,14 @@
+GET {{host}}/borrow/list?product_id=99
+Accept: application/json
+token:{{token}}
+
+###
+GET {{host}}/borrow/list
+token:{{token}}
+Content-Type: application/json
+
+{
+  "page": 1,
+  "size": 10,
+  "product_id": 10
+}

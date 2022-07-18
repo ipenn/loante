@@ -1,0 +1,108 @@
+###
+GET {{host}}/payment/list
+token:{{token}}
+Content-Type: application/json
+
+{
+  "page": 1,
+  "size":10
+}
+
+###
+POST {{host}}/payment/modify
+token:{{token}}
+Content-Type: application/json
+
+{
+  "id": 1,
+  "lending_start_time": "00:00:02",
+  "lending_end_time":"23:59:59",
+  "is_open_out":0,
+  "is_open_in":0,
+  "is_utr_query":0,
+  "is_utr_fill":0
+}
+
+###
+POST {{host}}/payment/set
+token:{{token}}
+Content-Type: application/json
+
+{
+  "id": 1,
+  "key": "is_utr_query",
+  "value":"1"
+}
+
+###
+GET {{host}}/payment/config
+token:{{token}}
+Content-Type: application/json
+
+{
+  "page": 1,
+  "size":10
+}
+
+###
+POST {{host}}/payment/config/create
+token:{{token}}
+Content-Type: application/json
+
+{
+  "id": 0,
+  "mch_id":1,
+  "product_id":1,
+  "payment_id":1,
+  "configuration":"{}"
+}
+###
+POST {{host}}/payment/config/del
+token:{{token}}
+Content-Type: application/json
+
+{
+  "id": 1
+}
+###
+POST {{host}}/payment/config/set
+token:{{token}}
+Content-Type: application/json
+
+{
+  "id":2,
+  "key": "is_open_out",
+  "value":"0"
+}
+
+
+###
+GET {{host}}/payment/default
+token:{{token}}
+Content-Type: application/json
+
+{
+  "page": 1,
+  "size":10
+}
+
+###
+POST {{host}}/payment/default/create
+token:{{token}}
+Content-Type: application/json
+
+{
+  "id": 0,
+  "mch_id":1,
+  "product_id":1,
+  "out_payment_id":1,
+  "in_payment_id":1
+}
+###
+POST {{host}}/payment/default/del
+token:{{token}}
+Content-Type: application/json
+
+{
+  "id": 1
+}

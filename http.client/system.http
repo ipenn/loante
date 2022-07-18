@@ -1,0 +1,128 @@
+
+### 登录
+POST {{host}}/auth/login
+Content-Type: application/json
+
+{"admin_name": "sadmin","password": "123456"}
+###
+GET {{host}}/side_menu
+token:{{token}}
+Content-Type: application/json
+
+{}
+###
+GET {{host}}/admins
+token:{{token}}
+Content-Type: application/json
+#{
+#  "page": 1,
+#  "size": 10
+#}
+
+{"page":1,"size":10,"mchId":1089,"adminName":"11","roleId":1,"startTime":"2022-07-01 00:00:00","endTime":"2022-07-30 23:59:59"}
+
+###
+POST {{host}}/admin/create
+token:{{token}}
+Content-Type: application/json
+
+{
+  "adminName": "wahaha2",
+  "password": "wahaha",
+  "mchId": 1,
+  "mobile": "122222",
+  "email": "3232323@qq.com",
+  "roleId": 1,
+  "id": 1
+}
+###
+GET {{host}}/roles
+token:{{token}}
+Content-Type: application/json
+
+{
+  "page": 1,
+  "size": 10
+}
+###
+GET {{host}}/rights
+token:{{token}}
+Content-Type: application/json
+
+{
+  "id": 0
+}
+###
+POST {{host}}/roles/create
+token:{{token}}
+Content-Type: application/json
+
+{
+  "id": 0,
+  "roleName": "HAHAHA",
+  "right": [554, 552]
+}
+###
+POST {{host}}/roles/delete
+token:{{token}}
+Content-Type: application/json
+
+{
+  "id": 100
+}
+
+###
+GET {{host}}/system/fields
+token:{{token}}
+Content-Type: application/json
+
+{
+}
+###
+GET {{host}}/utm/lists
+token:{{token}}
+Content-Type: application/json
+
+#{"keyWords":"2121","trafficName":"2121","page":1,"size":10,"needReview":"","status":""}
+{"page":1,"size":10}
+
+###
+POST {{host}}/utm/create
+token:{{token}}
+Content-Type: application/json
+
+{"id":1,"keyWords":"2121","name":"zi然浏览", "appToken":"xsaxsacds","remark":"remark remark ...."}
+
+###
+POST {{host}}/utm/modify
+token:{{token}}
+Content-Type: application/json
+
+{"id":1,"key":"status", "value":"0"}
+
+### 渠道风险配置
+GET {{host}}/utm/risk_config
+token:{{token}}
+Content-Type: application/json
+
+{"page":1,"size":10}
+
+### 渠道风险配置
+POST {{host}}/utm/risk_create
+token:{{token}}
+Content-Type: application/json
+
+{
+  "id": 1,
+  "referrer_id":1,
+  "stat_compay": 120,
+  "risk_model":120,
+  "new_min_score": 120,
+  "new_max_score":120,
+  "old_jump_risk": 120,
+  "old_min_score":120,
+  "old_max_score": 120,
+  "platform_old_min_score":120,
+  "platform_old_max_score": 120,
+  "remark": "dadada"
+}

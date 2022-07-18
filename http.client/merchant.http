@@ -1,0 +1,115 @@
+###
+GET {{host}}/merchant/list
+token:{{token}}
+Content-Type: application/json
+
+//{"page":1,"size":10,"name": "1111","startTime": "","endTime": ""}
+{"page":1,"size":10}
+
+###
+POST {{host}}/merchant/create
+token:{{token}}
+Content-Type: application/json
+
+{
+  "id": 1,
+  "name":"pp999",
+  "type": 0,
+  "status":0,
+  "password": "123456",
+  "cny_credit":2000,
+  "usd_credit":2000,
+  "contact_name":"AAAA",
+  "contact_mobile": "BBB",
+  "contact_email":"CCC"
+}
+
+###
+POST {{host}}/merchant/fund/create
+token:{{token}}
+Content-Type: application/json
+
+{
+  "mch_id": 1,
+  "in_account_no":"61010101012",
+  "currency": 1,
+  "rate":6.5,
+  "amount": 150,
+  "fund_no":"Xxnbsiaxnb001",
+  "remark": "remark..remark..",
+  "path":"http://baidu.com"
+}
+###
+GET {{host}}/merchant/funds
+token:{{token}}
+Content-Type: application/json
+
+{
+  "page": 1,
+  "size":10,
+  "mch_id": 0,
+  "type":"0",
+  "start_time": "",
+  "end_time":""
+}
+###
+POST {{host}}/merchant/service_rule/create
+token:{{token}}
+Content-Type: application/json
+
+{
+  "id": 0,
+  "name":"进件规则",
+  "price": 12,
+  "start_count":2001,
+  "end_count": 6000
+}
+
+###
+GET {{host}}/merchant/service_rule
+token:{{token}}
+Content-Type: application/json
+
+{
+  "page": 1,
+  "size":10
+}
+
+###
+POST {{host}}/merchant/service_rule/del
+token:{{token}}
+Content-Type: application/json
+
+{
+  "id": 1
+}
+###
+POST {{host}}/merchant/service_price/create
+token:{{token}}
+Content-Type: application/json
+
+{
+  "id": 0,
+  "service_type": 1,
+  "deduct_type":1,
+  "price": 0.15
+}
+
+###
+GET {{host}}/merchant/service_price
+token:{{token}}
+Content-Type: application/json
+
+{
+  "page": 1,
+  "size":10
+}
+
+###
+POST {{host}}/merchant/service_price/del
+token:{{token}}
+Content-Type: application/json
+
+{
+  "id": 1
+}

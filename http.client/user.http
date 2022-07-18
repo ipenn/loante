@@ -1,0 +1,18 @@
+###
+GET {{host}}/user/list
+token:{{token}}
+Content-Type: application/json
+
+{
+  "page": 1,
+  "size": 10,
+  "start_date": "",
+  "end_date":"",
+  "name": "",
+  "mobile":"",
+  "sex": "",
+  "old":"",
+  "traffic_id": "",
+  "market_id":"",
+  "id": ""
+}
