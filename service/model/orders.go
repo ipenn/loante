@@ -9,8 +9,10 @@ import (
 type Orders struct {
 	bun.BaseModel `bun:"table:orders,alias:o"`
 	Id	int	`json:"id" bun:",pk"`
+	MchId		int	`json:"-"`
+	ProductId		int	`json:"-"`
 	Bid		int	`json:"bid"`
-	Uid        int	`json:"uid"`
+	Uid        int	`json:"-"`
 	CreateTime string	`json:"create_time"`
 	Type       int	`json:"type"`
 	Payment        int	`json:"payment"`
@@ -27,7 +29,11 @@ type Orders struct {
 	PaymentRequestNo string	`json:"payment_request_no"`
 	PaymentRespondNo string	`json:"payment_respond_no"`
 	LatePaymentFee   int	`json:"late_payment_fee"`
+	User				*UserLittle 		`json:"user" bun:"rel:belongs-to,join:uid=id"`
 	Borrow				*BorrowLittle 		`json:"borrow" bun:"rel:belongs-to,join:bid=id"`
+	Merchant			*MerchantLittle 		`json:"merchant" bun:"rel:belongs-to,join:mch_id=id"`
+	Product				*ProductLittle 		`json:"product" bun:"rel:belongs-to,join:product_id=id"`
+	PaymentCom			*PaymentLittle 		`json:"payment_com" bun:"rel:belongs-to,join:payment=id"`
 }
 
 func (a *Orders)Insert()  {
@@ -61,7 +67,7 @@ func (a *Orders)Update(where string)  {
 
 func (a *Orders)Page(where string, page, limit int) ([]Orders, int) {
 	var datas []Orders
-	count, _ := global.C.DB.NewSelect().Model(&datas).Relation("Borrow").Where(where).Order(fmt.Sprintf("o.id desc")).Offset((page-1)*limit).Limit(limit).ScanAndCount(global.C.Ctx)
+	count, _ := global.C.DB.NewSelect().Model(&datas).Relation("Borrow").Relation("Merchant").Relation("Product").Relation("PaymentCom").Relation("User").Where(where).Order(fmt.Sprintf("o.id desc")).Offset((page-1)*limit).Limit(limit).ScanAndCount(global.C.Ctx)
 	return datas, count
 }
 

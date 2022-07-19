@@ -6,11 +6,15 @@ import (
 	"loante/global"
 )
 
-type Product struct {
+type ProductLittle struct {
 	bun.BaseModel       `bun:"table:product,alias:p"`
 	Id                  int      `json:"id" bun:",pk"`
 	AppNo               string  `json:"app_no"`
 	ProductName         string  `json:"product_name"`
+}
+type Product struct {
+	bun.BaseModel       `bun:"table:product,alias:p"`
+	ProductLittle
 	IconPath            string  `json:"icon_path"`
 	MchId               int     `json:"mch_id"`
 	DayMaxApply         int     `json:"day_max_apply"`
@@ -34,7 +38,7 @@ type Product struct {
 	RateOverdueInterest float64 `json:"rate_overdue_interest"`
 	RateService         float64 `json:"rate_service"`
 	RateTax             float64 `json:"rate_tax"`
-	Merchant      *Merchant      `json:"merchant" bun:"rel:belongs-to,join:mch_id=id"`
+	Merchant      *MerchantLittle      `json:"merchant" bun:"rel:belongs-to,join:mch_id=id"`
 }
 
 func (a *Product) Insert() {
