@@ -10,7 +10,7 @@ import (
 
 type urge struct{}
 
-func NewUrge() *urge{
+func NewUrge() *urge {
 	return new(urge)
 }
 
@@ -273,6 +273,9 @@ func (a *urge) UrgeRulesCreateOrUpdate(c *fiber.Ctx) error {
 	if err := tools.ParseBody(c, input); err != nil {
 		return resp.Err(c, 1, err.Error())
 	}
+	if tools.ToInt(input.MinDay) < 0 || tools.ToInt(input.MinDay) < 0 {
+		return resp.Err(c, 1, "催收规则天数不能小于0")
+	}
 	rules := new(model.UrgeRules)
 	rules.CompanyId = tools.ToInt(input.CompanyId)
 	rules.GroupId = tools.ToInt(input.GroupId)
@@ -283,7 +286,7 @@ func (a *urge) UrgeRulesCreateOrUpdate(c *fiber.Ctx) error {
 	if tools.ToInt(input.Id) == 0 {
 		rules.Insert()
 	} else {
-		rules.Id=tools.ToInt(input.Id)
+		rules.Id = tools.ToInt(input.Id)
 		rules.Update(fmt.Sprintf("id=%d", tools.ToInt(input.Id)))
 	}
 	return resp.OK(c, "")
@@ -303,7 +306,7 @@ func (a *urge) UrgeRules(c *fiber.Ctx) error {
 	if err := tools.ParseBody(c, input); err != nil {
 		return resp.Err(c, 1, err.Error())
 	}
-	where:="ur.id>0"
+	where := "ur.id>0"
 	if input.CompanyId != "" {
 		where += " and ur.company_id =" + input.CompanyId
 	}

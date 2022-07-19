@@ -8,14 +8,14 @@ import (
 
 type RemindCompany struct {
 	bun.BaseModel `bun:"table:remind_company,alias:rc"`
-	Id            int    `json:"id" bun:",pk"`
-	AdminId       int    `json:"admin_id"`
-	UserName      string `json:"user_name"`
-	MchId         int    `json:"mch_id"`
-	CreateTime    string `json:"create_time"`
-	CompanyName   string `json:"company_name"`
-	Description   string `json:"description"`
-	Merchant      *MerchantLittle      `json:"merchant" bun:"rel:belongs-to,join:mch_id=id"`
+	Id            int             `json:"id" bun:",pk"`
+	AdminId       int             `json:"admin_id"`
+	UserName      string          `json:"user_name"`
+	MchId         int             `json:"mch_id"`
+	CreateTime    string          `json:"create_time"`
+	CompanyName   string          `json:"company_name"`
+	Description   string          `json:"description"`
+	Merchant      *MerchantLittle `json:"merchant" bun:"rel:belongs-to,join:mch_id=id"`
 }
 
 func (a *RemindCompany) Insert() {

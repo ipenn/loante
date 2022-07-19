@@ -24,6 +24,7 @@ func Init() {
 	smsTemplateHandle := v1.NewSmsTemplate()
 	remindHandle := v1.NewRemind()
 	urgeHandle := v1.NewUrge()
+	UserBlackHandle := v1.NewUserBlack()
 
 	app := fiber.New(fiber.Config{
 		//Prefork:       true,
@@ -68,12 +69,12 @@ func Init() {
 	v.Post("/merchant/create", merchantHandle.Create)
 	v.Post("/merchant/modify", merchantHandle.Modify)
 	v.Post("/merchant/fund/create", merchantHandle.FundCreate)
-	v.Get("/merchant/service_rule", merchantHandle.ServiceRule) //进件计价规则
-	v.Post("/merchant/service_rule/create", merchantHandle.ServiceRuleCreate) //进件计价规则创建
-	v.Post("/merchant/service_rule/del", merchantHandle.ServiceRuleDel) //进件计价规则删除
-	v.Get("/merchant/service_price", merchantHandle.ServicePrice) //服务定价
+	v.Get("/merchant/service_rule", merchantHandle.ServiceRule)                 //进件计价规则
+	v.Post("/merchant/service_rule/create", merchantHandle.ServiceRuleCreate)   //进件计价规则创建
+	v.Post("/merchant/service_rule/del", merchantHandle.ServiceRuleDel)         //进件计价规则删除
+	v.Get("/merchant/service_price", merchantHandle.ServicePrice)               //服务定价
 	v.Post("/merchant/service_price/create", merchantHandle.ServicePriceCreate) //服务定价创建
-	v.Post("/merchant/service_price/del", merchantHandle.ServicePriceDel) //服务定价删除
+	v.Post("/merchant/service_price/del", merchantHandle.ServicePriceDel)       //服务定价删除
 
 	//支付平臺
 	v.Get("/payment/list", paymentHandle.Lists)
@@ -96,12 +97,12 @@ func Init() {
 	v.Get("/borrow/list", borrowHandle.Query)
 
 	//还款
-	v.Get("/pay_flow/repayments", payHandle.Repayments) //还款记录
+	v.Get("/pay_flow/repayments", payHandle.Repayments)              //还款记录
 	v.Get("/pay_flow/repayments/export", payHandle.RepaymentsExport) //导出还款记录
-	v.Get("/pay_flow/reconciliation", payHandle.Reconciliation)//平账
-	v.Get("/pay_flow/deposit", payHandle.Deposits)//入账
-	v.Get("/pay_flow/loan", payHandle.Loans) //放款
-	v.Get("/pay_flow/batch_loan", payHandle.BatchLoans) //批量重放款
+	v.Get("/pay_flow/reconciliation", payHandle.Reconciliation)      //平账
+	v.Get("/pay_flow/deposit", payHandle.Deposits)                   //入账
+	v.Get("/pay_flow/loan", payHandle.Loans)                         //放款
+	v.Get("/pay_flow/batch_loan", payHandle.BatchLoans)              //批量重放款
 
 	//短信模板
 	v.Get("/sms_template", smsTemplateHandle.SmsTemplate)
@@ -132,6 +133,10 @@ func Init() {
 	v.Get("/urge_admin", urgeHandle.UrgeAdmin)
 	v.Get("/urge_rules", urgeHandle.UrgeRules)
 	v.Post("/urge_rules/create_or_update", urgeHandle.UrgeRulesCreateOrUpdate)
+
+	v.Post("/user_black/create", UserBlackHandle.UserBlackCreate)
+	v.Post("/user_black/del", UserBlackHandle.UserBlackDel)
+	v.Get("/user_black", UserBlackHandle.UserBlackList)
 
 	app.Listen(fmt.Sprintf(":%d", global.C.Http.Port))
 }

@@ -10,9 +10,9 @@ func Logger(c *fiber.Ctx) error {
 	case "POST":
 		//POST 写操作记录到数据库中
 		log := new(model.AdminLog)
-		log.ReqBody = string( c.Body())
-		log.AdminName =  c.Locals("userName").(string)
-		log.AdminId =  c.Locals("userId").(int)
+		log.ReqBody = string(c.Body())
+		log.AdminName = c.Locals("userName").(string)
+		log.AdminId = c.Locals("userId").(int)
 		log.Path = c.Path()
 		log.Insert()
 	}

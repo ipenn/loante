@@ -72,17 +72,13 @@ func ParseUUID(uuid string) ([]byte, error) {
 	return ret, nil
 }
 
-
-
-
 func InviteCode(l int) string {
-	numeric := [54]string{"a","b","c","d","e","f","g","h","j","k","l","m","n","o","p","q","r","s","t","u","v","w","x","y","z","A","B","C","D","E","F","G","H","J","K","L","M","N","O","P","Q","R","S","T","U","V","W","X","Y","Z"}
+	numeric := [54]string{"a", "b", "c", "d", "e", "f", "g", "h", "j", "k", "l", "m", "n", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z", "A", "B", "C", "D", "E", "F", "G", "H", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z"}
 	r := len(numeric)
 	rand2.Seed(time.Now().UnixNano())
-	sb  := ""
+	sb := ""
 	for i := 0; i < l*2; i++ {
 		sb += numeric[rand2.Intn(r)]
 	}
 	return sb[:l]
 }
-

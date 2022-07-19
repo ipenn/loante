@@ -16,7 +16,7 @@ func UnixTimeToStr(t int64) string {
 
 func StrToUnixTime(str string) int64 {
 	tm2, _ := time.Parse("2006-01-02 15:04:05", str)
-	return tm2.Unix() - 8 *3600
+	return tm2.Unix() - 8*3600
 }
 
 func ToDay(t int64) string { //t 小时

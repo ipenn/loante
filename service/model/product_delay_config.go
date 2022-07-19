@@ -8,16 +8,16 @@ import (
 
 type ProductDelayConfig struct {
 	bun.BaseModel `bun:"table:product_delay_config,alias:pdc"`
-	Id            int      `json:"id" bun:",pk"`
-	MchId         int     `json:"mch_id"`
-	ProductId     int     `json:"product_id"`
-	DelayDay      int     `json:"delay_day"`
-	DelayRate     float64 `json:"delay_rate"`
-	Status        int     `json:"status"`
-	IsShowDelay   int     `json:"is_show_delay"`
-	CreateTime    string  `json:"create_time"`
-	Merchant      *Merchant      `json:"merchant" bun:"rel:belongs-to,join:mch_id=id"`
-	Product      *Product      `json:"product" bun:"rel:belongs-to,join:product_id=id"`
+	Id            int       `json:"id" bun:",pk"`
+	MchId         int       `json:"mch_id"`
+	ProductId     int       `json:"product_id"`
+	DelayDay      int       `json:"delay_day"`
+	DelayRate     float64   `json:"delay_rate"`
+	Status        int       `json:"status"`
+	IsShowDelay   int       `json:"is_show_delay"`
+	CreateTime    string    `json:"create_time"`
+	Merchant      *Merchant `json:"merchant" bun:"rel:belongs-to,join:mch_id=id"`
+	Product       *Product  `json:"product" bun:"rel:belongs-to,join:product_id=id"`
 }
 
 func (a *ProductDelayConfig) Insert() {
@@ -37,5 +37,5 @@ func (a *ProductDelayConfig) Update(where string) {
 func (a *ProductDelayConfig) Page(where string, page, limit int) ([]ProductDelayConfig, int) {
 	var d []ProductDelayConfig
 	count, _ := global.C.DB.NewSelect().Model(&d).Relation("Merchant").Relation("Product").Where(where).Order(fmt.Sprintf("pdc.id desc")).Offset((page - 1) * limit).Limit(limit).ScanAndCount(global.C.Ctx)
-	return d,count
+	return d, count
 }

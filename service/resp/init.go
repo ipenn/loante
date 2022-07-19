@@ -3,22 +3,23 @@ package resp
 import "github.com/gofiber/fiber/v2"
 
 type FiberRes struct {
-	Code int  `json:"code"`
-	Msg string	`json:"msg"`
-	Data interface{}	`json:"data"`
+	Code int         `json:"code"`
+	Msg  string      `json:"msg"`
+	Data interface{} `json:"data"`
 }
-func OK(c *fiber.Ctx, data interface{}) error{
+
+func OK(c *fiber.Ctx, data interface{}) error {
 	return c.JSON(FiberRes{
 		Code: 0,
-		Msg: "",
+		Msg:  "",
 		Data: data,
 	})
 }
 
-func Err(c *fiber.Ctx,code int, data interface{}) error {
+func Err(c *fiber.Ctx, code int, data interface{}) error {
 	return c.JSON(FiberRes{
 		Code: code,
-		Msg: data.(string),
+		Msg:  data.(string),
 		Data: "",
 	})
 }

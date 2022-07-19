@@ -9,7 +9,7 @@ import (
 	"loante/tools"
 )
 
-type product struct {}
+type product struct{}
 
 func NewProduct() *product {
 	return new(product)

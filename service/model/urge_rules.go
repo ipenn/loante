@@ -8,15 +8,15 @@ import (
 
 type UrgeRules struct {
 	bun.BaseModel `bun:"table:urge_rules,alias:ur"`
-	Id            int            `json:"id"`
-	CompanyId     int            `json:"company_id"`
-	GroupId       int            `json:"group_id"`
-	MaxDay        int            `json:"max_day"`
-	MinDay        int            `json:"min_day"`
-	Remark        string         `json:"remark"`
-	IsAutoApply   int            `json:"is_auto_apply"`
-	UrgeCompany *UrgeCompany `json:"urge_company" bun:"rel:belongs-to,join:company_id=id"`
-	UrgeGroup   *UrgeGroup   `json:"urge_group" bun:"rel:belongs-to,join:group_id=id"`
+	Id            int          `json:"id"`
+	CompanyId     int          `json:"company_id"`
+	GroupId       int          `json:"group_id"`
+	MaxDay        int          `json:"max_day"`
+	MinDay        int          `json:"min_day"`
+	Remark        string       `json:"remark"`
+	IsAutoApply   int          `json:"is_auto_apply"`
+	UrgeCompany   *UrgeCompany `json:"urge_company" bun:"rel:belongs-to,join:company_id=id"`
+	UrgeGroup     *UrgeGroup   `json:"urge_group" bun:"rel:belongs-to,join:group_id=id"`
 }
 
 func (a *UrgeRules) Insert() {

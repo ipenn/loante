@@ -8,14 +8,15 @@ import (
 
 type UrgeGroup struct {
 	bun.BaseModel `bun:"table:urge_group,alias:ug"`
-	Id            int            `json:"id" bun:",pk"`
-	CompanyId     int            `json:"company_id"`
-	MchId         int            `json:"mch_id"`
-	AdminId       int            `json:"admin_id"`
-	GroupName     string         `json:"group_name"`
-	Status        int            `json:"status"`
-	UrgeCompany *UrgeCompany `json:"urge_company" bun:"rel:belongs-to,join:company_id=id"`
-	Merchant      *Merchant      `json:"merchant" bun:"rel:belongs-to,join:mch_id=id"`
+	Id            int          `json:"id" bun:",pk"`
+	CompanyId     int          `json:"company_id"`
+	MchId         int          `json:"mch_id"`
+	AdminId       int          `json:"admin_id"`
+	GroupName     string       `json:"group_name"`
+	Status        int          `json:"status"`
+	UrgeCompany   *UrgeCompany `json:"urge_company" bun:"rel:belongs-to,join:company_id=id"`
+	Merchant      *Merchant    `json:"merchant" bun:"rel:belongs-to,join:mch_id=id"`
+	Admin         *Admin       `json:"admin" bun:"rel:belongs-to,join:admin_id=id"`
 }
 
 func (a *UrgeGroup) Insert() {
@@ -39,7 +40,8 @@ func (a *UrgeGroup) One(where string) {
 
 func (a *UrgeGroup) Page(where string, page, limit int) ([]UrgeGroup, int) {
 	var d []UrgeGroup
-	count, _ := global.C.DB.NewSelect().Model(&d).Relation("UrgeCompany").Relation("Merchant").
+	count, _ := global.C.DB.NewSelect().Model(&d).Relation("UrgeCompany").
+		Relation("Merchant").Relation("Admin").
 		Where(where).Order("ug.id desc").Offset((page - 1) * limit).Limit(limit).
 		ScanAndCount(global.C.Ctx)
 	return d, count

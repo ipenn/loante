@@ -10,7 +10,6 @@ import (
 )
 
 type user struct {
-	
 }
 
 func NewUser() *user {
@@ -19,66 +18,66 @@ func NewUser() *user {
 
 type userQueryReq struct {
 	req.PageReq
-	StartTime    string		`query:"start_time" json:"start_time"`
-	EndTime        string		`query:"end_time" json:"end_time"`
-	Name   string		`query:"name" json:"name"`
-	Phone string		`query:"phone" json:"phone"`
-	Gender    int		`query:"gender" json:"gender"`
-	New            int		`query:"new" json:"new"`
-	TrafficId      int		`query:"traffic_id" json:"traffic_id"`
-	Token       string		`query:"token" json:"token"`
-	Id             int		`query:"id" json:"id"`
+	StartTime string `query:"start_time" json:"start_time"`
+	EndTime   string `query:"end_time" json:"end_time"`
+	Name      string `query:"name" json:"name"`
+	Phone     string `query:"phone" json:"phone"`
+	Gender    int    `query:"gender" json:"gender"`
+	New       int    `query:"new" json:"new"`
+	TrafficId int    `query:"traffic_id" json:"traffic_id"`
+	Token     string `query:"token" json:"token"`
+	Id        int    `query:"id" json:"id"`
 }
 
-func (a *user)UserQuery(c *fiber.Ctx) error {
+func (a *user) UserQuery(c *fiber.Ctx) error {
 	input := new(userQueryReq)
 	if err := tools.ParseBody(c, input); err != nil {
 		return resp.Err(c, 1, err.Error())
 	}
 	where := "u.id > 0"
-	if len(input.Name) > 0{
+	if len(input.Name) > 0 {
 		where += fmt.Sprintf(" and aadhaar_name = '%s'", input.Name)
 	}
-	if len(input.Phone) > 0{
+	if len(input.Phone) > 0 {
 		where += fmt.Sprintf(" and phone = '%s'", input.Phone)
 	}
-	if input.Gender > 0{
+	if input.Gender > 0 {
 		where += fmt.Sprintf(" and Gender = '%d'", input.Gender)
 	}
-	if input.New > 0{
+	if input.New > 0 {
 		where += fmt.Sprintf(" and new = '%d'", input.New)
 	}
-	if input.Token != ""{
+	if input.Token != "" {
 		where += fmt.Sprintf(" and token = '%s'", input.Token)
 	}
-	if input.Id > 0{
+	if input.Id > 0 {
 		where += fmt.Sprintf(" and id = '%d'", input.Id)
 	}
-	if len(input.StartTime) > 0{
+	if len(input.StartTime) > 0 {
 		where += fmt.Sprintf(" and create_time >= '%s'", input.StartTime)
 	}
-	if len(input.EndTime) > 0{
+	if len(input.EndTime) > 0 {
 		where += fmt.Sprintf(" and create_time < '%s'", input.EndTime)
 	}
 	lists, count := new(model.User).Page(where, input.Page, input.Size)
 	return resp.OK(c, map[string]interface{}{
-		"count":count,
-		"list":lists,
+		"count": count,
+		"list":  lists,
 	})
 }
 
-
-func (a *user)Details(c *fiber.Ctx) error {
+func (a *user) Details(c *fiber.Ctx) error {
 	input := new(req.IdReq)
 	if err := tools.ParseBody(c, input); err != nil {
 		return resp.Err(c, 1, err.Error())
 	}
 	info := new(model.User)
 	info.One(fmt.Sprintf("id = %d", input.Id))
-	return resp.OK(c,map[string]interface{}{
-		"info":info,
+	return resp.OK(c, map[string]interface{}{
+		"info": info,
 	})
 }
+
 //
 //type setUserInfoReq struct {
 //	TrueName string `json:"true_name"`
