@@ -148,10 +148,10 @@ func (a *remind) RemindAdmin(c *fiber.Ctx) error {
 	}
 	where := " a.id>0 and a.role_id in (5,6,7) "
 	if input.RemindGroupId != "" {
-		where += fmt.Sprintf(" a.remind_group_id=%d", tools.ToInt(input.RemindGroupId))
+		where += fmt.Sprintf(" and a.remind_group_id=%d", tools.ToInt(input.RemindGroupId))
 	}
 	if input.RemindId != "" {
-		where += fmt.Sprintf(" a.remind_id=%d", tools.ToInt(input.RemindId))
+		where += fmt.Sprintf(" and a.remind_id=%d", tools.ToInt(input.RemindId))
 	}
 	admin := new(model.Admin)
 	lists, count := admin.Page(where, input.Page, input.Size)

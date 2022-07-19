@@ -8,14 +8,15 @@ import (
 
 type RemindGroup struct {
 	bun.BaseModel `bun:"table:remind_group,alias:rg"`
-	Id            int            `json:"id" bun:",pk"`
-	CompanyId     int            `json:"company_id"`
-	MchId         int            `json:"mch_id"`
-	AdminId       int            `json:"admin_id"`
-	GroupName     string         `json:"group_name"`
-	Status        int            `json:"status"`
-	RemindCompany *RemindCompany `json:"remind_company" bun:"rel:belongs-to,join:company_id=id"`
-	Merchant      *Merchant      `json:"merchant" bun:"rel:belongs-to,join:mch_id=id"`
+	Id            int             `json:"id" bun:",pk"`
+	CompanyId     int             `json:"company_id"`
+	MchId         int             `json:"mch_id"`
+	AdminId       int             `json:"admin_id"`
+	GroupName     string          `json:"group_name"`
+	Status        int             `json:"status"`
+	RemindCompany *RemindCompany  `json:"remind_company" bun:"rel:belongs-to,join:company_id=id"`
+	Merchant      *MerchantLittle `json:"merchant" bun:"rel:belongs-to,join:mch_id=id"`
+	Admin         *Admin          `json:"admin" bun:"rel:belongs-to,join:admin_id=id"`
 }
 
 func (a *RemindGroup) Insert() {
@@ -40,7 +41,7 @@ func (a *RemindGroup) One(where string) {
 func (a *RemindGroup) Page(where string, page, limit int) ([]RemindGroup, int) {
 	var d []RemindGroup
 	count, _ := global.C.DB.NewSelect().Model(&d).Relation("RemindCompany").Relation("Merchant").
-		Where(where).Order("rg.id desc").Offset((page - 1) * limit).Limit(limit).
+		Relation("Admin").Where(where).Order("rg.id desc").Offset((page - 1) * limit).Limit(limit).
 		ScanAndCount(global.C.Ctx)
 	return d, count
 }

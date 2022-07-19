@@ -70,6 +70,5 @@ func (a *smsTemplate) SmsTemplateCreateOrUpdate(c *fiber.Ctx) error {
 		s.Id = tools.ToInt(input.ID)
 		s.Update(fmt.Sprintf("id=%d", input.ID))
 	}
-	fmt.Println("111")
 	return resp.OK(c, "")
 }
