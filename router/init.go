@@ -25,6 +25,7 @@ func Init() {
 	remindHandle := v1.NewRemind()
 	urgeHandle := v1.NewUrge()
 	UserBlackHandle := v1.NewUserBlack()
+	whitePhoneHandle := v1.NewWhitePhone()
 
 	app := fiber.New(fiber.Config{
 		//Prefork:       true,
@@ -133,10 +134,13 @@ func Init() {
 	v.Get("/urge_admin", urgeHandle.UrgeAdmin)
 	v.Get("/urge_rules", urgeHandle.UrgeRules)
 	v.Post("/urge_rules/create_or_update", urgeHandle.UrgeRulesCreateOrUpdate)
-
+	//黑名单管理
 	v.Post("/user_black/create", UserBlackHandle.UserBlackCreate)
 	v.Post("/user_black/del", UserBlackHandle.UserBlackDel)
 	v.Get("/user_black", UserBlackHandle.UserBlackList)
-
+	//白名单管理
+	v.Post("/white_phone/create", whitePhoneHandle.WhitePhoneCreate)
+	v.Post("/white_phone/del", whitePhoneHandle.WhitePhoneDel)
+	v.Get("/white_phone", whitePhoneHandle.WhitePhoneList)
 	app.Listen(fmt.Sprintf(":%d", global.C.Http.Port))
 }

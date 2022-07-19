@@ -74,12 +74,12 @@ func (a *userBlack) UserBlackDel(c *fiber.Ctx) error {
 	if err := tools.ParseBody(c, input); err != nil {
 		return resp.Err(c, 1, err.Error())
 	}
-	if input.Id==""{
-		return resp.Err(c, 1,"id不能为空")
-	}else if tools.ToInt(input.Id)==0{
-		return resp.Err(c, 1,"id不能为0")
+	if input.Id == "" {
+		return resp.Err(c, 1, "id不能为空")
+	} else if tools.ToInt(input.Id) == 0 {
+		return resp.Err(c, 1, "id不能为0")
 	}
-	black:=new(model.UserBlack)
-	black.Del(fmt.Sprintf("id=%d",tools.ToInt(input.Id)))
+	black := new(model.UserBlack)
+	black.Del(fmt.Sprintf("id=%d", tools.ToInt(input.Id)))
 	return resp.OK(c, "")
 }
