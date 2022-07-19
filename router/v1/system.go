@@ -255,3 +255,127 @@ func (a *system) RoleDelete(c *fiber.Ctx) error {
 func (a *system) SystemFields(c *fiber.Ctx) error {
 	return resp.OK(c, global.C.Maps)
 }
+
+type systemSettingList struct {
+	Page int `json:"page"`
+	Size int `json:"size"`
+}
+
+// SystemSettingList 系统设置列表
+func (a *system) SystemSettingList(c *fiber.Ctx) error {
+	input := new(systemSettingList)
+	if err := tools.ParseBody(c, input); err != nil {
+		return resp.Err(c, 1, err.Error())
+	}
+	lists, count := new(model.SystemSetting).Page(input.Page, input.Size)
+	return resp.OK(c, map[string]interface{}{
+		"count": count,
+		"list":  lists,
+	})
+}
+
+type systemSettingUpdateValue struct {
+	Id         string `json:"id"`
+	ParamValue string `json:"param_value"`
+}
+
+// SystemSettingUpdateValue 修改系统设置
+func (a *system) SystemSettingUpdateValue(c *fiber.Ctx) error {
+	input := new(systemSettingUpdateValue)
+	if err := tools.ParseBody(c, input); err != nil {
+		return resp.Err(c, 1, err.Error())
+	}
+	if tools.ToInt(input.Id) == 0 {
+		return resp.Err(c, 1, "id不能为0")
+	}
+	cf := new(model.SystemSetting)
+	cf.One(fmt.Sprintf("id=%d", tools.ToInt(input.Id)))
+	cf.ParamValue = input.ParamValue
+	cf.Update(fmt.Sprintf("id=%d", tools.ToInt(input.Id)))
+	return resp.OK(c, "")
+}
+
+type adminLogList struct {
+	AdminName       string `json:"admin_name"`
+	Method          string `json:"method"`
+	Path            string `json:"path"`
+	StartCreateTime string `json:"StartCreateTime"`
+	EndCreateTime   string `json:"EndCreateTime"`
+	Page            int    `json:"page"`
+	Size            int    `json:"size"`
+}
+
+// AdminLogList 管理员操作日志
+func (a *system) AdminLogList(c *fiber.Ctx) error {
+	input := new(adminLogList)
+	if err := tools.ParseBody(c, input); err != nil {
+		return resp.Err(c, 1, err.Error())
+	}
+	where := "al.id>0"
+	if input.AdminName != "" {
+		where += " and al.admin_name like '%" + input.AdminName + "%'"
+	}
+	if input.AdminName != "" {
+		where += fmt.Sprintf("al.method=%s", input.Method)
+	}
+	if input.Path != "" {
+		where += " and al.path like '%" + input.Path + "%'"
+	}
+	if input.StartCreateTime != "" {
+		where += fmt.Sprintf(" and al.create_time>'%s'", input.StartCreateTime)
+		where += fmt.Sprintf(" and al.create_time<'%s'", input.EndCreateTime)
+	}
+	al := new(model.AdminLog)
+	lists, count := al.Page(where, input.Page, input.Size)
+	return resp.OK(c, map[string]interface{}{
+		"count": count,
+		"list":  lists,
+	})
+}
+
+type increaseRuleCreateOrUpdate struct {
+	Id               string `json:"id"`
+	LoanProductCount string `json:"loan_product_count"`
+	MinCount         string `json:"min_count"`
+}
+
+// IncreaseRuleCreateOrUpdate 新增或修改可贷在途产品数提量规则
+func (a *system) IncreaseRuleCreateOrUpdate(c *fiber.Ctx) error {
+	input := new(increaseRuleCreateOrUpdate)
+	if err := tools.ParseBody(c, input); err != nil {
+		return resp.Err(c, 1, err.Error())
+	}
+	rule := new(model.IncreaseRule)
+	if input.Id == "" {
+		rule.LoanProductCount = tools.ToInt(input.LoanProductCount)
+		rule.MinCount = tools.ToInt(input.MinCount)
+		rule.CreateTime = tools.GetFormatTime()
+		rule.UpdateTime = tools.GetFormatTime()
+		rule.Insert()
+	} else {
+		rule.One(fmt.Sprintf("ir.id=%d", tools.ToInt(input.Id)))
+		rule.LoanProductCount = tools.ToInt(input.LoanProductCount)
+		rule.MinCount = tools.ToInt(input.MinCount)
+		rule.UpdateTime = tools.GetFormatTime()
+		rule.Update(fmt.Sprintf("ir.id=%d", tools.ToInt(input.Id)))
+	}
+	return resp.OK(c, "")
+}
+
+type increaseRuleList struct {
+	Page int `json:"page"`
+	Size int `json:"size"`
+}
+
+// IncreaseRuleList 可贷在途产品数提量规则
+func (a *system) IncreaseRuleList(c *fiber.Ctx) error {
+	input := new(increaseRuleList)
+	if err := tools.ParseBody(c, input); err != nil {
+		return resp.Err(c, 1, err.Error())
+	}
+	lists, count := new(model.IncreaseRule).Page(input.Page, input.Size)
+	return resp.OK(c, map[string]interface{}{
+		"count": count,
+		"list":  lists,
+	})
+}

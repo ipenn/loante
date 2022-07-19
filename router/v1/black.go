@@ -8,11 +8,11 @@ import (
 	"loante/tools"
 )
 
-type userBlack struct {
+type blacks struct {
 }
 
-func NewUserBlack() *userBlack {
-	return new(userBlack)
+func NewBlack() *blacks {
+	return new(blacks)
 }
 
 type userBlackCreate struct {
@@ -22,7 +22,7 @@ type userBlackCreate struct {
 }
 
 // UserBlackCreate 添加黑名单
-func (a *userBlack) UserBlackCreate(c *fiber.Ctx) error {
+func (a *blacks) UserBlackCreate(c *fiber.Ctx) error {
 	input := new(userBlackCreate)
 	if err := tools.ParseBody(c, input); err != nil {
 		return resp.Err(c, 1, err.Error())
@@ -44,7 +44,7 @@ type userBlackList struct {
 }
 
 // UserBlackList 黑名单列表
-func (a *userBlack) UserBlackList(c *fiber.Ctx) error {
+func (a *blacks) UserBlackList(c *fiber.Ctx) error {
 	input := new(userBlackList)
 	if err := tools.ParseBody(c, input); err != nil {
 		return resp.Err(c, 1, err.Error())
@@ -69,7 +69,7 @@ type userBlackDel struct {
 }
 
 // UserBlackDel 删除用户黑名单
-func (a *userBlack) UserBlackDel(c *fiber.Ctx) error {
+func (a *blacks) UserBlackDel(c *fiber.Ctx) error {
 	input := new(userBlackDel)
 	if err := tools.ParseBody(c, input); err != nil {
 		return resp.Err(c, 1, err.Error())
@@ -82,4 +82,32 @@ func (a *userBlack) UserBlackDel(c *fiber.Ctx) error {
 	black := new(model.UserBlack)
 	black.Del(fmt.Sprintf("id=%d", tools.ToInt(input.Id)))
 	return resp.OK(c, "")
+}
+
+type regionalBlack struct {
+	RegionName    string `json:"region_name"`
+	IsBlackRegion string `json:"is_black_region"`
+	Page          int    `json:"page"`
+	Size          int    `json:"size"`
+}
+
+// RegionalBlack 区域黑名单列表
+func (a *blacks) RegionalBlack(c *fiber.Ctx) error {
+	input := new(regionalBlack)
+	if err := tools.ParseBody(c, input); err != nil {
+		return resp.Err(c, 1, err.Error())
+	}
+	where := "rb.id>0 "
+	if input.RegionName != "" {
+		where += fmt.Sprintf("and rb.region_name=%s", input.RegionName)
+	}
+	if input.IsBlackRegion != "" {
+		where += fmt.Sprintf("and rb.is_black_region=%d", tools.ToInt(input.RegionName))
+	}
+	black := new(model.RegionalBlack)
+	lists, count := black.Page(where, input.Page, input.Size)
+	return resp.OK(c, map[string]interface{}{
+		"count": count,
+		"list":  lists,
+	})
 }

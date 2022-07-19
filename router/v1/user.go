@@ -234,3 +234,62 @@ func (a *user) Details(c *fiber.Ctx) error {
 //	return resp.OK(c, map[string]interface{}{
 //	})
 //}
+
+type customerFeedBack struct {
+	Name            string `json:"name"`
+	Phone           string `json:"phone"`
+	Status          string `json:"status"`
+	StartCreateTime string `json:"startCreateTime"`
+	EndCreateTime   string `json:"endCreateTime"`
+	Page            int    `json:"page"`
+	Size            int    `json:"size"`
+}
+
+// CustomerFeedBack 客服反馈
+func (a *user) CustomerFeedBack(c *fiber.Ctx) error {
+	input := new(customerFeedBack)
+	if err := tools.ParseBody(c, input); err != nil {
+		return resp.Err(c, 1, err.Error())
+	}
+	where := "cf.id>0"
+	if input.Name != "" {
+		where += " and cf.name like '%" + input.Name + "%'"
+	}
+	if input.Phone != "" {
+		where += " and cf.phone like '%" + input.Phone + "%'"
+	}
+	if input.Status != "" {
+		where += fmt.Sprintf(" and cf.status=%d", tools.ToInt(input.Status))
+	}
+	if input.StartCreateTime != "" {
+		where += fmt.Sprintf(" and cf.create_time>'%s'", input.StartCreateTime)
+		where += fmt.Sprintf(" and cf.create_time<'%s'", input.EndCreateTime)
+	}
+	cf := new(model.CustomerFeedBack)
+	lists, count := cf.Page(where, input.Page, input.Size)
+	return resp.OK(c, map[string]interface{}{
+		"count": count,
+		"list":  lists,
+	})
+}
+
+type customerFeedBackUpdateStatus struct {
+	Id     string `json:"id"`
+	Status string `json:"status"`
+}
+
+// CustomerFeedBackUpdateStatus 修改客户反馈状态
+func (a *user) CustomerFeedBackUpdateStatus(c *fiber.Ctx) error {
+	input := new(customerFeedBackUpdateStatus)
+	if err := tools.ParseBody(c, input); err != nil {
+		return resp.Err(c, 1, err.Error())
+	}
+	if tools.ToInt(input.Id) == 0 {
+		return resp.Err(c, 1, "id不能为0")
+	}
+	cf := new(model.CustomerFeedBack)
+	cf.One(fmt.Sprintf("id=%d", tools.ToInt(input.Id)))
+	cf.Status = tools.ToInt(input.Status)
+	cf.Update(fmt.Sprintf("id=%d", tools.ToInt(input.Id)))
+	return resp.OK(c, "")
+}

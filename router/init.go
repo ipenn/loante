@@ -24,7 +24,7 @@ func Init() {
 	smsTemplateHandle := v1.NewSmsTemplate()
 	remindHandle := v1.NewRemind()
 	urgeHandle := v1.NewUrge()
-	UserBlackHandle := v1.NewUserBlack()
+	BlackHandle := v1.NewBlack()
 	whitePhoneHandle := v1.NewWhitePhone()
 
 	app := fiber.New(fiber.Config{
@@ -57,6 +57,11 @@ func Init() {
 	v.Post("/roles/create", systemHandle.RoleCreate)
 	v.Post("/roles/delete", systemHandle.RoleDelete)
 	v.Get("/system/fields", systemHandle.SystemFields)
+	v.Get("/system_setting", systemHandle.SystemSettingList)
+	v.Get("/admin_log", systemHandle.AdminLogList)
+	v.Post("/system_setting/update_value", systemHandle.SystemSettingUpdateValue)
+	v.Get("/increase_rule", systemHandle.IncreaseRuleList)
+	v.Post("/increase_rule/create_or_update", systemHandle.IncreaseRuleCreateOrUpdate)
 
 	//渠道
 	v.Get("/utm/lists", utmHandle.Lists)
@@ -93,6 +98,8 @@ func Init() {
 	//客户管理
 	v.Get("/user/list", userHandle.UserQuery)
 	v.Get("/user/detail", userHandle.Details)
+	v.Get("/customer_feedback", userHandle.CustomerFeedBack)                            //客户反馈
+	v.Post("/customer_feedback/update_status", userHandle.CustomerFeedBackUpdateStatus) //客户反馈
 
 	//借贷
 	v.Get("/borrow/list", borrowHandle.Query)
@@ -135,9 +142,10 @@ func Init() {
 	v.Get("/urge_rules", urgeHandle.UrgeRules)
 	v.Post("/urge_rules/create_or_update", urgeHandle.UrgeRulesCreateOrUpdate)
 	//黑名单管理
-	v.Post("/user_black/create", UserBlackHandle.UserBlackCreate)
-	v.Post("/user_black/del", UserBlackHandle.UserBlackDel)
-	v.Get("/user_black", UserBlackHandle.UserBlackList)
+	v.Post("/user_black/create", BlackHandle.UserBlackCreate)
+	v.Post("/user_black/del", BlackHandle.UserBlackDel)
+	v.Get("/user_black", BlackHandle.UserBlackList)
+	v.Get("/regional_black", BlackHandle.RegionalBlack) //区域黑名单
 	//白名单管理
 	v.Post("/white_phone/create", whitePhoneHandle.WhitePhoneCreate)
 	v.Post("/white_phone/del", whitePhoneHandle.WhitePhoneDel)

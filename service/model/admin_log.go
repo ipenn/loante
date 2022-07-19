@@ -62,3 +62,10 @@ func (a *AdminLog) Del(where string) {
 		global.Log.Error("%v err=%v", a, err.Error())
 	}
 }
+
+func (a *AdminLog) Page(where string, page, limit int) ([]AdminLog, int) {
+	var d []AdminLog
+	count, _ := global.C.DB.NewSelect().Model(&d).Where(where).Order("al.id desc").Offset((page - 1) * limit).Limit(limit).
+		ScanAndCount(global.C.Ctx)
+	return d, count
+}
