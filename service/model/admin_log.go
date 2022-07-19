@@ -9,12 +9,12 @@ import (
 type AdminLog struct {
 	bun.BaseModel `bun:"table:admin_log,alias:al"`
 	Id	int	`json:"id"`
-	Operate		string		`json:"operate"`
-	Path	string	`json:"path"`
-	Ip	string	`json:"ip"`
+	AdminId	int	`json:"admin_id"`
+	AdminName	string	`json:"admin_name"`
+	Method	string	`json:"method"`
+	Path    string `json:"path"`
+	ReqBody string `json:"req_body"`
 	CreateTime	string	`json:"create_time"`
-	UserName	string	`json:"user_name"`
-	RoleName	string	`json:"role_name"`
 }
 
 func (a *AdminLog)Insert()  {

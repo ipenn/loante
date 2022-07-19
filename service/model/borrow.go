@@ -14,7 +14,7 @@ type BorrowLittle struct {
 	ProductId          	int				`json:"product_id"`
 	User 				*UserLittle  	`json:"user" bun:"rel:belongs-to,join:uid=id"`
 	Merchant 			*MerchantLittle  	`json:"merchant" bun:"rel:belongs-to,join:mch_id=id"`
-	//Product 			*Product		`json:"product" bun:"rel:belongs-to,join:product_id=id"`
+	Product 			*Product		`json:"product" bun:"rel:belongs-to,join:product_id=id"`
 }
 type Borrow struct {
 	bun.BaseModel `bun:"table:borrow,alias:b"`
@@ -38,7 +38,6 @@ type Borrow struct {
 	Remark           	string		`json:"remark"`
 	CompleteTime     	string		`json:"complete_time"`
 	ActualAmount     	int			`json:"actual_amount"`
-
 }
 
 

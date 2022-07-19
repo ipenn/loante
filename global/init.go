@@ -36,15 +36,15 @@ type Config struct {
 	//Maps
 	Maps struct{
 		TestMap map[string]string 	`json:"test_map"`
-		ServiceDeductType []string 	`json:"service_deduct_type"`
-		ServiceType []string 	`json:"service_type"`
-		SmsCompanys []string 	`json:"sms_companys"`
-		SmsTypes []string 	`json:"sms_types"`
-		BlankTypes []string 	`json:"blank_types"`
-		SystemSettingTypes []string 	`json:"system_setting_types"`
-		StatisticsCompany []string 	`json:"statistics_company"`
-		RiskModel []string 	`json:"risk_model"`
-		MchFundType []string 	`json:"mch_fund_type"`
+		ServiceDeductType map[string]string 	`json:"service_deduct_type"`
+		ServiceType map[string]string 	`json:"service_type"`
+		SmsCompany map[string]string 	`json:"sms_company"`
+		SmsTypes map[string]string 	`json:"sms_types"`
+		BlankTypes map[string]string 	`json:"blank_types"`
+		SystemSettingType map[string]string 	`json:"system_setting_type"`
+		StatisticsCompany map[string]string 	`json:"statistics_company"`
+		RiskModel map[string]string 	`json:"risk_model"`
+		MchFundType map[string]string 	`json:"mch_fund_type"`
 	}  `json:"maps"`
 }
 

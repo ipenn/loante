@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"github.com/gofiber/fiber/v2"
 	"loante/service/model"
+	"loante/service/req"
 	"loante/service/resp"
 	"loante/tools"
 )
@@ -15,10 +16,9 @@ func NewProductDelayConfig() *productDelayConfig {
 }
 
 type productDelayConfigList struct {
+	req.PageReq
 	MchId     string `query:"mchId" json:"mch_id "`
 	ProductId string `query:"productId" json:"product_id"`
-	Page      int    `query:"page" json:"page"`
-	Size      int    `query:"size" json:"size"`
 }
 
 func (a *productDelayConfig) ProductDelayConfig(c *fiber.Ctx) error {

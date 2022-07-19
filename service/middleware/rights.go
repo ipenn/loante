@@ -8,16 +8,22 @@ import (
 	"loante/global"
 	"loante/service/model"
 	"loante/service/resp"
+	"strconv"
 	"strings"
 )
 
 
 type TokenPayload struct {
 	Id int
-	Username string
-	UserType string
+	AdminName string
+	AdminType string
 	RoleName string
 	RoleId string
+	MchId int
+	RemindId int
+	UrgeId int
+	RemindGroupId int
+	UrgeGroupId int
 }
 
 
@@ -57,16 +63,33 @@ func verify(token string) (*TokenPayload, error) {
 		return nil, errors.New("Something went wrong")
 	}
 	roleId := fmt.Sprintf("%v", claims["RoleId"] )
+
 	//roleId, ok := claims["RoleId"].(string)
 	//if !ok {
 	//	return nil, errors.New("Something went wrong")
 	//}
-	//rId,_ := strconv.Atoi(roleId)
+
+	mchId := fmt.Sprintf("%v", claims["MchId"])
+	MchId,_ := strconv.Atoi(mchId)
+	remindId := fmt.Sprintf("%v", claims["RemindId"])
+	RemindId,_ := strconv.Atoi(remindId)
+	urgeId := fmt.Sprintf("%v", claims["UrgeId"])
+	UrgeId,_ := strconv.Atoi(urgeId)
+	remindGroupId := fmt.Sprintf("%v", claims["RemindGroupId"])
+	RemindGroupId,_ := strconv.Atoi(remindGroupId)
+	urgeGroupId := fmt.Sprintf("%v", claims["UrgeGroupId"])
+	UrgeGroupId,_ := strconv.Atoi(urgeGroupId)
+
 	return &TokenPayload{
 		Id: int(id),
-		Username: username,
+		AdminName: username,
 		RoleId: roleId,
-		UserType:  claims["UserType"].(string),
+		AdminType:  claims["UserType"].(string),
+		MchId: MchId,
+		RemindId:RemindId,
+		UrgeId:UrgeId,
+		RemindGroupId:RemindGroupId,
+		UrgeGroupId:UrgeGroupId,
 	}, nil
 }
 
@@ -107,11 +130,18 @@ func Auth(c *fiber.Ctx) error {
 	if rights != "*" && strings.Index(rights, c.Path()) == -1{
 		return resp.Err(c, 1, "insufficient permissions!")
 	}
-	c.Locals("userType", user.UserType)
+	c.Locals("userType", user.AdminType)
 	c.Locals("userId", user.Id)
-	c.Locals("userName", user.Username)
+	c.Locals("userName", user.AdminName)
 	c.Locals("roleName", user.RoleName)
 	c.Locals("roleId", user.RoleId)
+
+	c.Locals("mchId", user.MchId)
+	c.Locals("remindId", user.RemindId)
+	c.Locals("remindGroupId", user.RemindGroupId)
+	c.Locals("urgeId", user.UrgeId)
+	c.Locals("urgeGroupId", user.UrgeGroupId)
+
 	c.Next()
 	return nil
 }

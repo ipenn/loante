@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"github.com/gofiber/fiber/v2"
 	"loante/service/model"
+	"loante/service/req"
 	"loante/service/resp"
 	"loante/tools"
 )
@@ -15,10 +16,9 @@ func NewSmsTemplate() *smsTemplate {
 }
 
 type smsTemplateList struct {
+	req.PageReq
 	CompanyId string `query:"companyId" json:"company_id"`
 	SmsType   string `query:"smsType" json:"sms_type"`
-	Page      int    `query:"page" json:"page"`
-	Size      int    `query:"size" json:"size"`
 }
 
 func (a *smsTemplate) SmsTemplate(c *fiber.Ctx) error {

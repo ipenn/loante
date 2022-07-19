@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"github.com/gofiber/fiber/v2"
 	"loante/service/model"
+	"loante/service/req"
 	"loante/service/resp"
 	"loante/tools"
 )
@@ -15,13 +16,12 @@ func NewProduct() *product {
 }
 
 type productList struct {
+	req.PageReq
 	MchId         string `query:"mchId" json:"mch_id"`
 	ProductName   string `query:"productName" json:"product_name"`
 	IsAutoLending string `query:"isAutoLending" json:"is_auto_lending"`
 	IsStopLending string `query:"isStopLending" json:"is_stop_lending"`
 	Status        string `query:"status" json:"status"`
-	Page          int    `query:"page" json:"page"`
-	Size          int    `query:"size" json:"size"`
 }
 
 func (a *product) Product(c *fiber.Ctx) error {

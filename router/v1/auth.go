@@ -46,11 +46,16 @@ func (a *auth)Login(c *fiber.Ctx) error {
 	token := jwt.New(jwt.SigningMethodHS256)
 	exp := tools.GetUnixTime() + int64(global.C.Safety.Expired)
 	claims := token.Claims.(jwt.MapClaims)
-	claims["Username"] = admin.AdminName
+	claims["AdminName"] = admin.AdminName
 	claims["Id"] = admin.Id
 	claims["RoleId"] = fmt.Sprintf("%d", admin.RoleId)
-	claims["UserType"] = right.RoleName
-	claims["exp"] = exp
+	claims["AdminType"] = right.RoleName
+	claims["MchId"] = admin.MchId
+	claims["RemindId"] = admin.RemindId
+	claims["UrgeId"] = admin.UrgeId
+	claims["RemindGroupId"] = admin.RemindGroupId
+	claims["UrgeGroupId"] = admin.UrgeGroupId
+	claims["Exp"] = exp
 	t, err := token.SignedString([]byte(global.C.Safety.Secret))
 	if err != nil {
 		return resp.Err(c, 1, "签名失败！")
@@ -61,5 +66,6 @@ func (a *auth)Login(c *fiber.Ctx) error {
 		"exp":exp,
 		"admin_type":right.RoleName,
 		"role_id": admin.RoleId,
+		"mch_id": admin.MchId,
 	})
 }

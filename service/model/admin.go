@@ -12,7 +12,7 @@ type Admin struct {
 	Id	int	`json:"id" bun:",pk"`
 	AdminName	string	`json:"admin_name"`
 	Password	string	`json:"-"`
-	Salt	string	`json:"salt"`
+	Salt	string	`json:"-"`
 	CreateTime	string	`json:"create_time"`
 	Status	int	`json:"status"`
 	RoleId	int	`json:"role_id"`
@@ -20,14 +20,16 @@ type Admin struct {
 	LoginIp	string	`json:"login_ip"`
 	Email	string	`json:"email"`
 	Mobile	string	`json:"mobile"`
-	MchId	int	`json:"mch_id" bun:"mch_id"`
-	RemindId	int	`json:"remind_id"`
-	UrgeId	int	`json:"urge_id"`
-	Merchant	*MerchantLittle `json:"merchant" bun:"rel:belongs-to,join:mch_id=id"`
-	RemindGroup   *RemindGroup   `json:"remind_group" bun:"rel:belongs-to,join:remind_group_id=id"`
-	RemindCompany *RemindCompany `json:"remind_company" bun:"rel:belongs-to,join:remind_id=id"`
-	UrgeGroup   *UrgeGroup   `json:"urge_group" bun:"rel:belongs-to,join:urge_group_id=id"`
-	Company *UrgeCompany `json:"urge_company" bun:"rel:belongs-to,join:urge_id=id"`
+	MchId	int	`json:"-" bun:"mch_id"`
+	RemindId	int	`json:"-"`
+	UrgeId        int `json:"-"`
+	RemindGroupId int             `json:"-"`
+	UrgeGroupId   int             `json:"-"`
+	Merchant      *MerchantLittle `json:"merchant" bun:"rel:belongs-to,join:mch_id=id"`
+	RemindGroup   	*RemindGroup   `json:"remind_group" bun:"rel:belongs-to,join:remind_group_id=id"`
+	RemindCompany 	*RemindCompany `json:"remind_company" bun:"rel:belongs-to,join:remind_id=id"`
+	UrgeGroup  	 	*UrgeGroup   `json:"urge_group" bun:"rel:belongs-to,join:urge_group_id=id"`
+	Company 		*UrgeCompany `json:"urge_company" bun:"rel:belongs-to,join:urge_id=id"`
 }
 
 func (a *Admin)Insert()  {
