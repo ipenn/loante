@@ -4,7 +4,6 @@ import (
 	"fmt"
 	"github.com/gofiber/fiber/v2"
 	"loante/service/model"
-	"loante/service/req"
 	"loante/service/resp"
 	"loante/tools"
 )
@@ -16,9 +15,10 @@ func NewSmsTemplate() *smsTemplate {
 }
 
 type smsTemplateList struct {
-	req.PageReq
 	CompanyId string `query:"companyId" json:"company_id"`
 	SmsType   string `query:"smsType" json:"sms_type"`
+	Page      int    `query:"page" json:"page"`
+	Size      int    `query:"size" json:"size"`
 }
 
 func (a *smsTemplate) SmsTemplate(c *fiber.Ctx) error {
@@ -33,6 +33,7 @@ func (a *smsTemplate) SmsTemplate(c *fiber.Ctx) error {
 	if input.SmsType != "" {
 		where += " and sms_type=" + input.SmsType
 	}
+
 	lists, count := new(model.SmsTemplate).Page(where, input.Page, input.Size)
 	return resp.OK(c, map[string]interface{}{
 		"count": count,
@@ -70,6 +71,5 @@ func (a *smsTemplate) SmsTemplateCreateOrUpdate(c *fiber.Ctx) error {
 		s.Id = tools.ToInt(input.ID)
 		s.Update(fmt.Sprintf("id=%d", input.ID))
 	}
-	fmt.Println("111")
 	return resp.OK(c, "")
 }

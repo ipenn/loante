@@ -1,0 +1,27 @@
+[mysql]
+host="192.168.1.5"
+port=3306
+user="loante"
+password="12345678"
+dbName="loante_db"
+
+[http]
+port=51111
+debug=true
+host="http://127.0.0.1:3000"
+
+[safety]
+secret="theconditionofbeingprotectedfromorunlikely"
+expired=100000000
+
+[maps]
+TestMap={1 ="haha",2 ="hehe" }
+ServiceDeductType={1="人民币",2 = "美金"}
+ServiceType={1="短信",2="风控",3="服务费"}
+SmsCompany={1="kmi",2="创蓝",3 ="牛信"}
+SmsTypes={1="验证码", 2="放款成功通知", 3="还款前一天提醒", 4="还款当天通知", 5="逾期天数通知", 6="全额还款完成发送提额短信", 7="其它"}
+BlankTypes={1="身份证号", 2="手机号", 3="银行卡号", 4="姓名", 5="通讯手机号", 6="pan卡号"}
+SystemSettingType={1="bool值", 2="数字", 3="普通字符串"}
+StatisticsCompany={1="adjust"}
+RiskModel={1="水星", 2="水星2号"}
+MchFundType={1="现金充值",2="服务退款",3="现金退款",4="服务扣款",5="催收提醒短信扣款",6="风控服务费扣款"}
