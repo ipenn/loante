@@ -1,5 +1,5 @@
 package cron
 
-func ScoreCron()  {
+func ScoreCron() {
 
 }

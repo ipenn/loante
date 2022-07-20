@@ -2,11 +2,10 @@ package main
 
 import "loante/service/cron"
 
-func main()  {
+func main() {
 	CronInit()
 }
 
-func CronInit()  {
+func CronInit() {
 	cron.ScoreCron()
 }
-

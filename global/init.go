@@ -14,24 +14,24 @@ import (
 )
 
 type Config struct {
-	DB *bun.DB
-	Ctx context.Context
-	Mysql struct{
-		Host		string
-		Port		int
-		User	string
-		Password	string
-		DbName		string
+	DB    *bun.DB
+	Ctx   context.Context
+	Mysql struct {
+		Host     string
+		Port     int
+		User     string
+		Password string
+		DbName   string
 	}
-	Http		struct{
-		Port		int
-		Host		string
-		Debug 		bool
+	Http struct {
+		Port  int
+		Host  string
+		Debug bool
 	}
 	//安全配置的
-	Safety struct{
-		Secret 		string
-		Expired 	int
+	Safety struct {
+		Secret  string
+		Expired int
 	}
 	//Maps
 	Maps struct{
@@ -54,7 +54,7 @@ type Config struct {
 var C Config
 var Log *logger.LocalLogger
 var AdminRights map[string]string
-var Validate 		*validator.Validate
+var Validate *validator.Validate
 
 func init() {
 	configInit()
@@ -62,7 +62,7 @@ func init() {
 	logInit()
 }
 
-func configInit()  {
+func configInit() {
 	if _, err := toml.DecodeFile("conf/config.toml", &C); err != nil {
 		fmt.Println("toml.DecodeFile", err.Error())
 	}
@@ -70,14 +70,14 @@ func configInit()  {
 	Validate = validator.New()
 }
 
-func dbInit()  {
+func dbInit() {
 	sqldb, err := sql.Open("mysql", fmt.Sprintf("%s:%s@tcp(%s:%d)/%s", C.Mysql.User, C.Mysql.Password, C.Mysql.Host, C.Mysql.Port, C.Mysql.DbName))
 	if err != nil {
 		fmt.Println(err)
 		return
 	}
 	C.Ctx = context.Background()
-	C.DB  = bun.NewDB(sqldb, mysqldialect.New())
+	C.DB = bun.NewDB(sqldb, mysqldialect.New())
 	if C.Http.Debug {
 		C.DB.AddQueryHook(bundebug.NewQueryHook(
 			bundebug.WithVerbose(true),
@@ -87,7 +87,7 @@ func dbInit()  {
 
 }
 
-func logInit()  {
+func logInit() {
 	Log = logger.NewLogger()
 	Log.SetLogger("file", `{"filename":"./log/info.log","maxlines":10000,"maxsize":2,"append":true}`)
 }

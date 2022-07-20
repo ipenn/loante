@@ -8,57 +8,64 @@ import (
 
 type AdminLog struct {
 	bun.BaseModel `bun:"table:admin_log,alias:al"`
-	Id	int	`json:"id"`
-	AdminId	int	`json:"admin_id"`
-	AdminName	string	`json:"admin_name"`
-	Method	string	`json:"method"`
-	Path    string `json:"path"`
-	ReqBody string `json:"req_body"`
-	CreateTime	string	`json:"create_time"`
+	Id            int    `json:"id"`
+	AdminId       int    `json:"admin_id"`
+	AdminName     string `json:"admin_name"`
+	Method        string `json:"method"`
+	Path          string `json:"path"`
+	ReqBody       string `json:"req_body"`
+	CreateTime    string `json:"create_time"`
 }
 
-func (a *AdminLog)Insert()  {
+func (a *AdminLog) Insert() {
 	a.CreateTime = tools.GetFormatTime()
 	_, err := global.C.DB.NewInsert().Model(a).Returning("*").Exec(global.C.Ctx)
-	if err != nil{
+	if err != nil {
 		global.Log.Error("%v err=%v", a, err.Error())
 	}
 }
 
-func (a *AdminLog)Update(where string)  {
+func (a *AdminLog) Update(where string) {
 	_, err := global.C.DB.NewUpdate().Model(a).Where(where).Exec(global.C.Ctx)
-	if err != nil{
+	if err != nil {
 		global.Log.Error("%v err=%v", a, err.Error())
 	}
 }
 
-func (a *AdminLog)One(where string)  {
+func (a *AdminLog) One(where string) {
 	err := global.C.DB.NewSelect().Model(a).Where(where).Scan(global.C.Ctx)
-	if err != nil{
+	if err != nil {
 		global.Log.Error("%v err=%v", a, err.Error())
 	}
 }
 
-func (a *AdminLog)Gets(where string) ([]AdminLog, int) {
+func (a *AdminLog) Gets(where string) ([]AdminLog, int) {
 	var datas []AdminLog
 	count, err := global.C.DB.NewSelect().Model(&datas).Where(where).ScanAndCount(global.C.Ctx)
-	if err != nil{
+	if err != nil {
 		global.Log.Error("%v err=%v", a, err.Error())
 	}
 	return datas, count
 }
 
-func (a *AdminLog)Count(where string) int {
+func (a *AdminLog) Count(where string) int {
 	count, err := global.C.DB.NewSelect().Model(a).Where(where).Count(global.C.Ctx)
-	if err != nil{
+	if err != nil {
 		global.Log.Error("%v err=%v", a, err.Error())
 	}
 	return count
 }
 
-func (a *AdminLog)Del(where string)  {
+func (a *AdminLog) Del(where string) {
 	_, err := global.C.DB.NewDelete().Model(a).Where(where).Exec(global.C.Ctx)
-	if err != nil{
+	if err != nil {
 		global.Log.Error("%v err=%v", a, err.Error())
 	}
+}
+
+func (a *AdminLog) Page(where string, page, limit int) ([]AdminLog, int) {
+	var d []AdminLog
+	count, _ := global.C.DB.NewSelect().Model(&d).Where(where).Order("al.id desc").Offset((page - 1) * limit).Limit(limit).
+		ScanAndCount(global.C.Ctx)
+	return d, count
 }

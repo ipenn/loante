@@ -7,13 +7,13 @@ import (
 )
 
 type ProductLittle struct {
-	bun.BaseModel       `bun:"table:product,alias:p"`
-	Id                  int      `json:"id" bun:",pk"`
-	AppNo               string  `json:"app_no"`
-	ProductName         string  `json:"product_name"`
+	bun.BaseModel `bun:"table:product,alias:p"`
+	Id            int    `json:"id" bun:",pk"`
+	AppNo         string `json:"app_no"`
+	ProductName   string `json:"product_name"`
 }
 type Product struct {
-	bun.BaseModel       `bun:"table:product,alias:p"`
+	bun.BaseModel `bun:"table:product,alias:p"`
 	ProductLittle
 	IconPath            string  `json:"icon_path"`
 	MchId               int     `json:"mch_id"`
@@ -63,5 +63,5 @@ func (a *Product) One(where string) {
 func (a *Product) Page(where string, page, limit int) ([]Product, int) {
 	var d []Product
 	count, _ := global.C.DB.NewSelect().Model(&d).Relation("Merchant").Where(where).Order(fmt.Sprintf("p.id desc")).Offset((page - 1) * limit).Limit(limit).ScanAndCount(global.C.Ctx)
-	return d,count
+	return d, count
 }

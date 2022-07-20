@@ -9,7 +9,7 @@ import (
 	"loante/tools"
 )
 
-type product struct {}
+type product struct{}
 
 func NewProduct() *product {
 	return new(product)
@@ -107,10 +107,10 @@ func (a *product) ProductCreateOrUpdate(c *fiber.Ctx) error {
 	p.IsStopLending = tools.ToInt(input.IsStopLending)
 	p.Status = tools.ToInt(input.Status)
 	p.Description = input.Description
-	p.RateNormalInterest = tools.ToFloat64(input.RateNormalInterest)
-	p.RateOverdueInterest = tools.ToFloat64(input.RateOverdueInterest)
-	p.RateService = tools.ToFloat64(input.RateService)
-	p.RateTax = tools.ToFloat64(input.RateTax)
+	p.RateNormalInterest = tools.ToFloat32(input.RateNormalInterest)
+	p.RateOverdueInterest = tools.ToFloat32(input.RateOverdueInterest)
+	p.RateService = tools.ToFloat32(input.RateService)
+	p.RateTax = tools.ToFloat32(input.RateTax)
 	if tools.ToInt(input.Id) == 0 {
 		p.CreateTime = tools.GetFormatTime()
 		p.Insert()

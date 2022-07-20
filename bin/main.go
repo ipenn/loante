@@ -2,6 +2,6 @@ package main
 
 import "loante/router"
 
-func main()  {
+func main() {
 	router.Init()
 }

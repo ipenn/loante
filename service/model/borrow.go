@@ -41,42 +41,41 @@ type Borrow struct {
 	Product 			*Product		`json:"product" bun:"rel:belongs-to,join:product_id=id"`
 }
 
-
-func (a *Borrow)Insert()  {
+func (a *Borrow) Insert() {
 	res, _ := global.C.DB.NewInsert().Model(a).Ignore().On("DUPLICATE KEY UPDATE").Exec(global.C.Ctx)
 	id, _ := res.LastInsertId()
 	a.Id = int(id)
 }
 
-func (a *Borrow)One(where string)  {
+func (a *Borrow) One(where string) {
 	err := global.C.DB.NewSelect().Model(a).Where(where).Scan(global.C.Ctx)
 	fmt.Println(err)
 }
 
-func (a *Borrow)Gets(where string) ([]Borrow, int) {
+func (a *Borrow) Gets(where string) ([]Borrow, int) {
 	var datas []Borrow
 	count, _ := global.C.DB.NewSelect().Model(&datas).Where(where).ScanAndCount(global.C.Ctx)
 	return datas, count
 }
 
-func (a *Borrow)Count(where string) int {
+func (a *Borrow) Count(where string) int {
 	count, _ := global.C.DB.NewSelect().Model(a).Where(where).Count(global.C.Ctx)
 	return count
 }
 
-func (a *Borrow)Update(where string)  {
+func (a *Borrow) Update(where string) {
 	_, err := global.C.DB.NewUpdate().Model(a).Where(where).Exec(global.C.Ctx)
-	if err != nil{
+	if err != nil {
 		global.Log.Error("%v err=%v", a, err.Error())
 	}
 }
 
-func (a *Borrow)Page(where string, page, limit int) ([]Borrow, int) {
+func (a *Borrow) Page(where string, page, limit int) ([]Borrow, int) {
 	var datas []Borrow
-	count, _ := global.C.DB.NewSelect().Model(&datas).Where(where).Order(fmt.Sprintf("b.id desc")).Offset((page-1)*limit).Limit(limit).ScanAndCount(global.C.Ctx)
+	count, _ := global.C.DB.NewSelect().Model(&datas).Where(where).Order(fmt.Sprintf("b.id desc")).Offset((page - 1) * limit).Limit(limit).ScanAndCount(global.C.Ctx)
 	return datas, count
 }
 
-func (a *Borrow)Del(where string)  {
+func (a *Borrow) Del(where string) {
 	global.C.DB.NewDelete().Model(a).Where(where).Exec(global.C.Ctx)
 }

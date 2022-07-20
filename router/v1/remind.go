@@ -14,7 +14,6 @@ func NewRemind() *remind {
 	return new(remind)
 }
 
-
 type remindCompanyCreate struct {
 	CompanyName string `json:"companyName"`
 	MchId       string `json:"mchId"`
@@ -114,7 +113,7 @@ func (a *remind) RemindCompanyUpdate(c *fiber.Ctx) error {
 		//新主管添加权限
 		admin.MchId = tools.ToInt(input.MchId)
 		admin.RoleId = 5
-		admin.Update(fmt.Sprintf("id=%d",tools.ToInt( input.AdminId)))
+		admin.Update(fmt.Sprintf("id=%d", tools.ToInt(input.AdminId)))
 
 		//旧主管取消权限
 		oldAdmin := new(model.Admin)
@@ -129,7 +128,7 @@ func (a *remind) RemindCompanyUpdate(c *fiber.Ctx) error {
 	remindCompany.UserName = admin.AdminName
 	remindCompany.CompanyName = input.CompanyName
 	remindCompany.Description = input.Description
-	remindCompany.Update(fmt.Sprintf("id=%d",tools.ToInt( input.Id)))
+	remindCompany.Update(fmt.Sprintf("id=%d", tools.ToInt(input.Id)))
 	return resp.OK(c, "")
 }
 
@@ -148,10 +147,10 @@ func (a *remind) RemindAdmin(c *fiber.Ctx) error {
 	}
 	where := " a.id>0 and a.role_id in (5,6,7) "
 	if input.RemindGroupId != "" {
-		where += fmt.Sprintf(" a.remind_group_id=%d", tools.ToInt(input.RemindGroupId))
+		where += fmt.Sprintf(" and a.remind_group_id=%d", tools.ToInt(input.RemindGroupId))
 	}
 	if input.RemindId != "" {
-		where += fmt.Sprintf(" a.remind_id=%d", tools.ToInt(input.RemindId))
+		where += fmt.Sprintf(" and a.remind_id=%d", tools.ToInt(input.RemindId))
 	}
 	admin := new(model.Admin)
 	lists, count := admin.Page(where, input.Page, input.Size)
@@ -209,13 +208,13 @@ func (a *remind) RemindGroupUpdate(c *fiber.Ctx) error {
 	group.One(fmt.Sprintf("id=%d", tools.ToInt(input.Id)))
 	if tools.ToInt(input.AdminId) != 0 {
 		admin := new(model.Admin)
-		admin.One(fmt.Sprintf("id=%d",tools.ToInt( input.AdminId)))
+		admin.One(fmt.Sprintf("id=%d", tools.ToInt(input.AdminId)))
 		admin.MchId = group.MchId
 		admin.RoleId = 6
-		admin.Update(fmt.Sprintf("id=%d",tools.ToInt( input.AdminId)))
+		admin.Update(fmt.Sprintf("id=%d", tools.ToInt(input.AdminId)))
 		if group.AdminId != 0 {
 			oldAdmin := new(model.Admin)
-			oldAdmin.One(fmt.Sprintf("id=%d",tools.ToInt( input.AdminId)))
+			oldAdmin.One(fmt.Sprintf("id=%d", tools.ToInt(input.AdminId)))
 			oldAdmin.MchId = group.MchId
 			oldAdmin.RoleId = 7
 			oldAdmin.Update(fmt.Sprintf("id=%d", tools.ToInt(input.AdminId)))
@@ -249,7 +248,7 @@ func (a *remind) RemindGroup(c *fiber.Ctx) error {
 		where += fmt.Sprintf(" rg.id=%d", tools.ToInt(input.Id))
 	}
 	if input.Status != "" {
-		where += fmt.Sprintf(" rg.status=%d",tools.ToInt( input.Status))
+		where += fmt.Sprintf(" rg.status=%d", tools.ToInt(input.Status))
 	}
 	lists, count := new(model.RemindGroup).Page(where, input.Page, input.Size)
 	return resp.OK(c, map[string]interface{}{
@@ -274,6 +273,9 @@ func (a *remind) RemindRulesCreateOrUpdate(c *fiber.Ctx) error {
 	if err := tools.ParseBody(c, input); err != nil {
 		return resp.Err(c, 1, err.Error())
 	}
+	if tools.ToInt(input.MinDay) > 0 || tools.ToInt(input.MinDay) > 0 {
+		return resp.Err(c, 1, "预提醒规则天数不能大于0")
+	}
 	rules := new(model.RemindRules)
 	rules.CompanyId = tools.ToInt(input.CompanyId)
 	rules.GroupId = tools.ToInt(input.GroupId)
@@ -284,7 +286,7 @@ func (a *remind) RemindRulesCreateOrUpdate(c *fiber.Ctx) error {
 	if tools.ToInt(input.Id) == 0 {
 		rules.Insert()
 	} else {
-		rules.Id=tools.ToInt(input.Id)
+		rules.Id = tools.ToInt(input.Id)
 		rules.Update(fmt.Sprintf("id=%d", tools.ToInt(input.Id)))
 	}
 	return resp.OK(c, "")
@@ -304,7 +306,7 @@ func (a *remind) RemindRules(c *fiber.Ctx) error {
 	if err := tools.ParseBody(c, input); err != nil {
 		return resp.Err(c, 1, err.Error())
 	}
-	where:="rr.id>0"
+	where := "rr.id>0"
 	if input.CompanyId != "" {
 		where += " and rr.company_id =" + input.CompanyId
 	}

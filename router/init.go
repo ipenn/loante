@@ -26,6 +26,8 @@ func Init() {
 	remindHandle := v1.NewRemind()
 	urgeHandle := v1.NewUrge()
 	payBackHandle := v1.NewPayBack()
+	BlackHandle := v1.NewBlack()
+	whitePhoneHandle := v1.NewWhitePhone()
 
 	app := fiber.New(fiber.Config{
 		//Prefork:       true,
@@ -58,6 +60,11 @@ func Init() {
 	v.Post("/roles/create", systemHandle.RoleCreate)
 	v.Post("/roles/delete", systemHandle.RoleDelete)
 	v.Get("/system/fields", systemHandle.SystemFields)
+	v.Get("/system_setting", systemHandle.SystemSettingList)
+	v.Get("/admin_log", systemHandle.AdminLogList)
+	v.Post("/system_setting/update_value", systemHandle.SystemSettingUpdateValue)
+	v.Get("/increase_rule", systemHandle.IncreaseRuleList)
+	v.Post("/increase_rule/create_or_update", systemHandle.IncreaseRuleCreateOrUpdate)
 
 	//渠道
 	v.Get("/utm/lists", utmHandle.Lists)
@@ -71,12 +78,12 @@ func Init() {
 	v.Post("/merchant/create", merchantHandle.Create)
 	v.Post("/merchant/modify", merchantHandle.Modify)
 	v.Post("/merchant/fund/create", merchantHandle.FundCreate)
-	v.Get("/merchant/service_rule", merchantHandle.ServiceRule) //进件计价规则
-	v.Post("/merchant/service_rule/create", merchantHandle.ServiceRuleCreate) //进件计价规则创建
-	v.Post("/merchant/service_rule/del", merchantHandle.ServiceRuleDel) //进件计价规则删除
-	v.Get("/merchant/service_price", merchantHandle.ServicePrice) //服务定价
+	v.Get("/merchant/service_rule", merchantHandle.ServiceRule)                 //进件计价规则
+	v.Post("/merchant/service_rule/create", merchantHandle.ServiceRuleCreate)   //进件计价规则创建
+	v.Post("/merchant/service_rule/del", merchantHandle.ServiceRuleDel)         //进件计价规则删除
+	v.Get("/merchant/service_price", merchantHandle.ServicePrice)               //服务定价
 	v.Post("/merchant/service_price/create", merchantHandle.ServicePriceCreate) //服务定价创建
-	v.Post("/merchant/service_price/del", merchantHandle.ServicePriceDel) //服务定价删除
+	v.Post("/merchant/service_price/del", merchantHandle.ServicePriceDel)       //服务定价删除
 
 	//支付平臺
 	v.Get("/payment/list", paymentHandle.Lists)
@@ -95,6 +102,8 @@ func Init() {
 	//客户管理
 	v.Get("/user/list", userHandle.UserQuery)
 	v.Get("/user/detail", userHandle.Details)
+	v.Get("/customer_feedback", userHandle.CustomerFeedBack)                            //客户反馈
+	v.Post("/customer_feedback/update_status", userHandle.CustomerFeedBackUpdateStatus) //客户反馈
 
 	v.Get("/visit/reminds", visitHandle.RemindBorrowAll)	//预提醒订单列表
 	v.Get("/visit/reminding", visitHandle.RemindBorrowing)	//预提醒中订单
@@ -114,7 +123,7 @@ func Init() {
 	v.Post("/borrow/deposit", borrowHandle.Deposit) //入账操作
 
 	//还款
-	v.Get("/pay_flow/repayments", payHandle.Repayments) //还款记录
+	v.Get("/pay_flow/repayments", payHandle.Repayments)              //还款记录
 	v.Get("/pay_flow/repayments/export", payHandle.RepaymentsExport) //导出还款记录
 	v.Get("/pay_flow/reconciliation", payHandle.Reconciliation)//平账
 	v.Get("/pay_flow/deposit", payHandle.Deposits)//入账
@@ -124,6 +133,7 @@ func Init() {
 	v.Get("/pay_flow/utr_dismissed", payHandle.UtrsDismissed) //UTR对账单验证失败的
 	v.Post("/pay_flow/utr_verify", payHandle.UtrsVerify)
 	v.Post("/pay_flow/pay_partial", payHandle.PayPartial) //生成 部分还款链接
+
 
 	//短信模板
 	v.Get("/sms_template", smsTemplateHandle.SmsTemplate)
@@ -154,6 +164,14 @@ func Init() {
 	v.Get("/urge_admin", urgeHandle.UrgeAdmin)
 	v.Get("/urge_rules", urgeHandle.UrgeRules)
 	v.Post("/urge_rules/create_or_update", urgeHandle.UrgeRulesCreateOrUpdate)
-
+	//黑名单管理
+	v.Post("/user_black/create", BlackHandle.UserBlackCreate)
+	v.Post("/user_black/del", BlackHandle.UserBlackDel)
+	v.Get("/user_black", BlackHandle.UserBlackList)
+	v.Get("/regional_black", BlackHandle.RegionalBlack) //区域黑名单
+	//白名单管理
+	v.Post("/white_phone/create", whitePhoneHandle.WhitePhoneCreate)
+	v.Post("/white_phone/del", whitePhoneHandle.WhitePhoneDel)
+	v.Get("/white_phone", whitePhoneHandle.WhitePhoneList)
 	app.Listen(fmt.Sprintf(":%d", global.C.Http.Port))
 }

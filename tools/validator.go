@@ -39,7 +39,7 @@ func ParseBody(ctx *fiber.Ctx, body interface{}) *fiber.Error {
 		if err := ctx.QueryParser(body); err != nil {
 			return fiber.ErrBadRequest
 		}
-		if !reflect.ValueOf(body).IsZero(){
+		if !reflect.ValueOf(body).IsZero() {
 			if err := ctx.BodyParser(body); err != nil {
 				//return fiber.ErrBadRequest
 			}

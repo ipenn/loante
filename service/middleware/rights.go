@@ -12,20 +12,18 @@ import (
 	"strings"
 )
 
-
 type TokenPayload struct {
-	Id int
-	AdminName string
-	AdminType string
-	RoleName string
-	RoleId string
-	MchId int
-	RemindId int
-	UrgeId int
+	Id            int
+	AdminName     string
+	AdminType     string
+	RoleName      string
+	RoleId        string
+	MchId         int
+	RemindId      int
+	UrgeId        int
 	RemindGroupId int
-	UrgeGroupId int
+	UrgeGroupId   int
 }
-
 
 func parse(token string) (*jwt.Token, error) {
 	// Parse takes the token string and a function for looking up the key. The latter is especially
@@ -62,7 +60,7 @@ func verify(token string) (*TokenPayload, error) {
 	if !ok {
 		return nil, errors.New("Something went wrong")
 	}
-	roleId := fmt.Sprintf("%v", claims["RoleId"] )
+	roleId := fmt.Sprintf("%v", claims["RoleId"])
 
 	//roleId, ok := claims["RoleId"].(string)
 	//if !ok {
@@ -70,26 +68,26 @@ func verify(token string) (*TokenPayload, error) {
 	//}
 
 	mchId := fmt.Sprintf("%v", claims["MchId"])
-	MchId,_ := strconv.Atoi(mchId)
+	MchId, _ := strconv.Atoi(mchId)
 	remindId := fmt.Sprintf("%v", claims["RemindId"])
-	RemindId,_ := strconv.Atoi(remindId)
+	RemindId, _ := strconv.Atoi(remindId)
 	urgeId := fmt.Sprintf("%v", claims["UrgeId"])
-	UrgeId,_ := strconv.Atoi(urgeId)
+	UrgeId, _ := strconv.Atoi(urgeId)
 	remindGroupId := fmt.Sprintf("%v", claims["RemindGroupId"])
-	RemindGroupId,_ := strconv.Atoi(remindGroupId)
+	RemindGroupId, _ := strconv.Atoi(remindGroupId)
 	urgeGroupId := fmt.Sprintf("%v", claims["UrgeGroupId"])
-	UrgeGroupId,_ := strconv.Atoi(urgeGroupId)
+	UrgeGroupId, _ := strconv.Atoi(urgeGroupId)
 
 	return &TokenPayload{
-		Id: int(id),
-		AdminName: username,
-		RoleId: roleId,
-		AdminType:  claims["UserType"].(string),
-		MchId: MchId,
-		RemindId:RemindId,
-		UrgeId:UrgeId,
-		RemindGroupId:RemindGroupId,
-		UrgeGroupId:UrgeGroupId,
+		Id:            int(id),
+		AdminName:     username,
+		RoleId:        roleId,
+		AdminType:     claims["UserType"].(string),
+		MchId:         MchId,
+		RemindId:      RemindId,
+		UrgeId:        UrgeId,
+		RemindGroupId: RemindGroupId,
+		UrgeGroupId:   UrgeGroupId,
 	}, nil
 }
 
@@ -119,15 +117,15 @@ func Auth(c *fiber.Ctx) error {
 	ok := true
 
 	if rights, ok = global.AdminRights[user.RoleId]; !ok {
-		lists,_ := new(model.AdminRight).Gets(fmt.Sprintf("id > 0"))
-		for _, item := range lists{
+		lists, _ := new(model.AdminRight).Gets(fmt.Sprintf("id > 0"))
+		for _, item := range lists {
 			global.AdminRights[fmt.Sprintf("%d", item.Id)] = item.Rights
-			if user.RoleId == fmt.Sprintf("%d", item.Id){
+			if user.RoleId == fmt.Sprintf("%d", item.Id) {
 				rights = item.Rights
 			}
 		}
 	}
-	if rights != "*" && strings.Index(rights, c.Path()) == -1{
+	if rights != "*" && strings.Index(rights, c.Path()) == -1 {
 		return resp.Err(c, 1, "insufficient permissions!")
 	}
 	c.Locals("userType", user.AdminType)
