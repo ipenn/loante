@@ -42,7 +42,6 @@ type borrowQueryReq struct {
 	LoanEndTime      string	`json:"loan_end_time" query:"loan_end_time"` //放款时间
 }
 
-
 func (a *borrow) Query(c *fiber.Ctx) error {
 	input := new(borrowQueryReq)
 	if err := tools.ParseBody(c, input); err != nil {
@@ -77,27 +76,28 @@ func (a *borrow)QueryExport(c *fiber.Ctx) error {
 		return resp.Err(c, 1, err.Error())
 	}
 	where := "b.id > 0"
-	if len(input.NoApplying) > 0{
+	if len(input.NoApplying) > 0 {
 		where += " and b.status > 4"
 	}
-	if len(input.ProcessingInPay) > 0{
+	if len(input.ProcessingInPay) > 0 {
 		where += " and b.status = 4"
 	}
-	if input.ProductId > 0{
+	if input.ProductId > 0 {
 		where += fmt.Sprintf(" and b.product_id =%d", input.ProductId)
 	}
-	if input.UserId > 0{
+	if input.UserId > 0 {
 		where += fmt.Sprintf(" and b.uid =%d", input.UserId)
 	}
-	if input.UserId > 0{
+	if input.UserId > 0 {
 		where += fmt.Sprintf(" and u.aadhaar_name ='%s'", input.Name)
 	}
 	lists, count := new(model.Borrow).Gets("b.id > 0")
 	return resp.OK(c, map[string]interface{}{
-		"count":count,
-		"list":lists,
+		"count": count,
+		"list":  lists,
 	})
 }
+
 type reconciliationReq struct {
 	req.IdReq
 	Amount float64	`json:"amount"`
@@ -186,4 +186,3 @@ func (a *borrow)Deposit(c *fiber.Ctx) error {
 	}
 	return resp.OK(c, "")
 }
-

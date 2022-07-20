@@ -115,7 +115,6 @@ func (a *payFlow) RepaymentsExport(c *fiber.Ctx) error {
 
 type reconciliationQueryReq struct {
 	req.PageReq
-
 	BorrowId	int	`json:"borrow_id" query:"borrow_id"`  //借款的订单编号
 	UserName    string `json:"user_name" query:"user_name"` //用户名
 	Phone       string `json:"phone" query:"phone"`			//手机号
@@ -186,6 +185,7 @@ type loansQueryReq struct {
 	Phone    string `json:"phone" query:"phone"`
 	Status   int    `json:"status" query:"status"`
 }
+
 
 //Loans 放款记录 从borrow表获取
 func (a *payFlow) Loans(c *fiber.Ctx) error {
@@ -299,8 +299,8 @@ func (a *payFlow)UtrsDismissed(c *fiber.Ctx) error {
 	}
 	lists, count := new(model.BorrowUtr).Page(where, input.Page, input.Size)
 	return resp.OK(c, map[string]interface{}{
-		"count":count,
-		"list":lists,
+		"count": count,
+		"list":  lists,
 	})
 }
 

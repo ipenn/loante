@@ -75,6 +75,7 @@ func (a *Orders) Page(where string, page, limit int) ([]Orders, int) {
 func (a *Orders) Del(where string) {
 	global.C.DB.NewDelete().Model(a).Where(where).Exec(global.C.Ctx)
 }
+
 //PayAfter 还款成功以后处理订单逻辑
 func (a *Orders)PayAfter(amount float64)  {
 	//更新 orders 支付状态
@@ -104,4 +105,3 @@ func (a *Orders)PayAfter(amount float64)  {
 	a.Update(fmt.Sprintf("id = %d", a.Id))
 	borrowData.Update(fmt.Sprintf("id = %d", borrowData.Id))
 }
-

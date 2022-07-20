@@ -105,6 +105,7 @@ func Init() {
 	v.Get("/customer_feedback", userHandle.CustomerFeedBack)                            //客户反馈
 	v.Post("/customer_feedback/update_status", userHandle.CustomerFeedBackUpdateStatus) //客户反馈
 
+
 	v.Get("/visit/reminds", visitHandle.RemindBorrowAll)	//预提醒订单列表
 	v.Get("/visit/reminding", visitHandle.RemindBorrowing)	//预提醒中订单
 	v.Get("/visit/reminded", visitHandle.RemindBorrowed)	//预提醒完成的订单
@@ -116,6 +117,7 @@ func Init() {
 	v.Get("/visit/urge_report", visitHandle.UrgeReport) //催收业绩
 	v.Post("/visit/urge/action", visitHandle.UrgeAction) //新增催记
 
+
 	//借贷
 	v.Get("/borrow/list", borrowHandle.Query)	//获取借贷信息列表
 	v.Get("/borrow/export", borrowHandle.QueryExport) //获取借贷信息导出的功能
@@ -125,6 +127,7 @@ func Init() {
 	//还款
 	v.Get("/pay_flow/repayments", payHandle.Repayments)              //还款记录
 	v.Get("/pay_flow/repayments/export", payHandle.RepaymentsExport) //导出还款记录
+
 	v.Get("/pay_flow/reconciliation", payHandle.Reconciliation)//平账
 	v.Get("/pay_flow/deposit", payHandle.Deposits)//入账
 	v.Get("/pay_flow/loan", payHandle.Loans) //放款
@@ -133,7 +136,6 @@ func Init() {
 	v.Get("/pay_flow/utr_dismissed", payHandle.UtrsDismissed) //UTR对账单验证失败的
 	v.Post("/pay_flow/utr_verify", payHandle.UtrsVerify)
 	v.Post("/pay_flow/pay_partial", payHandle.PayPartial) //生成 部分还款链接
-
 
 	//短信模板
 	v.Get("/sms_template", smsTemplateHandle.SmsTemplate)
