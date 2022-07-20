@@ -12,32 +12,33 @@ type BorrowLittle struct {
 	Uid                	int				`json:"uid"`
 	MchId              	int				`json:"mch_id"`
 	ProductId          	int				`json:"product_id"`
-	User 				*UserLittle  	`json:"user" bun:"rel:belongs-to,join:uid=id"`
-	Merchant 			*MerchantLittle  	`json:"merchant" bun:"rel:belongs-to,join:mch_id=id"`
-	Product 			*Product		`json:"product" bun:"rel:belongs-to,join:product_id=id"`
+	Status           	int				`json:"status"`
+	Payment          	int				`json:"payment"`
+	BeRepaidAmount    	int				`json:"be_repaid_amount"`
+	EndTime          	string			`json:"end_time"`
+	LoanAmount         	int				`json:"loan_amount"`
 }
 type Borrow struct {
 	bun.BaseModel `bun:"table:borrow,alias:b"`
 	BorrowLittle
-	Postponed          	int			`json:"postponed"`
-	LoanAmount         	int			`json:"loan_amount"`
-	PostponedPeriod    	int			`json:"postponed_period"`
-	BeRepaidAmount    	int			`json:"be_repaid_amount"`
-	PostponeValuation 	int			`json:"postpone_valuation"`
-	Status           	int			`json:"status"`
-	LoanType         	int			`json:"loan_type"`
-	Score            	int			`json:"score"`
-	RiskModel        	int			`json:"risk_model"`
-	ScoreTime        	string		`json:"score_time"`
-	CreateTime       	string		`json:"create_time"`
-	Payment          	int			`json:"payment"`
-	LoanTime         	string		`json:"loan_time"`
-	PaymentRequestNo 	string		`json:"payment_request_no"`
-	PaymentRespond   	string		`json:"payment_respond"`
-	EndTime          	string		`json:"end_time"`
-	Remark           	string		`json:"remark"`
-	CompleteTime     	string		`json:"complete_time"`
-	ActualAmount     	int			`json:"actual_amount"`
+	Postponed          	int				`json:"postponed"`
+	PostponedPeriod    	int				`json:"postponed_period"`
+	PostponeValuation 	int				`json:"postpone_valuation"`
+	LoanType         	int				`json:"loan_type"`
+	Score            	int				`json:"score"`
+	RiskModel        	int				`json:"risk_model"`
+	ScoreTime        	string			`json:"score_time"`
+	CreateTime       	string			`json:"create_time"`
+	LoanTime         	string			`json:"loan_time"`
+	PaymentRequestNo 	string			`json:"payment_request_no"`
+	PaymentRespond   	string			`json:"payment_respond"`
+	Remark           	string			`json:"remark"`
+	CompleteTime     	string			`json:"complete_time"`
+	ActualAmount   		int         `json:"actual_amount"`
+	LatePaymentFee 		int         `json:"late_payment_fee"` //滞纳金
+	User           *UserLittle `json:"user" bun:"rel:belongs-to,join:uid=id"`
+	Merchant 			*MerchantLittle  `json:"merchant" bun:"rel:belongs-to,join:mch_id=id"`
+	Product 			*Product		`json:"product" bun:"rel:belongs-to,join:product_id=id"`
 }
 
 

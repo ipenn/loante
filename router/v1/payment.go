@@ -72,6 +72,19 @@ func (a *payment)Set(c *fiber.Ctx) error {
 	return resp.OK(c, "")
 }
 
+func (a *payment)Info(c *fiber.Ctx) error {
+	input := new(req.IdReq)
+	if err := tools.ParseBody(c, input); err != nil {
+		return resp.Err(c, 1, err.Error())
+	}
+	row := new(model.Payment)
+	row.One(fmt.Sprintf("id = %d", input.Id))
+	if row.Id == 0{
+		return resp.Err(c, 1, "支付通道不存在")
+	}
+	return resp.OK(c, row)
+}
+
 type paymentConfigReq struct {
 	req.PageReq
 	MchId       int 	`query:"mch_id" json:"mch_id"`
@@ -84,7 +97,17 @@ func (a *payment)ConfigLists(c *fiber.Ctx) error {
 	if err := tools.ParseBody(c, input); err != nil {
 		return resp.Err(c, 1, err.Error())
 	}
-	lists, count := new(model.ProductPayment).Page("id > 0", input.Page, input.Size)
+	where := "pp.id > 0"
+	if input.MchId > 0{
+		where += fmt.Sprintf(" and pp.mch_id = %d", input.MchId)
+	}
+	if input.ProductId > 0{
+		where += fmt.Sprintf(" and pp.product_id = %d", input.ProductId)
+	}
+	if input.PaymentId > 0{
+		where += fmt.Sprintf(" and pp.payment_id = %d", input.PaymentId)
+	}
+	lists, count := new(model.ProductPayment).Page(where, input.Page, input.Size)
 	return resp.OK(c, map[string]interface{}{
 		"count":count,
 		"list":lists,
@@ -96,6 +119,8 @@ type productPaymentCreateReq struct {
 	MchId int `json:"mch_id"`
 	ProductId int `json:"product_id"`
 	PaymentId int `json:"payment_id"`
+	IsOpenIn int `json:"is_open_in"`
+	IsOpenOut int `json:"is_open_out"`
 	Configuration string `json:"configuration"` //{"config":[{"merchantId":"121","merchantKey":"12132","desc":"xsaxsa"}],"use":1}
 }
 func (a *payment)ConfigCreate(c *fiber.Ctx) error {
@@ -120,9 +145,9 @@ func (a *payment)ConfigCreate(c *fiber.Ctx) error {
 	pp.PaymentId = input.PaymentId
 	pp.MchId = input.MchId
 	pp.Configuration = input.Configuration
+	pp.IsOpenIn = input.IsOpenIn
+	pp.IsOpenOut = input.IsOpenOut
 	if input.Id == 0 {
-		pp.IsOpenIn = 1
-		pp.IsOpenOut = 1
 		pp.Insert()
 	}else{
 		pp.Update(fmt.Sprintf("id = %d", input.Id))

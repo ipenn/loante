@@ -34,10 +34,10 @@ type Product struct {
 	Status              int     `json:"status"`
 	CreateTime          string  `json:"create_time"`
 	Description         string  `json:"description"`
-	RateNormalInterest  float64 `json:"rate_normal_interest"`
-	RateOverdueInterest float64 `json:"rate_overdue_interest"`
-	RateService         float64 `json:"rate_service"`
-	RateTax             float64 `json:"rate_tax"`
+	RateNormalInterest  float32 `json:"rate_normal_interest"`
+	RateOverdueInterest float32 `json:"rate_overdue_interest"`
+	RateService         float32 `json:"rate_service"`
+	RateTax             float32 `json:"rate_tax"`
 	Merchant      *MerchantLittle      `json:"merchant" bun:"rel:belongs-to,join:mch_id=id"`
 }
 

@@ -44,7 +44,10 @@ type Config struct {
 		SystemSettingType map[string]string 	`json:"system_setting_type"`
 		StatisticsCompany map[string]string 	`json:"statistics_company"`
 		RiskModel map[string]string 	`json:"risk_model"`
-		MchFundType map[string]string 	`json:"mch_fund_type"`
+		RepaymentWish map[string]string 	`json:"repayment_wish"`
+		VisitTag map[string]string 	`json:"visit_tag"`
+		RepaymentRelationship map[string]string 	`json:"repayment_relationship"`
+		UTRStatus map[string]string 	`json:"utr_status"`
 	}  `json:"maps"`
 }
 

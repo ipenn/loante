@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"github.com/uptrace/bun"
 	"loante/global"
+	"loante/tools"
 )
 
 type ProductPayment struct {
@@ -16,9 +17,13 @@ type ProductPayment struct {
 	IsOpenOut     int	`json:"is_open_out"`
 	IsOpenIn      int	`json:"is_open_in"`
 	CreateTime    string	`json:"create_time"`
+	Product *ProductLittle	`json:"product" bun:"rel:belongs-to,join:product_id=id"`
+	Merchant *MerchantLittle `json:"merchant" bun:"rel:belongs-to,join:mch_id=id"`
+	Payment *PaymentLittle `json:"payment" bun:"rel:belongs-to,join:payment_id=id"`
 }
 
 func (a *ProductPayment)Insert()  {
+	a.CreateTime = tools.GetFormatTime()
 	_, err := global.C.DB.NewInsert().Model(a).Returning("*").Exec(global.C.Ctx)
 	if err != nil{
 		global.Log.Error("%v err=%v", a, err.Error())
@@ -48,7 +53,7 @@ func (a *ProductPayment)One(where string)  {
 
 func (a *ProductPayment)Page(where string, page, limit int) ([]ProductPayment, int) {
 	var datas []ProductPayment
-	count, _ := global.C.DB.NewSelect().Model(&datas).Where(where).Order(fmt.Sprintf("id desc")).Offset((page-1)*limit).Limit(limit).ScanAndCount(global.C.Ctx)
+	count, _ := global.C.DB.NewSelect().Model(&datas).Relation("Product").Relation("Merchant").Relation("Payment").Where(where).Order(fmt.Sprintf("pp.id desc")).Offset((page-1)*limit).Limit(limit).ScanAndCount(global.C.Ctx)
 	return datas, count
 }
 

@@ -54,6 +54,8 @@ Content-Type: application/json
   "mch_id":1,
   "product_id":1,
   "payment_id":1,
+  "is_open_in":1,
+  "is_open_out":1,
   "configuration":"{}"
 }
 ###

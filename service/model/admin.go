@@ -7,6 +7,12 @@ import (
 	"loante/tools"
 )
 
+type AdminLittle struct {
+	bun.BaseModel `bun:"table:admin,alias:a"`
+	Id	int	`json:"id" bun:",pk"`
+	AdminName	string	`json:"admin_name"`
+}
+
 type Admin struct {
 	bun.BaseModel `bun:"table:admin,alias:a"`
 	Id	int	`json:"id" bun:",pk"`

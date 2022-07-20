@@ -8,15 +8,16 @@ import (
 
 type ProductPaymentDefault struct {
 	bun.BaseModel `bun:"table:product_payment_default,alias:ppd"`
-	Id            int	`json:"id" bun:",pk"`
-	ProductId     int	`json:"product_id"`
-	MchId          int `json:"mch_id"`
-	OutPaymentId int `json:"out_payment_id"`
-	InPaymentId int `json:"in_payment_id"`
+	Id            	int	`json:"id" bun:",pk"`
+	ProductId     	int	`json:"product_id"`
+	MchId          	int `json:"mch_id"`
+	OutPaymentId 	int `json:"out_payment_id"`
+	InPaymentId 	int `json:"in_payment_id"`
 
-	Merchant	*Merchant `json:"merchant" bun:"rel:belongs-to,join:mch_id=id"`
-	OutPayment	*Payment `json:"out_payment" bun:"rel:belongs-to,join:out_payment_id=id"`
-	InPayment	*Payment `json:"in_payment" bun:"rel:belongs-to,join:in_payment_id=id"`
+	Product		*ProductLittle `json:"product" bun:"rel:belongs-to,join:product_id=id"`
+	Merchant	*MerchantLittle `json:"merchant" bun:"rel:belongs-to,join:mch_id=id"`
+	OutPayment	*PaymentLittle `json:"out_payment" bun:"rel:belongs-to,join:out_payment_id=id"`
+	InPayment	*PaymentLittle `json:"in_payment" bun:"rel:belongs-to,join:in_payment_id=id"`
 }
 
 func (a *ProductPaymentDefault)Insert()  {
@@ -49,8 +50,6 @@ func (a *ProductPaymentDefault)One(where string)  {
 
 func (a *ProductPaymentDefault)Page(where string, page, limit int) ([]ProductPaymentDefault, int) {
 	var datas []ProductPaymentDefault
-	count, _ := global.C.DB.NewSelect().Model(&datas).Relation("Merchant", func (q *bun.SelectQuery) *bun.SelectQuery {
-		return q.Column("name")
-	}).Relation("OutPayment").Relation("InPayment").Where(where).Order(fmt.Sprintf("ppd.id desc")).Offset((page-1)*limit).Limit(limit).ScanAndCount(global.C.Ctx)
+	count, _ := global.C.DB.NewSelect().Model(&datas).Relation("Merchant").Relation("OutPayment").Relation("InPayment").Relation("Product").Where(where).Order(fmt.Sprintf("ppd.id desc")).Offset((page-1)*limit).Limit(limit).ScanAndCount(global.C.Ctx)
 	return datas, count
 }

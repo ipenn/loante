@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"github.com/uptrace/bun"
 	"loante/global"
+	"loante/tools"
 )
 
 type Orders struct {
@@ -73,4 +74,34 @@ func (a *Orders)Page(where string, page, limit int) ([]Orders, int) {
 
 func (a *Orders)Del(where string)  {
 	global.C.DB.NewDelete().Model(a).Where(where).Exec(global.C.Ctx)
+}
+
+//PayAfter 还款成功以后处理订单逻辑
+func (a *Orders)PayAfter(amount float64)  {
+	//更新 orders 支付状态
+	a.RepaidStatus = 1
+	a.ActualAmount = int(amount)
+	borrowData := new(Borrow)
+	borrowData.One(fmt.Sprintf("id = %d", a.Bid))
+	if a.Type == 0{ //全额还款
+		if borrowData.Status == 6{
+			borrowData.Status = 8
+		}
+		if borrowData.Status == 7{
+			borrowData.Status = 9
+		}
+		borrowData.BeRepaidAmount = 0
+	}else if a.Type == 1{
+		borrowData.BeRepaidAmount -= a.ActualAmount
+	}else if a.Type == 2{ //展期还款
+		//获取产品的展期天数
+		//productData := new(ProductDelayConfig)
+		//productData.One(fmt.Sprintf("id = %d", borrowData.ProductId))
+		borrowData.PostponedPeriod += 1
+		borrowData.Status = 5
+		endTimeUnix := tools.StrToUnixTime(borrowData.EndTime) + 6*24*3600
+		borrowData.EndTime = tools.UnixTimeToStr(endTimeUnix)
+	}
+	a.Update(fmt.Sprintf("id = %d", a.Id))
+	borrowData.Update(fmt.Sprintf("id = %d", borrowData.Id))
 }

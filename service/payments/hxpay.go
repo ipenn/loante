@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
+	"github.com/gofiber/fiber/v2"
 	"github.com/imroc/req"
 	"loante/global"
 	"loante/tools"
@@ -47,7 +48,7 @@ type HXPayNotify struct {
 	MerchantCode         string `json:"merchantCode"`
 	Status     string `json:"status"`
 	OrderAmount int `json:"orderAmount"`
-	PaidAmount  int `json:"paidAmount"`
+	PaidAmount  float64 `json:"paidAmount"`
 	Sign      string `json:"sign"`
 }
 
@@ -82,19 +83,28 @@ func (hx *HXPays)sign(data req.Param) string {
 }
 
 
-func (hx *HXPays)VerifySign(data map[string]interface{}, sign string) (bool, error) {
+func (hx *HXPays)Verify(config string, ctx *fiber.Ctx) (bool,float64, error) {
+	hx.init(config)
 	pa := req.Param{}
-	for index, item := range data{
-		pa[index] = item
+	body := HXPayNotify{}
+	ctx.BodyParser(body)
+	m2, _ := tools.StructToMapReflect(&body,"json")
+	for index, item := range m2{
+		if index == "sign"{
+			pa[index] = item
+		}
 	}
-	if hx.sign(pa) != sign{
-		return false,errors.New("sign fail")
+	if hx.sign(pa) != body.Sign{
+		return false, 0, errors.New("sign fail")
 	}
-	return true,nil
+	if body.Status != "SUCCESS"{
+		return false, 0, errors.New(body.Status)
+	}
+	return true, body.PaidAmount, nil
 }
 
 
-func (hx *HXPays)PayIn(config string, pays Pays) (bool, interface{}, error) {
+func (hx *HXPays)PayIn(config string, pays Pays) (bool, map[string]interface{}, error) {
 	hx.init(config)
 	data := req.Param{
 		"merchantLogin":hx.Merchant,
@@ -124,7 +134,11 @@ func (hx *HXPays)PayIn(config string, pays Pays) (bool, interface{}, error) {
 		resp.ToJSON(&res2)
 		return false, nil, errors.New(res2.Detail)
 	}
-	return true, res,nil
+	return true, map[string]interface{}{
+		"platId":res.PlatformOrderCode, //平仓的
+		"orderId":pays.OrderId,
+		"url":res.PaymentUrl,
+	},nil
 }
 
 
