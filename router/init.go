@@ -19,6 +19,7 @@ func Init() {
 	borrowHandle := v1.NewBorrow()
 	payHandle := v1.NewPayFlow()
 	visitHandle := v1.NewVisit()
+	appHandle := v1.NewApp()
 
 	productHandle := v1.NewProduct()
 	productDelayConfigHandle := v1.NewProductDelayConfig()
@@ -28,6 +29,7 @@ func Init() {
 	payBackHandle := v1.NewPayBack()
 	BlackHandle := v1.NewBlack()
 	whitePhoneHandle := v1.NewWhitePhone()
+	uploadHandle := v1.NewUpload()
 
 	app := fiber.New(fiber.Config{
 		//Prefork:       true,
@@ -45,7 +47,15 @@ func Init() {
 	v := app.Group("/v1")
 	//登录
 	v.Post("/auth/login", authHandle.Login)
-	v.Post("/pay_notify", payBackHandle.PayNotify)
+	//给APP后端调用
+	v.Post("/pay_notify", payBackHandle.PayNotify)		//收款回调
+	v.Post("/out_notify", payBackHandle.OutNotify) 		//放款回调
+	v.Post("/sms/send", 	appHandle.SmsSend)				//发送短信
+	v.Post("/pay/in", 	payHandle.PayPartial) 			//代收
+	v.Post("/pay/out", 	payHandle.PayOut)				//代付
+	//上传
+	v.Post("/upload", uploadHandle.Upload)				//普通上传
+	v.Post("/upload/base64", uploadHandle.UploadBase64)	//上传Base64
 
 	//中间件
 	v.Use(middleware.Auth)
@@ -55,6 +65,7 @@ func Init() {
 	v.Get("/side_menu", systemHandle.SideMenu)
 	v.Get("/admins", systemHandle.AdminsList)
 	v.Post("/admin/create", systemHandle.AdminCreate)
+	v.Post("/admin/pwd_reset", systemHandle.PwdMchReset)
 	v.Get("/rights", systemHandle.RightsList)
 	v.Get("/roles", systemHandle.RolesList)
 	v.Post("/roles/create", systemHandle.RoleCreate)
@@ -65,6 +76,7 @@ func Init() {
 	v.Post("/system_setting/update_value", systemHandle.SystemSettingUpdateValue)
 	v.Get("/increase_rule", systemHandle.IncreaseRuleList)
 	v.Post("/increase_rule/create_or_update", systemHandle.IncreaseRuleCreateOrUpdate)
+	v.Post("/increase_rule/del", systemHandle.IncreaseRuleDel)
 
 	//渠道
 	v.Get("/utm/lists", utmHandle.Lists)
@@ -102,9 +114,13 @@ func Init() {
 	//客户管理
 	v.Get("/user/list", userHandle.UserQuery)
 	v.Get("/user/detail", userHandle.Details)
+	v.Get("/user/contact", userHandle.Contact) //获取用户的通讯录
+	v.Get("/user/sms", userHandle.Sms) //获取用户的短信
+	v.Get("/user/app", userHandle.App) //获取用户的APP
+	v.Get("/user/call", userHandle.Call) //获取用户的通话记录
+
 	v.Get("/customer_feedback", userHandle.CustomerFeedBack)                            //客户反馈
 	v.Post("/customer_feedback/update_status", userHandle.CustomerFeedBackUpdateStatus) //客户反馈
-
 
 	v.Get("/visit/reminds", visitHandle.RemindBorrowAll)	//预提醒订单列表
 	v.Get("/visit/reminding", visitHandle.RemindBorrowing)	//预提醒中订单
@@ -116,7 +132,6 @@ func Init() {
 	v.Get("/visit/urge_detail", visitHandle.UrgeDetail) //催收记录 一笔借贷可能会有多条记录
 	v.Get("/visit/urge_report", visitHandle.UrgeReport) //催收业绩
 	v.Post("/visit/urge/action", visitHandle.UrgeAction) //新增催记
-
 
 	//借贷
 	v.Get("/borrow/list", borrowHandle.Query)	//获取借贷信息列表
@@ -143,6 +158,10 @@ func Init() {
 	//产品运营
 	v.Get("/product", productHandle.Product)
 	v.Post("/product/create_or_update", productHandle.ProductCreateOrUpdate)
+	//提额规则
+	v.Get("/product/precept", productHandle.ProductPrecept)
+	v.Post("/product/precept_create", productHandle.ProductPreceptCreate)
+	v.Post("/product/precept_del", productHandle.ProductPreceptDel)
 	//产品配置
 	v.Get("/productDelayConfig", productDelayConfigHandle.ProductDelayConfig)
 	v.Post("/productDelayConfig/create_or_update", productDelayConfigHandle.ProductDelayConfigCreateOrUpdate)

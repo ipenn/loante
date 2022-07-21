@@ -119,17 +119,22 @@ func (a *borrow)Reconciliation(c *fiber.Ctx) error {
 	if borrowData.Status == 8 || borrowData.Status == 9{
 		return resp.Err(c, 1, "借贷已经完成")
 	}
-	fundData := new(model.BorrowFund)
-	fundData.Amount = input.Amount
+	fundData := new(model.Orders)
+	fundData.Type = borrowData.MchId
+	fundData.MchId = borrowData.MchId
 	fundData.Remark = input.Remark
-	fundData.BorrowId = borrowData.Id
-	fundData.UserId = borrowData.Uid
-	fundData.BeRepaidAmount = float64(borrowData.BeRepaidAmount)
-	fundData.RemainingAmount = float64(borrowData.BeRepaidAmount) - input.Amount
+	fundData.Bid = borrowData.Id
+	fundData.Uid = borrowData.Uid
+	fundData.RepaidType = 1
+	fundData.RepaidStatus = 1
+	fundData.ApplyAmount = int(input.Amount)
+	fundData.ActualAmount = int(input.Amount)
+	fundData.CreateTime = tools.GetFormatTime()
 	fundData.Insert()
 	if fundData.Id > 0{
 		//borrowData.BeRepaidAmount -= input.Amount
-		borrowData.BeRepaidAmount = 0
+		borrowData.BeRepaidAmount = 0	//待还金额
+		borrowData.LatePaymentFee = 0	//滞纳金
 		borrowData.Status = 8
 		if borrowData.EndTime < tools.GetFormatTime(){
 			borrowData.Status = 9
@@ -163,19 +168,22 @@ func (a *borrow)Deposit(c *fiber.Ctx) error {
 	if borrowData.Status == 8 || borrowData.Status == 9{
 		return resp.Err(c, 1, "借贷已经完成")
 	}
-	fundData := new(model.BorrowFund)
-	fundData.OrderNo = input.OrderNo
-	fundData.Amount = input.Amount
+	fundData := new(model.Orders)
+	fundData.Type = borrowData.MchId
+	fundData.MchId = borrowData.MchId
 	fundData.Remark = input.Remark
-	fundData.BorrowId = borrowData.Id
-	fundData.UserId = borrowData.Uid
-	fundData.PaymentId = input.PaymentId
-	fundData.BeRepaidAmount = float64(borrowData.BeRepaidAmount)
-	fundData.RemainingAmount = float64(borrowData.BeRepaidAmount) - input.Amount
+	fundData.Bid = borrowData.Id
+	fundData.Uid = borrowData.Uid
+	fundData.RepaidType = 1
+	fundData.RepaidStatus = 1
+	fundData.ApplyAmount = int(input.Amount)
+	fundData.ActualAmount = int(input.Amount)
+	fundData.CreateTime = tools.GetFormatTime()
 	fundData.Insert()
 	if fundData.Id > 0{
 		//borrowData.BeRepaidAmount -= input.Amount
-		borrowData.BeRepaidAmount = 0
+		borrowData.BeRepaidAmount = 0	//待还金额
+		borrowData.LatePaymentFee = 0	//滞纳金
 		borrowData.Status = 8
 		if borrowData.EndTime < tools.GetFormatTime(){
 			borrowData.Status = 9

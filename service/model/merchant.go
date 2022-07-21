@@ -73,3 +73,26 @@ func (a *Merchant) Set(col string, where string) error {
 	}
 	return nil
 }
+
+//AddService 服务消费  <count 件数> <t 类型 = 1 短信 2=服务费 >
+func (a *Merchant)AddService(count, t int)  {
+	//获取费用标准
+	sPrice := ServicePrice{}
+	sPrice.One(fmt.Sprintf("service_type = %d", t))
+	amount := sPrice.Price * float64(count)
+	if sPrice.DeductType == 2{ //美元
+		a.UsdBalance -= amount
+	}else{ //人名币
+		a.CnyBalance -= amount
+	}
+	a.Update(fmt.Sprintf("id = %d", a.Id))
+	fund := new(MerchantFund) //mch_id,create_time,amount,type,fund_no,path,remark,currency,in_account_no,rate
+	fund.MchId = a.Id
+	fund.CreateTime = tools.GetFormatTime()
+	fund.Amount = amount
+	fund.Type = t
+	fund.FundNo = fmt.Sprintf("%s-%d", tools.InviteCode(8), a.Id)
+	fund.Remark = ""
+	fund.Currency = sPrice.DeductType
+	fund.Insert()
+}

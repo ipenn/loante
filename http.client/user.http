@@ -16,3 +16,56 @@ Content-Type: application/json
   "market_id":"",
   "id": ""
 }
+
+###
+GET {{host}}/user/contact
+token:{{token}}
+Content-Type: application/json
+
+{
+  "page": 1,
+  "size": 10,
+  "user_id": 1
+}
+
+###
+GET {{host}}/user/sms
+token:{{token}}
+Content-Type: application/json
+
+{
+  "page": 1,
+  "size": 10,
+  "user_id": 1
+}
+###
+GET {{host}}/user/app
+token:{{token}}
+Content-Type: application/json
+
+{
+  "page": 1,
+  "size": 10,
+  "user_id": 1
+}
+###
+GET {{host}}/user/call
+token:{{token}}
+Content-Type: application/json
+
+{
+  "page": 1,
+  "size": 10,
+  "user_id": 1
+}
+
+###
+GET {{host}}/user/detail
+token:{{token}}
+Content-Type: application/json
+
+{
+  "page": 1,
+  "size": 10,
+  "user_id": 1
+}

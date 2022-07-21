@@ -126,3 +126,65 @@ func (a *product) ProductCreateOrUpdate(c *fiber.Ctx) error {
 	}
 	return resp.OK(c, "")
 }
+
+type productPreceptReq struct {
+	req.PageReq
+	ProductId int `json:"product_id" query:"product_id"`
+	Status int `json:"status" query:"status"`
+}
+//ProductPrecept 提额列表
+func (a *product) ProductPrecept(c *fiber.Ctx) error  {
+	input := new(productPreceptReq)
+	if err := tools.ParseBody(c, input); err != nil {
+		return resp.Err(c, 1, err.Error())
+	}
+	where := "ppt.id>0"
+	if input.ProductId > 0 {
+		where += fmt.Sprintf(" and ppt.product_id= %d", input.ProductId)
+	}
+	if input.Status > 0 {
+		where += fmt.Sprintf(" and ppt.status = %d", input.Status)
+	}
+	lists, count := new(model.ProductPrecept).Page(where, input.Page, input.Size)
+	return resp.OK(c, map[string]interface{}{
+		"count": count,
+		"list":  lists,
+	})
+}
+
+type productPreceptCreateReq struct {
+	req.IdReq
+	ProductId int `json:"product_id"`
+	Amount float64 `json:"amount"`
+	MinCount int `json:"min_count"`
+	Status int `json:"status"`
+}
+//ProductPreceptCreate 提额规则添加或修改
+func (a *product) ProductPreceptCreate(c *fiber.Ctx) error  {
+	input := new(productPreceptCreateReq)
+	if err := tools.ParseBody(c, input); err != nil {
+		return resp.Err(c, 1, err.Error())
+	}
+	ppt := new(model.ProductPrecept)
+	ppt.One(fmt.Sprintf("id = %d", input.Id))
+	ppt.ProductId = input.ProductId
+	ppt.Amount = input.Amount
+	ppt.MinCount = input.MinCount
+	ppt.Status = input.Status
+	if input.Id == 0{
+		ppt.Insert()
+	}else{
+		ppt.Update(fmt.Sprintf("id = %d", input.Id))
+	}
+	return resp.OK(c, "")
+}
+//ProductPreceptDel 提额规则删除
+func (a *product) ProductPreceptDel(c *fiber.Ctx) error  {
+	input := new(req.IdReq)
+	if err := tools.ParseBody(c, input); err != nil {
+		return resp.Err(c, 1, err.Error())
+	}
+	ppt := new(model.ProductPrecept)
+	ppt.Del(fmt.Sprintf("id = %d", input.Id))
+	return resp.OK(c, "")
+}

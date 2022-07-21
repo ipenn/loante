@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"github.com/uptrace/bun"
 	"loante/global"
+	"loante/tools"
 )
 
 type UserLittle struct {
@@ -41,7 +42,6 @@ type User struct {
 	AadhaarPhotoFront             string `json:"aadhaar_photo_front"`
 	AadhaarPhotoBack              string `json:"aadhaar_photo_back"`
 	PanPhotoFront                 string `json:"pan_photo_front"`
-	PanPhotoBack                  string `json:"pan_photo_back"`
 	FacialPortrait                string `json:"facial_portrait"`
 	KycVerifyBankcard             int    `json:"kyc_verify_bankcard"`
 	KycVerifyBaseinfo             int    `json:"kyc_verify_baseinfo"`
@@ -110,7 +110,11 @@ type UserPrivacyApp struct {
 	App           string `json:"app"`
 	Version       string `json:"version"`
 }
-
+func (a *UserPrivacyApp) Page(where string, page, limit int) ([]UserPrivacyApp, int) {
+	var datas []UserPrivacyApp
+	count, _ := global.C.DB.NewSelect().Model(&datas).Where(where).Order(fmt.Sprintf("upa.id desc")).Offset((page - 1) * limit).Limit(limit).ScanAndCount(global.C.Ctx)
+	return datas, count
+}
 func (a *UserPrivacyApp) Gets(where string) ([]UserPrivacyApp, int) {
 	var datas []UserPrivacyApp
 	count, _ := global.C.DB.NewSelect().Model(&datas).Where(where).Order(fmt.Sprintf("upa.id desc")).ScanAndCount(global.C.Ctx)
@@ -127,7 +131,11 @@ type UserPrivacyCall struct {
 	Duration      string `json:"duration"`
 	CreateTime    string `json:"create_time"`
 }
-
+func (a *UserPrivacyCall) Page(where string, page, limit int) ([]UserPrivacyCall, int) {
+	var datas []UserPrivacyCall
+	count, _ := global.C.DB.NewSelect().Model(&datas).Where(where).Order(fmt.Sprintf("upc.id desc")).Offset((page - 1) * limit).Limit(limit).ScanAndCount(global.C.Ctx)
+	return datas, count
+}
 func (a *UserPrivacyCall) Gets(where string) ([]UserPrivacyCall, int) {
 	var datas []UserPrivacyCall
 	count, _ := global.C.DB.NewSelect().Model(&datas).Where(where).Order(fmt.Sprintf("upc.id desc")).ScanAndCount(global.C.Ctx)
@@ -143,7 +151,11 @@ type UserPrivacyContact struct {
 	CreateTime    string `json:"create_time"`
 	UpdateTime    string `json:"update_time"`
 }
-
+func (a *UserPrivacyContact) Page(where string, page, limit int) ([]UserPrivacyContact, int) {
+	var datas []UserPrivacyContact
+	count, _ := global.C.DB.NewSelect().Model(&datas).Where(where).Order(fmt.Sprintf("upc.id desc")).Offset((page - 1) * limit).Limit(limit).ScanAndCount(global.C.Ctx)
+	return datas, count
+}
 func (a *UserPrivacyContact) Gets(where string) ([]UserPrivacyContact, int) {
 	var datas []UserPrivacyContact
 	count, _ := global.C.DB.NewSelect().Model(&datas).Where(where).Order(fmt.Sprintf("upc.id desc")).ScanAndCount(global.C.Ctx)
@@ -163,9 +175,114 @@ type UserPrivacySms struct {
 	WhoPhone      string `json:"who_phone"`
 	CreateTime    string `json:"create_time"`
 }
-
+func (a *UserPrivacySms) Page(where string, page, limit int) ([]UserPrivacySms, int) {
+	var datas []UserPrivacySms
+	count, _ := global.C.DB.NewSelect().Model(&datas).Where(where).Order(fmt.Sprintf("ups.id desc")).Offset((page - 1) * limit).Limit(limit).ScanAndCount(global.C.Ctx)
+	return datas, count
+}
 func (a *UserPrivacySms) Gets(where string) ([]UserPrivacySms, int) {
 	var datas []UserPrivacySms
 	count, _ := global.C.DB.NewSelect().Model(&datas).Where(where).Order(fmt.Sprintf("ups.id desc")).ScanAndCount(global.C.Ctx)
 	return datas, count
+}
+
+
+type UserQuota struct {
+	bun.BaseModel `bun:"table:user_quota,alias:uq"`
+	Id            int    	`json:"id"`
+	ProductId     int	`json:"product_id"`
+	UserId        int	`json:"user_id"`
+	Quota         int	`json:"quota"`
+	CreateTime    string	`json:"create_time"`
+	Remark        string	`json:"remark"`
+}
+
+func (a *UserQuota) Insert() {
+	a.CreateTime = tools.GetFormatTime()
+	res, _ := global.C.DB.NewInsert().Model(a).Ignore().On("DUPLICATE KEY UPDATE").Exec(global.C.Ctx)
+	id, _ := res.LastInsertId()
+	a.Id = int(id)
+}
+
+//Increase 产品额度提升
+//19 repay.overdue.dont.increase.amount	1	逾期结清不提额（0：否，1：是）
+//20 repay.overdue.reset.increase.amount	0	逾期结清时重置提额度（0：否，1：是）
+//21 repay.fast.dont.increase.amount		1	还款间隔未满24小时不提额（0：否，1：是）
+//pid 产品Id
+//uid 用户Id
+//overdue 是否逾期 9 逾期 8 正常
+func (a *UserQuota) Increase(pid, uid, overdue int)  {
+	//获取规则
+	config19 := new(SystemSetting)
+	config19.One("id = 19") //逾期结清不提额（0：否，1：是）
+	rules, _ := new(ProductPrecept).Page(fmt.Sprintf("status = 1 and product_id = %d", pid),1,1000)
+	where := fmt.Sprintf("uid = %d and product_id = %d and (status = 8", uid, pid)
+	remark := ""
+	if config19.ParamValue == "0"{
+		where += " or status = 9)"
+		remark += "逾期结清不提额"
+	}else{
+		where += ")"
+		remark += "逾期结清也提额"
+	}
+	config21 := new(SystemSetting)
+	config21.One("id = 21")
+	if config19.ParamValue == "1"{
+		where += " and TIMESTAMPDIFF(HOUR,loan_time, complete_time) > 24"  //24小时不提额
+		remark += " 24小时不提额"
+	}else{
+		remark += " 不满24小时也提额"
+	}
+	//统计个数
+	borrow := new(Borrow)
+	count := borrow.Count(where)
+	amount := 0.0
+	for _, item := range rules{
+		if item.MinCount == count{
+			amount = item.Amount
+			remark += fmt.Sprintf(" count = %d", item.MinCount)
+		}
+	}
+	if amount > 0{
+		// 插入提额数据
+		uq := new(UserQuota)
+		uq.ProductId = pid
+		uq.ProductId = uid
+		uq.Quota = int(amount)
+		uq.Remark = remark
+		uq.Insert()
+		global.Log.Info("插入提额数据 %v", uq)
+	}
+	//处理 逾期结清时重置提额度
+	config20 := new(SystemSetting)
+	config20.One("id = 20")
+	if config20.ParamValue == "1" && overdue == 9{
+		//最后一条数据是否逾期
+		//lists,_  := borrow.Page(fmt.Sprintf("product_id = %d and uid = %d", pid, uid), 1,2000)
+		//lastTime := ""
+		//status := 0
+		//for _, item := range lists{
+		//	if item.CompleteTime > lastTime{
+		//		status = item.Status
+		//	}
+		//}
+		//if status == 9{ //逾期重置额度
+		//
+		//}
+		//获取产品初始额度
+		product := new(Product)
+		product.One(fmt.Sprintf("id = %d", pid))
+		if product.Id > 0{
+			uq := new(UserQuota)
+			uq.ProductId = pid
+			uq.ProductId = uid
+			uq.Quota = product.StartAmount
+			uq.Remark = remark
+			uq.Insert()
+			global.Log.Info("逾期重置额度 %v", uq)
+		}
+	}
+}
+func (a *UserQuota) One(where string) {
+	global.C.DB.NewSelect().Model(a).Where(where).Order("id desc").Scan(global.C.Ctx)
 }

@@ -53,9 +53,9 @@ func ToFloat32(t interface{}) float32 {
 	switch t := t.(type) {
 	case int:
 		return float32(t)
-	//case string:
-	//	tt, _ := strconv.ParseFloat(t, 32)
-	//	return tt
+	case string:
+		tt, _ := strconv.ParseFloat(t, 64)
+		return float32(tt)
 	case float32:
 		return t
 	case interface{}:

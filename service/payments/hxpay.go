@@ -46,8 +46,8 @@ type HXPayNotify struct {
 	OrderCode    string `json:"orderCode"`
 	MerchantCode         string `json:"merchantCode"`
 	Status     string `json:"status"`
-	OrderAmount int `json:"orderAmount"`
-	PaidAmount  float64 `json:"paidAmount"`
+	OrderAmount int `json:"orderAmount,omitempty"`
+	PaidAmount  float64 `json:"paidAmount,omitempty"`
 	Sign      string `json:"sign"`
 }
 
@@ -100,8 +100,7 @@ func (hx *HXPays)Verify(config string, ctx *fiber.Ctx) (bool,float64, error) {
 	return true, body.PaidAmount, nil
 }
 
-
-func (hx *HXPays)PayIn(config string, pays Pays) (bool, map[string]interface{}, error) {
+func (hx *HXPays)PayIn(config string, pays *Pays) (bool, map[string]interface{}, error) {
 	hx.init(config)
 	data := req.Param{
 		"merchantLogin": hx.Merchant,
@@ -131,6 +130,7 @@ func (hx *HXPays)PayIn(config string, pays Pays) (bool, map[string]interface{}, 
 		resp.ToJSON(&res2)
 		return false, nil, errors.New(res2.Detail)
 	}
+	pays.PlatOrderId = res.PlatformOrderCode
 	return true, map[string]interface{}{
 		"platId":res.PlatformOrderCode, //平仓的
 		"orderId":pays.OrderId,
@@ -138,7 +138,7 @@ func (hx *HXPays)PayIn(config string, pays Pays) (bool, map[string]interface{}, 
 	},nil
 }
 
-func (hx *HXPays) PayOut(config string, pays Pays) (bool, error) {
+func (hx *HXPays) PayOut(config string, pays *Pays) (bool, error) {
 	hx.init(config)
 	data := req.Param{
 		"merchantLogin": hx.Merchant,
@@ -167,5 +167,6 @@ func (hx *HXPays) PayOut(config string, pays Pays) (bool, error) {
 		resp.ToJSON(&res2)
 		return false, errors.New(res2.Detail)
 	}
+	pays.PlatOrderId = res.PlatformOrderCode
 	return true, nil
 }

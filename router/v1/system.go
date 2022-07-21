@@ -379,3 +379,64 @@ func (a *system) IncreaseRuleList(c *fiber.Ctx) error {
 		"list":  lists,
 	})
 }
+
+// IncreaseRuleDel 可贷在途产品数提量规则 删除
+func (a *system) IncreaseRuleDel(c *fiber.Ctx) error {
+	input := new(req.IdReq)
+	if err := tools.ParseBody(c, input); err != nil {
+		return resp.Err(c, 1, err.Error())
+	}
+	new(model.IncreaseRule).Del(fmt.Sprintf("id = %d", input.Id))
+	return resp.OK(c, "")
+}
+
+//PwdReset 重置商户密码
+type pwdResetReq struct {
+	req.IdReq
+	Password string `json:"password"`
+	RePassword string `json:"re_password"`
+}
+func (a *system) PwdMchReset(c *fiber.Ctx) error {
+	input := new(pwdResetReq)
+	if err := tools.ParseBody(c, input); err != nil {
+		return resp.Err(c, 1, err.Error())
+	}
+	if input.RePassword != input.Password {
+		return resp.Err(c, 1, "两次密码不一致")
+	}
+	if len(input.Password) < 6{
+		return resp.Err(c, 1, "密码不能少于6位")
+	}
+	admin := new(model.Admin)
+	admin.One(fmt.Sprintf("mch_id = %d and type = '8'", input.Id))
+	if admin.Id == 0{
+		return resp.Err(c, 1, "没有找到商户管理员")
+	}
+	pwd := tools.Md5(fmt.Sprintf("%s%s", input.Password, admin.Salt))
+	admin.Password = pwd
+	admin.Update(fmt.Sprintf("id = %d", admin.Id))
+	return resp.OK(c, "")
+}
+
+//PwdAdminReset 重置管理员密码
+func (a *system) PwdAdminReset(c *fiber.Ctx) error {
+	input := new(pwdResetReq)
+	if err := tools.ParseBody(c, input); err != nil {
+		return resp.Err(c, 1, err.Error())
+	}
+	if input.RePassword != input.Password {
+		return resp.Err(c, 1, "两次密码不一致")
+	}
+	if len(input.Password) < 6{
+		return resp.Err(c, 1, "密码不能少于6位")
+	}
+	admin := new(model.Admin)
+	admin.One(fmt.Sprintf("id = %d", input.Id))
+	if admin.Id == 0{
+		return resp.Err(c, 1, "没有找到商户管理员")
+	}
+	pwd := tools.Md5(fmt.Sprintf("%s%s", input.Password, admin.Salt))
+	admin.Password = pwd
+	admin.Update(fmt.Sprintf("id = %d", admin.Id))
+	return resp.OK(c, "")
+}

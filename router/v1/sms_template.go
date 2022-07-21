@@ -59,7 +59,7 @@ func (a *smsTemplate) SmsTemplateCreateOrUpdate(c *fiber.Ctx) error {
 	s := new(model.SmsTemplate)
 	s.CompanyId = tools.ToInt(input.CompanyId)
 	s.SmsType = tools.ToInt(input.SmsType)
-	s.TemplateId = tools.ToInt(input.TemplateId)
+	s.TemplateId = input.TemplateId
 	s.Content = input.Content
 	s.Description = input.Description
 	s.SenderId = input.SenderId
