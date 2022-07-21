@@ -589,3 +589,4 @@ Content-Disposition: form-data; name="content"
 2022-07-19 14:31:43 [EROR] [C:/app/loante/loante/service/model/user_black.go:19] &{0 18482084444 今天过的整没用 1 2022-07-19 14:31:43} err=Error 1146: Table 'loante_db.user_blacks' doesn't exist
 2022-07-19 14:38:59 [EROR] [C:/app/loante/loante/service/model/admin.go:55] &{{} 0     0 0     0 0 0 0 0 <nil> <nil> <nil> <nil> <nil>} err=sql: no rows in result set
 2022-07-19 14:39:15 [EROR] [C:/app/loante/loante/service/model/admin.go:55] &{{} 0     0 0     0 0 0 0 0 <nil> <nil> <nil> <nil> <nil>} err=sql: no rows in result set
+2022-07-20 10:55:01 [EROR] [C:/app/loante/loante/service/model/admin_right.go:34] &{{} 0        } err=invalid connection

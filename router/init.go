@@ -26,6 +26,7 @@ func Init() {
 	urgeHandle := v1.NewUrge()
 	BlackHandle := v1.NewBlack()
 	whitePhoneHandle := v1.NewWhitePhone()
+	StatTrafficHandle := v1.NewStatTraffic()
 
 	app := fiber.New(fiber.Config{
 		//Prefork:       true,
@@ -62,6 +63,9 @@ func Init() {
 	v.Post("/system_setting/update_value", systemHandle.SystemSettingUpdateValue)
 	v.Get("/increase_rule", systemHandle.IncreaseRuleList)
 	v.Post("/increase_rule/create_or_update", systemHandle.IncreaseRuleCreateOrUpdate)
+
+	//统计报表
+	v.Get("/stat_traffic", StatTrafficHandle.StatTrafficList)
 
 	//渠道
 	v.Get("/utm/lists", utmHandle.Lists)
@@ -117,7 +121,8 @@ func Init() {
 	v.Post("/sms_template/create_or_update", smsTemplateHandle.SmsTemplateCreateOrUpdate)
 	//产品运营
 	v.Get("/product", productHandle.Product)
-	v.Post("/product/create_or_update", productHandle.ProductCreateOrUpdate)
+	v.Post("/product/create_or_update", productHandle.ProductCreateOrUpdate) //修改产品
+	v.Post("/product/update_For_mch", productHandle.ProductUpdateForMch)     //修改产品(商户)
 	//产品配置
 	v.Get("/productDelayConfig", productDelayConfigHandle.ProductDelayConfig)
 	v.Post("/productDelayConfig/create_or_update", productDelayConfigHandle.ProductDelayConfigCreateOrUpdate)

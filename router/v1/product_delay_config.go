@@ -57,6 +57,7 @@ func (a *productDelayConfig) ProductDelayConfigCreateOrUpdate(c *fiber.Ctx) erro
 		return resp.Err(c, 1, err.Error())
 	}
 	p := new(model.ProductDelayConfig)
+	p.One(fmt.Sprintf("product_id=%d", tools.ToInt(input.ProductId)))
 	p.MchId = tools.ToInt(input.MchId)
 	p.ProductId = tools.ToInt(input.ProductId)
 	p.DelayDay = tools.ToInt(input.DelayDay)
@@ -65,10 +66,14 @@ func (a *productDelayConfig) ProductDelayConfigCreateOrUpdate(c *fiber.Ctx) erro
 	p.IsShowDelay = tools.ToInt(input.IsShowDelay)
 	p.CreateTime = input.CreateTime
 	if tools.ToInt(input.Id) == 0 {
+		if p.Id != 0 {
+			return resp.Err(c, 1, "该产品展期规则已存在")
+		}
+		p.CreateTime = tools.GetFormatTime()
 		p.Insert()
 	} else {
 		p.Id = tools.ToInt(input.Id)
-		p.Update(fmt.Sprintf("id=%d", input.Id))
+		p.Update(fmt.Sprintf("id=%d", tools.ToInt(input.Id)))
 	}
 	return resp.OK(c, "")
 }
