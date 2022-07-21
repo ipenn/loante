@@ -69,6 +69,9 @@ func Init() {
 
 	//统计报表
 	v.Get("/stat_traffic", StatTrafficHandle.StatTrafficList)
+	v.Get("/after_report_unified", StatTrafficHandle.AfterReportUnifiedList)
+	v.Get("/report_pay_in", StatTrafficHandle.ReportPayIn)
+	v.Get("/report_pay_out", StatTrafficHandle.ReportPayOut)
 
 	//渠道
 	v.Get("/utm/lists", utmHandle.Lists)
@@ -109,35 +112,33 @@ func Init() {
 	v.Get("/customer_feedback", userHandle.CustomerFeedBack)                            //客户反馈
 	v.Post("/customer_feedback/update_status", userHandle.CustomerFeedBackUpdateStatus) //客户反馈
 
-
-	v.Get("/visit/reminds", visitHandle.RemindBorrowAll)	//预提醒订单列表
-	v.Get("/visit/reminding", visitHandle.RemindBorrowing)	//预提醒中订单
-	v.Get("/visit/reminded", visitHandle.RemindBorrowed)	//预提醒完成的订单
+	v.Get("/visit/reminds", visitHandle.RemindBorrowAll)    //预提醒订单列表
+	v.Get("/visit/reminding", visitHandle.RemindBorrowing)  //预提醒中订单
+	v.Get("/visit/reminded", visitHandle.RemindBorrowed)    //预提醒完成的订单
 	v.Get("/visit/remind_detail", visitHandle.RemindDetail) //预提醒记录 一笔借贷可能会有多条记录
-	v.Get("/visit/urges", visitHandle.UrgeBorrowAll)	//催收订单列表
-	v.Get("/visit/urging", visitHandle.UrgeBorrowing)	//催收中订单
-	v.Get("/visit/urged", visitHandle.UrgeBorrowed)	//催收完成的订单
-	v.Get("/visit/urge_detail", visitHandle.UrgeDetail) //催收记录 一笔借贷可能会有多条记录
-	v.Get("/visit/urge_report", visitHandle.UrgeReport) //催收业绩
-	v.Post("/visit/urge/action", visitHandle.UrgeAction) //新增催记
-
+	v.Get("/visit/urges", visitHandle.UrgeBorrowAll)        //催收订单列表
+	v.Get("/visit/urging", visitHandle.UrgeBorrowing)       //催收中订单
+	v.Get("/visit/urged", visitHandle.UrgeBorrowed)         //催收完成的订单
+	v.Get("/visit/urge_detail", visitHandle.UrgeDetail)     //催收记录 一笔借贷可能会有多条记录
+	v.Get("/visit/urge_report", visitHandle.UrgeReport)     //催收业绩
+	v.Post("/visit/urge/action", visitHandle.UrgeAction)    //新增催记
 
 	//借贷
-	v.Get("/borrow/list", borrowHandle.Query)	//获取借贷信息列表
-	v.Get("/borrow/export", borrowHandle.QueryExport) //获取借贷信息导出的功能
+	v.Get("/borrow/list", borrowHandle.Query)                     //获取借贷信息列表
+	v.Get("/borrow/export", borrowHandle.QueryExport)             //获取借贷信息导出的功能
 	v.Post("/borrow/reconciliation", borrowHandle.Reconciliation) //平账操作
-	v.Post("/borrow/deposit", borrowHandle.Deposit) //入账操作
+	v.Post("/borrow/deposit", borrowHandle.Deposit)               //入账操作
 
 	//还款
 	v.Get("/pay_flow/repayments", payHandle.Repayments)              //还款记录
 	v.Get("/pay_flow/repayments/export", payHandle.RepaymentsExport) //导出还款记录
 
-	v.Get("/pay_flow/reconciliation", payHandle.Reconciliation)//平账
-	v.Get("/pay_flow/deposit", payHandle.Deposits)//入账
-	v.Get("/pay_flow/loan", payHandle.Loans) //放款
-	v.Get("/pay_flow/batch_loan", payHandle.BatchLoans) //批量重放款
-	v.Get("/pay_flow/utr", payHandle.Utrs) //UTR对账单
-	v.Get("/pay_flow/utr_dismissed", payHandle.UtrsDismissed) //UTR对账单验证失败的
+	v.Get("/pay_flow/reconciliation", payHandle.Reconciliation) //平账
+	v.Get("/pay_flow/deposit", payHandle.Deposits)              //入账
+	v.Get("/pay_flow/loan", payHandle.Loans)                    //放款
+	v.Get("/pay_flow/batch_loan", payHandle.BatchLoans)         //批量重放款
+	v.Get("/pay_flow/utr", payHandle.Utrs)                      //UTR对账单
+	v.Get("/pay_flow/utr_dismissed", payHandle.UtrsDismissed)   //UTR对账单验证失败的
 	v.Post("/pay_flow/utr_verify", payHandle.UtrsVerify)
 	v.Post("/pay_flow/pay_partial", payHandle.PayPartial) //生成 部分还款链接
 

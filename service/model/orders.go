@@ -77,23 +77,23 @@ func (a *Orders) Del(where string) {
 }
 
 //PayAfter 还款成功以后处理订单逻辑
-func (a *Orders)PayAfter(amount float64)  {
+func (a *Orders) PayAfter(amount float64) {
 	//更新 orders 支付状态
 	a.RepaidStatus = 1
 	a.ActualAmount = int(amount)
 	borrowData := new(Borrow)
 	borrowData.One(fmt.Sprintf("id = %d", a.Bid))
-	if a.Type == 0{ //全额还款
-		if borrowData.Status == 6{
+	if a.Type == 0 { //全额还款
+		if borrowData.Status == 6 {
 			borrowData.Status = 8
 		}
-		if borrowData.Status == 7{
+		if borrowData.Status == 7 {
 			borrowData.Status = 9
 		}
 		borrowData.BeRepaidAmount = 0
-	}else if a.Type == 1{
+	} else if a.Type == 1 {
 		borrowData.BeRepaidAmount -= a.ActualAmount
-	}else if a.Type == 2{ //展期还款
+	} else if a.Type == 2 { //展期还款
 		//获取产品的展期天数
 		//productData := new(ProductDelayConfig)
 		//productData.One(fmt.Sprintf("id = %d", borrowData.ProductId))
@@ -104,4 +104,51 @@ func (a *Orders)PayAfter(amount float64)  {
 	}
 	a.Update(fmt.Sprintf("id = %d", a.Id))
 	borrowData.Update(fmt.Sprintf("id = %d", borrowData.Id))
+}
+
+type OrdersForStatistics struct {
+	Count      int    `json:"count"`
+	Payment    int    `json:"payment"`
+	CreateTime string `json:"create_time"`
+	Name       string `json:"name"`
+	Type       int    `json:"type"`
+}
+
+func (a *Orders) ForStatistics(where string) []OrdersForStatistics {
+	//var datas []Borrow
+	//count, _ := global.C.DB.NewSelect().Model(&Borrow{}).GroupExpr("HOUR(loan_time) desc").
+	//	GroupExpr("payment DESC").Where(where).Offset((page - 1) * limit).Limit(limit).ScanAndCount(global.C.Ctx)
+	//return datas, count
+	var ordersForStatistics []OrdersForStatistics
+	rows, _ := global.C.DB.QueryContext(global.C.Ctx, `SELECT
+	COUNT( o.id ) AS count,
+	o.payment,
+	o.create_time,
+	p.name,
+	0 AS type 
+FROM
+	orders o
+	LEFT JOIN payment p ON o.payment = p.id 
+WHERE
+	o.repaid_status IN ( 0,1 ) and DATE_SUB(CURDATE(), INTERVAL 7 DAY) <= date(o.create_time) `+where+`
+GROUP BY
+	HOUR ( o.create_time ) DESC,
+	o.payment DESC UNION ALL
+SELECT
+	COUNT( o.id ) AS count,
+	o.payment,
+	o.create_time,
+	p.name,
+	0 AS type 
+FROM
+	orders o
+	LEFT JOIN payment p ON o.payment = p.id 
+WHERE
+	o.repaid_status =2 and DATE_SUB(CURDATE(), INTERVAL 7 DAY) <= date(o.create_time) `+where+`
+GROUP BY
+	HOUR ( o.create_time ) DESC,
+	o.payment DESC`)
+
+	global.C.DB.ScanRows(global.C.Ctx, rows, &ordersForStatistics)
+	return ordersForStatistics
 }
