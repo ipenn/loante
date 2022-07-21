@@ -5,9 +5,11 @@ import (
 	"github.com/gofiber/fiber/v2"
 	"github.com/xuri/excelize/v2"
 	"loante/service/model"
+	"loante/service/payments"
 	"loante/service/req"
 	"loante/service/resp"
 	"loante/tools"
+	"math"
 	"strings"
 )
 
@@ -113,20 +115,40 @@ func (a *payFlow) RepaymentsExport(c *fiber.Ctx) error {
 
 type reconciliationQueryReq struct {
 	req.PageReq
-	Id       int    `json:"id" query:"id"`
-	BorrowId string `json:"borrow_id" query:"borrow_id"`
-	UserName string `json:"user_name" query:"user_name"`
-	Phone    string `json:"phone" query:"phone"`
-	Status   int    `json:"status" query:"status"`
+	BorrowId	int	`json:"borrow_id" query:"borrow_id"`  //借款的订单编号
+	UserName    string `json:"user_name" query:"user_name"` //用户名
+	Phone       string `json:"phone" query:"phone"`			//手机号
+	StartTime       string `json:"start_time" query:"start_time"`	//应还款时间
+	EndTime       string `json:"end_time" query:"end_time"`		//应还款时间
+	Status      int `json:"status" query:"status"` //借款的订单状态
 }
-
-//Reconciliation 平账
-func (a *payFlow) Reconciliation(c *fiber.Ctx) error {
+//Reconciliation 平账记录
+func (a *payFlow)Reconciliation(c *fiber.Ctx) error {
 	input := new(reconciliationQueryReq)
 	if err := tools.ParseBody(c, input); err != nil {
 		return resp.Err(c, 1, err.Error())
 	}
-	lists, count := new(model.Orders).Page("o.id > 0", input.Page, input.Size)
+	where := "b.id > 0"
+	if input.BorrowId > 0{ //订单编号
+		where += fmt.Sprintf("borrow_id = %d", input.BorrowId)
+	}
+	if len(input.UserName) > 0{
+		where += fmt.Sprintf("u.aadhaar_name = '%s'", input.UserName)
+	}
+	if len(input.Phone) > 0{
+		where += fmt.Sprintf("u.phone = '%s'", input.Phone)
+	}
+	if len(input.StartTime) > 0{
+		where += fmt.Sprintf("b.end_time > '%s'", input.StartTime)
+	}
+	if len(input.EndTime) > 0{
+		where += fmt.Sprintf("b.end_time < '%s'", input.EndTime)
+	}
+	if input.Status > 0{
+		where += fmt.Sprintf("b.status = '%d'", input.Status)
+	}
+
+	lists, count := new(model.Orders).Page(where, input.Page, input.Size)
 	return resp.OK(c, map[string]interface{}{
 		"count": count,
 		"list":  lists,
@@ -164,13 +186,14 @@ type loansQueryReq struct {
 	Status   int    `json:"status" query:"status"`
 }
 
-//Loans 放款
+
+//Loans 放款记录 从borrow表获取
 func (a *payFlow) Loans(c *fiber.Ctx) error {
-	input := new(depositQueryReq)
+	input := new(loansQueryReq)
 	if err := tools.ParseBody(c, input); err != nil {
 		return resp.Err(c, 1, err.Error())
 	}
-	lists, count := new(model.Orders).Page("o.id > 0", input.Page, input.Size)
+	lists, count := new(model.Borrow).Page("b.id > 0", input.Page, input.Size)
 	return resp.OK(c, map[string]interface{}{
 		"count": count,
 		"list":  lists,
@@ -188,4 +211,238 @@ func (a *payFlow) BatchLoans(c *fiber.Ctx) error {
 		"count": count,
 		"list":  lists,
 	})
+}
+
+type utrPageReq struct {
+	req.PageReq
+	UserName string	`query:"user_name" json:"user_name"`
+	Phone   string	`query:"phone" json:"phone"`
+	UtrCode    string	`query:"utr_code" json:"utr_code"`
+	MchId     int	`query:"mch_id" json:"mch_id"`
+	ProductId int	`query:"product_id" json:"product_id"`
+	Status    int	`query:"status" json:"status"`
+	StartTime string	`query:"start_time" json:"start_time"`
+	EndTime   string	`query:"end_time" json:"end_time"`
+}
+
+//Utrs UTR对账单
+func (a *payFlow)Utrs(c *fiber.Ctx) error {
+	input := new(utrPageReq)
+	if err := tools.ParseBody(c, input); err != nil {
+		return resp.Err(c, 1, err.Error())
+	}
+	where := "bu.id > 0"
+	if len(input.UserName) > 0{
+		where += fmt.Sprintf("u.aadhaar_name = '%s'", input.UserName)
+	}
+	if len(input.Phone) > 0{
+		where += fmt.Sprintf("u.phone = '%s'", input.Phone)
+	}
+	if len(input.UtrCode) > 0{
+		where += fmt.Sprintf("bu.utr_code = '%s'", input.UtrCode)
+	}
+	if input.MchId > 0{
+		where += fmt.Sprintf("bu.mch_id = '%d'", input.MchId)
+	}
+	if input.ProductId > 0{
+		where += fmt.Sprintf("bu.product_id = '%d'", input.ProductId)
+	}
+	if input.Status > 0{
+		where += fmt.Sprintf("bu.status = '%d'", input.Status)
+	}
+	if len(input.StartTime) > 0{
+		where += fmt.Sprintf("bu.create >= '%s'", input.StartTime)
+	}
+	if len(input.EndTime) > 0{
+		where += fmt.Sprintf("bu.create < '%s'", input.EndTime)
+	}
+	lists, count := new(model.BorrowUtr).Page(where, input.Page, input.Size)
+	return resp.OK(c, map[string]interface{}{
+		"count":count,
+		"list":lists,
+	})
+}
+
+type utrDismissedReq struct {
+	req.PageReq
+	UserName string	`query:"user_name" json:"user_name"`
+	Phone   string	`query:"phone" json:"phone"`
+	MchId     int	`query:"mch_id" json:"mch_id"`
+	ProductId int	`query:"product_id" json:"product_id"`
+	StartTime string	`query:"start_time" json:"start_time"`
+	EndTime   string	`query:"end_time" json:"end_time"`
+}
+//UtrsDismissed UTR驳回列表
+func (a *payFlow)UtrsDismissed(c *fiber.Ctx) error {
+	input := new(utrDismissedReq)
+	if err := tools.ParseBody(c, input); err != nil {
+		return resp.Err(c, 1, err.Error())
+	}
+	where := "bu.id > 0"
+	if len(input.UserName) > 0{
+		where += fmt.Sprintf("u.aadhaar_name = '%s'", input.UserName)
+	}
+	if len(input.Phone) > 0{
+		where += fmt.Sprintf("u.phone = '%s'", input.Phone)
+	}
+	if input.MchId > 0{
+		where += fmt.Sprintf("bu.mch_id = '%d'", input.MchId)
+	}
+	if input.ProductId > 0{
+		where += fmt.Sprintf("bu.product_id = '%d'", input.ProductId)
+	}
+	if len(input.StartTime) > 0{
+		where += fmt.Sprintf("bu.create >= '%s'", input.StartTime)
+	}
+	if len(input.EndTime) > 0{
+		where += fmt.Sprintf("bu.create < '%s'", input.EndTime)
+	}
+	lists, count := new(model.BorrowUtr).Page(where, input.Page, input.Size)
+	return resp.OK(c, map[string]interface{}{
+		"count": count,
+		"list":  lists,
+	})
+}
+
+type payPartialReq struct {
+	BorrowId int	`query:"borrow" json:"borrow_id"`
+	Type   int	`query:"type" json:"type"` //0 全额还款 1 部分还款 2 展期还款
+	Amount   int	`query:"amount" json:"amount"`
+	PaymentId   int	`query:"payment_id" json:"payment_id"`
+}
+//PayPartial 部分还款码<商户收款>
+func (a *payFlow)PayPartial(c *fiber.Ctx) error {
+	input := new(payPartialReq)
+	if err := tools.ParseBody(c, input); err != nil {
+		return resp.Err(c, 1, err.Error())
+	}
+	input.Amount = int(math.Abs(float64(input.Amount)))
+	borrow := new(model.Borrow)
+	borrow.One(fmt.Sprintf("id = %d", input.BorrowId))
+	if borrow.Id == 0{
+		return resp.Err(c, 1, "借款数据不存在！")
+	}
+	visit := new(model.BorrowVisit)
+	visit.One(fmt.Sprintf("borrow_id = %d", borrow.Id))
+	userData := new(model.User)
+	userData.One(fmt.Sprintf("id = %d", borrow.Uid))
+
+	//校对金额
+	if input.Type != 1 && input.Type != 2{
+		return resp.Err(c, 1, "还款方式不正确！")
+	}
+	if input.Type == 1 {
+		if borrow.BeRepaidAmount < input.Amount{
+			input.Amount = borrow.BeRepaidAmount
+			input.Type = 0
+		}
+	}
+	if input.Type == 2{ //展期
+		//获取产品服务费
+		product := new(model.Product)
+		product.One(fmt.Sprintf("id = %d", borrow.ProductId))
+		if product.Id == 0{
+			return resp.Err(c, 1, "未找到产品！")
+		}
+		//borrow.PostponedPeriod += 1 展期还款成功以后才能 + 1
+		//展期需要先还滞纳金 和 展期费用
+		input.Amount = int( float32(borrow.LoanAmount) * product.RateService) + borrow.LatePaymentFee
+	}
+	//获取产品的默认支付通道
+	if input.PaymentId == 0{
+		payDefault := new(model.ProductPaymentDefault)
+		payDefault.One(fmt.Sprintf("product_id = %d", borrow.ProductId))
+		if payDefault.Id == 0{
+			return resp.Err(c, 1, "产品的支付没有默认配置！")
+		}
+		input.PaymentId = payDefault.InPaymentId
+	}
+	//获取支付通道的配置
+	pp := new(model.ProductPayment)
+	pp.One(fmt.Sprintf("payment_id = %d and product_id = %d", input.PaymentId, borrow.ProductId))
+	if pp.Id ==0{
+		return resp.Err(c, 1, "未找到支付通道配置")
+	}
+	payment := new(model.Payment)
+	payment.One(fmt.Sprintf("id = %d", 	input.PaymentId))
+	if payment.Id == 0{
+		return resp.Err(c, 1, "支付通道已经被删除！")
+	}
+	payModel :=  payments.SelectPay(payment.Name)
+	paysData := payments.Pays{
+		OrderId:fmt.Sprintf("%s-%d-%d-%d", tools.InviteCode(6), borrow.Id, borrow.ProductId, input.PaymentId),
+		Amount:float64(input.Amount),
+		CustomName:userData.AadhaarName,
+		CustomMobile:userData.Phone,
+		CustomEmail:userData.Email,
+		BankAccount:userData.Bankcard,
+		IfscCode:userData.Ifsc,
+		Remark:"",
+		UpiAccount:"",
+		NotifyUrl:"http://127.0.0.1/notify",
+		CallbackUrl:"http://127.0.0.1/notify",
+	}
+	ret, data, err := (*payModel).PayIn(pp.Configuration, paysData)
+	if !ret {
+		fmt.Println(err)
+		return  resp.Err(c, 1, err.Error())
+	}
+	//保存order
+	orders := new(model.Orders)
+	orders.MchId = borrow.MchId
+	orders.ProductId = borrow.ProductId
+	orders.Bid = borrow.Id
+	orders.Uid = borrow.Uid
+	orders.CreateTime = tools.GetFormatTime()
+	orders.Type = input.Type
+	orders.Payment = input.PaymentId
+	orders.PostponePeriod = borrow.PostponedPeriod
+	orders.ApplyAmount = int(input.Amount)
+	orders.RepaidStatus = 2
+	orders.UrgeId = visit.UrgeId
+	orders.RepaidUrl = data["url"].(string)
+	orders.RepaidType = 0
+	orders.InvalidTime = tools.ToAddMinute(30)
+	orders.LoanTime = borrow.LoanTime
+	orders.EndTime = borrow.EndTime
+	orders.PaymentRequestNo = paysData.OrderId
+	orders.PaymentRespondNo = data["platId"].(string)
+	orders.Insert()
+	return resp.OK(c, "")
+}
+
+func (a *payFlow)UtrsVerify(c *fiber.Ctx) error {
+	input := new(req.IdReq)
+	if err := tools.ParseBody(c, input); err != nil {
+		return resp.Err(c, 1, err.Error())
+	}
+	//获取Borrow
+	utr := new(model.BorrowUtr)
+	utr.One(fmt.Sprintf("id = %d", input.Id))
+	if utr.Id == 0{
+		return resp.Err(c, 1, "UTR数据不存在！")
+	}
+	//获取产品的默认支付通道
+	payDefault := new(model.ProductPaymentDefault)
+	payDefault.One(fmt.Sprintf("product_id = %d", 	utr.ProductId))
+	if payDefault.Id == 0{
+		return resp.Err(c, 1, "产品的支付没有默认配置！")
+	}
+	payment := new(model.Payment)
+	payment.One(fmt.Sprintf("id = %d", 	payDefault.InPaymentId))
+	if payment.Id == 0{
+		return resp.Err(c, 1, "支付通道已经被删除！")
+	}
+	//是否支持utr查单
+	if payment.IsUtrQuery == 0{
+		return resp.Err(c, 1, payment.Name+" 不支持UTR查单！")
+	}
+	//获取支付通道的配置
+	pp := new(model.ProductPayment)
+	pp.One(fmt.Sprintf("payment_id = %d and product_id = %d", payDefault.InPaymentId, utr.ProductId))
+	if pp.Id ==0{
+		return resp.Err(c, 1, "未找到支付通道配置")
+	}
+
+	return resp.OK(c, "")
 }

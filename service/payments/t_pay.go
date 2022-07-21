@@ -4,10 +4,12 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
+	"github.com/gofiber/fiber/v2"
 	"github.com/imroc/req"
 	"loante/global"
 	"loante/tools"
 	"sort"
+	"strconv"
 	"strings"
 )
 
@@ -91,18 +93,29 @@ func (t *TPays) sign(data req.Param) string {
 	return strings.ToLower(signData)
 }
 
-func (t *TPays) VerifySign(data map[string]interface{}, sign string) (bool, error) {
+
+func (t *TPays)Verify(config string, ctx *fiber.Ctx) (bool,float64, error) {
+	t.init(config)
 	pa := req.Param{}
-	for index, item := range data {
-		pa[index] = item
+	body := TPayNotify{}
+	ctx.BodyParser(body)
+	m2, _ := tools.StructToMapReflect(&body,"json")
+	for index, item := range m2{
+		if index != "sign"{
+			pa[index] = item
+		}
 	}
-	if t.sign(pa) != sign {
-		return false, errors.New("sign fail")
+	if t.sign(pa) != body.Sign{
+		return false, 0,errors.New("sign fail")
 	}
-	return true, nil
+	if body.Status != "PAY_SUCCESS"{
+		return false,0 ,errors.New(body.Status)
+	}
+	amount,_  := strconv.ParseFloat(body.Amount, 10)
+	return true, amount,nil
 }
 
-func (t *TPays) PayIn(config string, pays Pays) (bool, interface{}, error) {
+func (t *TPays)PayIn(config string, pays Pays) (bool, map[string]interface{}, error) {
 	t.init(config)
 	data := req.Param{
 		"merchant":     t.Merchant,
@@ -130,7 +143,11 @@ func (t *TPays) PayIn(config string, pays Pays) (bool, interface{}, error) {
 		resp.ToJSON(&res2)
 		return false, nil, errors.New(res2.ErrorMessages)
 	}
-	return true, res, nil
+	return true, map[string]interface{}{
+		"platId":res.Data.PlatOrderId,
+		"orderId":res.Data.OrderId,
+		"url":res.Data.Url,
+	},nil
 }
 
 func (t *TPays) PayOut(config string, pays Pays) (bool, error) {

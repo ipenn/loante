@@ -15,30 +15,30 @@ type ProductLittle struct {
 type Product struct {
 	bun.BaseModel `bun:"table:product,alias:p"`
 	ProductLittle
-	IconPath            string          `json:"icon_path"`
-	MchId               int             `json:"mch_id"`
-	DayMaxApply         int             `json:"day_max_apply"`
-	MaxApply            int             `json:"max_apply"`
-	DayApplyPass        int             `json:"day_apply_pass"`
-	StartAmount         int             `json:"start_amount"`
-	TodayApplyCount     int             `json:"today_apply_count"`
-	ApplyStartTime      string          `json:"apply_start_time"`
-	ApplyEndTime        string          `json:"apply_end_time"`
-	TotalMaxApplyCount  int             `json:"total_max_apply_count"`
-	UpTime              string          `json:"up_time"`
-	DownTime            string          `json:"down_time"`
-	IsAutoLending       int             `json:"is_auto_lending"`
-	IsRejectNew         int             `json:"is_reject_new"`
-	IsRejectOld         int             `json:"is_reject_old"`
-	IsStopLending       int             `json:"is_stop_lending"`
-	Status              int             `json:"status"`
-	CreateTime          string          `json:"create_time"`
-	Description         string          `json:"description"`
-	RateNormalInterest  float64         `json:"rate_normal_interest"`
-	RateOverdueInterest float64         `json:"rate_overdue_interest"`
-	RateService         float64         `json:"rate_service"`
-	RateTax             float64         `json:"rate_tax"`
-	Merchant            *MerchantLittle `json:"merchant" bun:"rel:belongs-to,join:mch_id=id"`
+	IconPath            string  `json:"icon_path"`
+	MchId               int     `json:"mch_id"`
+	DayMaxApply         int     `json:"day_max_apply"`
+	MaxApply            int     `json:"max_apply"`
+	DayApplyPass        int     `json:"day_apply_pass"`
+	StartAmount         int     `json:"start_amount"`
+	TodayApplyCount     int     `json:"today_apply_count"`
+	ApplyStartTime      string  `json:"apply_start_time"`
+	ApplyEndTime        string  `json:"apply_end_time"`
+	TotalMaxApplyCount  int     `json:"total_max_apply_count"`
+	UpTime              string  `json:"up_time"`
+	DownTime            string  `json:"down_time"`
+	IsAutoLending       int     `json:"is_auto_lending"`
+	IsRejectNew         int     `json:"is_reject_new"`
+	IsRejectOld         int     `json:"is_reject_old"`
+	IsStopLending       int     `json:"is_stop_lending"`
+	Status              int     `json:"status"`
+	CreateTime          string  `json:"create_time"`
+	Description         string  `json:"description"`
+	RateNormalInterest  float32 `json:"rate_normal_interest"`
+	RateOverdueInterest float32 `json:"rate_overdue_interest"`
+	RateService         float32 `json:"rate_service"`
+	RateTax             float32 `json:"rate_tax"`
+	Merchant      *MerchantLittle      `json:"merchant" bun:"rel:belongs-to,join:mch_id=id"`
 }
 
 func (a *Product) Insert() {

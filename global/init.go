@@ -34,18 +34,21 @@ type Config struct {
 		Expired int
 	}
 	//Maps
-	Maps struct {
-		TestMap           map[string]string `json:"test_map"`
-		ServiceDeductType map[string]string `json:"service_deduct_type"`
-		ServiceType       map[string]string `json:"service_type"`
-		SmsCompany        map[string]string `json:"sms_company"`
-		SmsTypes          map[string]string `json:"sms_types"`
-		BlankTypes        map[string]string `json:"blank_types"`
-		SystemSettingType map[string]string `json:"system_setting_type"`
-		StatisticsCompany map[string]string `json:"statistics_company"`
-		RiskModel         map[string]string `json:"risk_model"`
-		MchFundType       map[string]string `json:"mch_fund_type"`
-	} `json:"maps"`
+	Maps struct{
+		TestMap map[string]string 	`json:"test_map"`
+		ServiceDeductType map[string]string 	`json:"service_deduct_type"`
+		ServiceType map[string]string 	`json:"service_type"`
+		SmsCompany map[string]string 	`json:"sms_company"`
+		SmsTypes map[string]string 	`json:"sms_types"`
+		BlankTypes map[string]string 	`json:"blank_types"`
+		SystemSettingType map[string]string 	`json:"system_setting_type"`
+		StatisticsCompany map[string]string 	`json:"statistics_company"`
+		RiskModel map[string]string 	`json:"risk_model"`
+		RepaymentWish map[string]string 	`json:"repayment_wish"`
+		VisitTag map[string]string 	`json:"visit_tag"`
+		RepaymentRelationship map[string]string 	`json:"repayment_relationship"`
+		UTRStatus map[string]string 	`json:"utr_status"`
+	}  `json:"maps"`
 }
 
 var C Config

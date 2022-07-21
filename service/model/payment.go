@@ -8,19 +8,19 @@ import (
 
 type PaymentLittle struct {
 	bun.BaseModel `bun:"table:payment,alias:p"`
-	Id            int    `json:"id" bun:",pk"`
-	Name          string `json:"name"`
+	Id          int	`json:"id" bun:",pk"`
+	Name        string	`json:"name"`
+	IsOpenOut   int	`json:"is_open_out"`
+	IsOpenIn    int	`json:"is_open_in"`
+	LendingStartTime string	`json:"lending_start_time"`
+	LendingEndTime string	`json:"lending_end_time"`
 }
 type Payment struct {
 	bun.BaseModel `bun:"table:payment,alias:p"`
 	PaymentLittle
-	LendingStartTime string `json:"lending_start_time"`
-	LendingEndTime   string `json:"lending_end_time"`
-	IsOpenOut        int    `json:"is_open_out"`
-	IsOpenIn         int    `json:"is_open_in"`
-	IsUtrQuery       int    `json:"is_utr_query"`
-	IsUtrFill        int    `json:"is_utr_fill"`
-	Fields           string `json:"fields"`
+	IsUtrQuery int	`json:"is_utr_query"`
+	IsUtrFill  int	`json:"is_utr_fill"`
+	Fields     string	`json:"fields"`
 }
 
 func (a *Payment) Insert() {

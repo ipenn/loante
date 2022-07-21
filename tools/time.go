@@ -19,8 +19,12 @@ func StrToUnixTime(str string) int64 {
 	return tm2.Unix() - 8*3600
 }
 
-func ToDay(t int64) string { //t 小时
+func ToAddHour(t int64) string { //t 小时
 	return UnixTimeToStr(GetUnixTime() + t*3600)
+}
+
+func ToAddMinute(t int64) string {
+	return UnixTimeToStr(GetUnixTime() + t*60)
 }
 
 func ToAddMonth(number int) string {
