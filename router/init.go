@@ -29,7 +29,11 @@ func Init() {
 	payBackHandle := v1.NewPayBack()
 	BlackHandle := v1.NewBlack()
 	whitePhoneHandle := v1.NewWhitePhone()
+<<<<<<< HEAD
 	uploadHandle := v1.NewUpload()
+=======
+	StatTrafficHandle := v1.NewStatTraffic()
+>>>>>>> 5fa5f02c1373b226cd4ab46bcdfa3326f6ae89d0
 
 	app := fiber.New(fiber.Config{
 		//Prefork:       true,
@@ -78,6 +82,12 @@ func Init() {
 	v.Post("/increase_rule/create_or_update", systemHandle.IncreaseRuleCreateOrUpdate)
 	v.Post("/increase_rule/del", systemHandle.IncreaseRuleDel)
 
+	//统计报表
+	v.Get("/stat_traffic", StatTrafficHandle.StatTrafficList)
+	v.Get("/after_report_unified", StatTrafficHandle.AfterReportUnifiedList)
+	v.Get("/report_pay_in", StatTrafficHandle.ReportPayIn)
+	v.Get("/report_pay_out", StatTrafficHandle.ReportPayOut)
+
 	//渠道
 	v.Get("/utm/lists", utmHandle.Lists)
 	v.Post("/utm/create", utmHandle.Create)
@@ -122,6 +132,7 @@ func Init() {
 	v.Get("/customer_feedback", userHandle.CustomerFeedBack)                            //客户反馈
 	v.Post("/customer_feedback/update_status", userHandle.CustomerFeedBackUpdateStatus) //客户反馈
 
+<<<<<<< HEAD
 	v.Get("/visit/reminds", visitHandle.RemindBorrowAll)	//预提醒订单列表
 	v.Get("/visit/reminding", visitHandle.RemindBorrowing)	//预提醒中订单
 	v.Get("/visit/reminded", visitHandle.RemindBorrowed)	//预提醒完成的订单
@@ -132,23 +143,35 @@ func Init() {
 	v.Get("/visit/urge_detail", visitHandle.UrgeDetail) //催收记录 一笔借贷可能会有多条记录
 	v.Get("/visit/urge_report", visitHandle.UrgeReport) //催收业绩
 	v.Post("/visit/urge/action", visitHandle.UrgeAction) //新增催记
+=======
+	v.Get("/visit/reminds", visitHandle.RemindBorrowAll)    //预提醒订单列表
+	v.Get("/visit/reminding", visitHandle.RemindBorrowing)  //预提醒中订单
+	v.Get("/visit/reminded", visitHandle.RemindBorrowed)    //预提醒完成的订单
+	v.Get("/visit/remind_detail", visitHandle.RemindDetail) //预提醒记录 一笔借贷可能会有多条记录
+	v.Get("/visit/urges", visitHandle.UrgeBorrowAll)        //催收订单列表
+	v.Get("/visit/urging", visitHandle.UrgeBorrowing)       //催收中订单
+	v.Get("/visit/urged", visitHandle.UrgeBorrowed)         //催收完成的订单
+	v.Get("/visit/urge_detail", visitHandle.UrgeDetail)     //催收记录 一笔借贷可能会有多条记录
+	v.Get("/visit/urge_report", visitHandle.UrgeReport)     //催收业绩
+	v.Post("/visit/urge/action", visitHandle.UrgeAction)    //新增催记
+>>>>>>> 5fa5f02c1373b226cd4ab46bcdfa3326f6ae89d0
 
 	//借贷
-	v.Get("/borrow/list", borrowHandle.Query)	//获取借贷信息列表
-	v.Get("/borrow/export", borrowHandle.QueryExport) //获取借贷信息导出的功能
+	v.Get("/borrow/list", borrowHandle.Query)                     //获取借贷信息列表
+	v.Get("/borrow/export", borrowHandle.QueryExport)             //获取借贷信息导出的功能
 	v.Post("/borrow/reconciliation", borrowHandle.Reconciliation) //平账操作
-	v.Post("/borrow/deposit", borrowHandle.Deposit) //入账操作
+	v.Post("/borrow/deposit", borrowHandle.Deposit)               //入账操作
 
 	//还款
 	v.Get("/pay_flow/repayments", payHandle.Repayments)              //还款记录
 	v.Get("/pay_flow/repayments/export", payHandle.RepaymentsExport) //导出还款记录
 
-	v.Get("/pay_flow/reconciliation", payHandle.Reconciliation)//平账
-	v.Get("/pay_flow/deposit", payHandle.Deposits)//入账
-	v.Get("/pay_flow/loan", payHandle.Loans) //放款
-	v.Get("/pay_flow/batch_loan", payHandle.BatchLoans) //批量重放款
-	v.Get("/pay_flow/utr", payHandle.Utrs) //UTR对账单
-	v.Get("/pay_flow/utr_dismissed", payHandle.UtrsDismissed) //UTR对账单验证失败的
+	v.Get("/pay_flow/reconciliation", payHandle.Reconciliation) //平账
+	v.Get("/pay_flow/deposit", payHandle.Deposits)              //入账
+	v.Get("/pay_flow/loan", payHandle.Loans)                    //放款
+	v.Get("/pay_flow/batch_loan", payHandle.BatchLoans)         //批量重放款
+	v.Get("/pay_flow/utr", payHandle.Utrs)                      //UTR对账单
+	v.Get("/pay_flow/utr_dismissed", payHandle.UtrsDismissed)   //UTR对账单验证失败的
 	v.Post("/pay_flow/utr_verify", payHandle.UtrsVerify)
 	v.Post("/pay_flow/pay_partial", payHandle.PayPartial) //生成 部分还款链接
 
@@ -157,11 +180,16 @@ func Init() {
 	v.Post("/sms_template/create_or_update", smsTemplateHandle.SmsTemplateCreateOrUpdate)
 	//产品运营
 	v.Get("/product", productHandle.Product)
+<<<<<<< HEAD
 	v.Post("/product/create_or_update", productHandle.ProductCreateOrUpdate)
 	//提额规则
 	v.Get("/product/precept", productHandle.ProductPrecept)
 	v.Post("/product/precept_create", productHandle.ProductPreceptCreate)
 	v.Post("/product/precept_del", productHandle.ProductPreceptDel)
+=======
+	v.Post("/product/create_or_update", productHandle.ProductCreateOrUpdate) //修改产品
+	v.Post("/product/update_For_mch", productHandle.ProductUpdateForMch)     //修改产品(商户)
+>>>>>>> 5fa5f02c1373b226cd4ab46bcdfa3326f6ae89d0
 	//产品配置
 	v.Get("/productDelayConfig", productDelayConfigHandle.ProductDelayConfig)
 	v.Post("/productDelayConfig/create_or_update", productDelayConfigHandle.ProductDelayConfigCreateOrUpdate)

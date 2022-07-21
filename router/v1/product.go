@@ -127,6 +127,7 @@ func (a *product) ProductCreateOrUpdate(c *fiber.Ctx) error {
 	return resp.OK(c, "")
 }
 
+<<<<<<< HEAD
 type productPreceptReq struct {
 	req.PageReq
 	ProductId int `json:"product_id" query:"product_id"`
@@ -188,3 +189,41 @@ func (a *product) ProductPreceptDel(c *fiber.Ctx) error  {
 	ppt.Del(fmt.Sprintf("id = %d", input.Id))
 	return resp.OK(c, "")
 }
+=======
+type productUpdateForMch struct {
+	Id                  string `json:"id"`
+	ProductName         string `json:"productName"`
+	IconPath            string `json:"iconPath"`
+	IsAutoLending       string `json:"isAutoLending"`
+	IsStopLending       string `json:"isStopLending"`
+	Status              string `json:"status"`
+	RateNormalInterest  string `json:"rateNormalInterest"`
+	RateOverdueInterest string `json:"rateOverdueInterest"`
+	RateService         string `json:"rateService"`
+	RateTax             string `json:"rateTax"`
+}
+
+func (a *product) ProductUpdateForMch(c *fiber.Ctx) error {
+	input := new(productUpdateForMch)
+	if err := tools.ParseBody(c, input); err != nil {
+		return resp.Err(c, 1, err.Error())
+	}
+	p := new(model.Product)
+	p.One(fmt.Sprintf("id=%d", tools.ToInt(input.Id)))
+	if p.Id == 0 {
+		return resp.Err(c, 1, "id不能为0")
+	}
+	p.ProductName = input.ProductName
+	p.IconPath = input.IconPath
+	p.IsAutoLending = tools.ToInt(input.IsAutoLending)
+	p.IsStopLending = tools.ToInt(input.IsStopLending)
+	p.Status = tools.ToInt(input.Status)
+	p.RateNormalInterest = tools.ToFloat32(input.RateNormalInterest)
+	p.RateOverdueInterest = tools.ToFloat32(input.RateOverdueInterest)
+	p.RateService = tools.ToFloat32(input.RateService)
+	p.RateTax = tools.ToFloat32(input.RateTax)
+
+	p.Update(fmt.Sprintf("id=%d", p.Id))
+	return resp.OK(c, "")
+}
+>>>>>>> 5fa5f02c1373b226cd4ab46bcdfa3326f6ae89d0

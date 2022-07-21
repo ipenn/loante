@@ -54,7 +54,11 @@ func ToFloat32(t interface{}) float32 {
 	case int:
 		return float32(t)
 	case string:
+<<<<<<< HEAD
 		tt, _ := strconv.ParseFloat(t, 64)
+=======
+		tt, _ := strconv.ParseFloat(t, 32)
+>>>>>>> 5fa5f02c1373b226cd4ab46bcdfa3326f6ae89d0
 		return float32(tt)
 	case float32:
 		return t

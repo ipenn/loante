@@ -43,7 +43,7 @@ func (a *IncreaseRule) Del(where string) {
 		global.Log.Error("%v err=%v", a, err.Error())
 	}
 }
-func (a *IncreaseRule) Page (page, limit int) ([]IncreaseRule, int) {
+func (a *IncreaseRule) Page(page, limit int) ([]IncreaseRule, int) {
 	var d []IncreaseRule
 	count, _ := global.C.DB.NewSelect().Model(&d).Order("ir.id desc").Offset((page - 1) * limit).Limit(limit).
 		ScanAndCount(global.C.Ctx)

@@ -9,20 +9,21 @@ import (
 )
 
 type BorrowLittle struct {
-	bun.BaseModel `bun:"table:borrow,alias:b"`
-	Id                 	int				`json:"id" bun:",pk"`
-	Uid                	int				`json:"uid"`
-	MchId              	int				`json:"mch_id"`
-	ProductId          	int				`json:"product_id"`
-	Status           	int				`json:"status"`
-	Payment          	int				`json:"payment"`
-	BeRepaidAmount    	int				`json:"be_repaid_amount"`
-	EndTime          	string			`json:"end_time"`
-	LoanAmount         	int				`json:"loan_amount"`
+	bun.BaseModel  `bun:"table:borrow,alias:b"`
+	Id             int    `json:"id" bun:",pk"`
+	Uid            int    `json:"uid"`
+	MchId          int    `json:"mch_id"`
+	ProductId      int    `json:"product_id"`
+	Status         int    `json:"status"`
+	Payment        int    `json:"payment"`
+	BeRepaidAmount int    `json:"be_repaid_amount"`
+	EndTime        string `json:"end_time"`
+	LoanAmount     int    `json:"loan_amount"`
 }
 type Borrow struct {
 	bun.BaseModel `bun:"table:borrow,alias:b"`
 	BorrowLittle
+<<<<<<< HEAD
 	Postponed          	int				`json:"postponed"`
 	PostponedPeriod    	int				`json:"postponed_period"`
 	PostponeValuation 	int				`json:"postpone_valuation"`
@@ -42,6 +43,26 @@ type Borrow struct {
 	User               *UserLittle     `json:"user" bun:"rel:belongs-to,join:uid=id"`
 	Merchant           *MerchantLittle `json:"merchant" bun:"rel:belongs-to,join:mch_id=id"`
 	Product            *Product        `json:"product" bun:"rel:belongs-to,join:product_id=id"`
+=======
+	Postponed         int             `json:"postponed"`
+	PostponedPeriod   int             `json:"postponed_period"`
+	PostponeValuation int             `json:"postpone_valuation"`
+	LoanType          int             `json:"loan_type"`
+	Score             int             `json:"score"`
+	RiskModel         int             `json:"risk_model"`
+	ScoreTime         string          `json:"score_time"`
+	CreateTime        string          `json:"create_time"`
+	LoanTime          string          `json:"loan_time"`
+	PaymentRequestNo  string          `json:"payment_request_no"`
+	PaymentRespond    string          `json:"payment_respond"`
+	Remark            string          `json:"remark"`
+	CompleteTime      string          `json:"complete_time"`
+	ActualAmount      int             `json:"actual_amount"`
+	LatePaymentFee    int             `json:"late_payment_fee"` //滞纳金
+	User              *UserLittle     `json:"user" bun:"rel:belongs-to,join:uid=id"`
+	Merchant          *MerchantLittle `json:"merchant" bun:"rel:belongs-to,join:mch_id=id"`
+	Product           *Product        `json:"product" bun:"rel:belongs-to,join:product_id=id"`
+>>>>>>> 5fa5f02c1373b226cd4ab46bcdfa3326f6ae89d0
 }
 
 func (a *Borrow) Insert() {
@@ -83,6 +104,7 @@ func (a *Borrow) Del(where string) {
 	global.C.DB.NewDelete().Model(a).Where(where).Exec(global.C.Ctx)
 }
 
+<<<<<<< HEAD
 type PPConfig struct {
 	Config string
 	Name string
@@ -141,4 +163,51 @@ func (a *Borrow)PayAfter()  {
 		mchData.Id = a.MchId
 		mchData.AddService(1, 1) //扣费
 	}
+=======
+type BorrowForStatistics struct {
+	Count      int    `json:"count"`
+	Payment    int    `json:"payment"`
+	CreateTime string `json:"create_time"`
+	Name       string `json:"name"`
+	Type       int    `json:"type"`
+}
+
+func (a *Borrow) ForStatistics(where string) []BorrowForStatistics {
+	//var datas []Borrow
+	//count, _ := global.C.DB.NewSelect().Model(&Borrow{}).GroupExpr("HOUR(loan_time) desc").
+	//	GroupExpr("payment DESC").Where(where).Offset((page - 1) * limit).Limit(limit).ScanAndCount(global.C.Ctx)
+	//return datas, count
+	var borrowForStatistics []BorrowForStatistics
+	rows, _ := global.C.DB.QueryContext(global.C.Ctx, `SELECT
+	COUNT( b.id ) AS count,
+	b.payment,
+	b.create_time,
+	p.name,
+	0 AS type 
+FROM
+	borrow b
+	LEFT JOIN payment p ON b.payment = p.id 
+WHERE
+	b.STATUS IN ( 5, 0 ) and DATE_SUB(CURDATE(), INTERVAL 7 DAY) <= date(b.create_time) `+where+`
+GROUP BY
+	HOUR ( b.create_time ) DESC,
+	b.payment DESC UNION ALL
+SELECT
+	COUNT( b.id ) AS count,
+	b.payment,
+	b.create_time,
+	p.name,
+	0 AS type 
+FROM
+	borrow b
+	LEFT JOIN payment p ON b.payment = p.id 
+WHERE
+	b.STATUS =5 and DATE_SUB(CURDATE(), INTERVAL 7 DAY) <= date(b.create_time) `+where+`
+GROUP BY
+	HOUR ( b.create_time ) DESC,
+	b.payment DESC`)
+
+	global.C.DB.ScanRows(global.C.Ctx, rows, &borrowForStatistics)
+	return borrowForStatistics
+>>>>>>> 5fa5f02c1373b226cd4ab46bcdfa3326f6ae89d0
 }

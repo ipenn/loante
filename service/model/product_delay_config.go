@@ -20,6 +20,11 @@ type ProductDelayConfig struct {
 	Product       *Product  `json:"product" bun:"rel:belongs-to,join:product_id=id"`
 }
 
+func (a *ProductDelayConfig) One(where string) {
+	err := global.C.DB.NewSelect().Model(a).Where(where).Scan(global.C.Ctx)
+	fmt.Println(err)
+}
+
 func (a *ProductDelayConfig) Insert() {
 	_, err := global.C.DB.NewInsert().Model(a).Returning("*").Exec(global.C.Ctx)
 	if err != nil {

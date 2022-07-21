@@ -6,8 +6,16 @@ import (
 	"loante/global"
 )
 
+type ReferrerConfigLittle struct {
+	bun.BaseModel `bun:"table:referrer_config,alias:rc"`
+	Id            int    `json:"id" bun:",pk"`
+	Name          string `json:"name"`
+	Keyworks      string `json:"keyworks"`
+}
+
 type ReferrerConfig struct {
 	bun.BaseModel `bun:"table:referrer_config,alias:rc"`
+	ReferrerConfigLittle
 	Id            int    `json:"id"`
 	Name          string `json:"name"`
 	Keyworks      string `json:"keyworks"`
