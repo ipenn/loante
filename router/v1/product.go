@@ -127,9 +127,6 @@ func (a *product) ProductCreateOrUpdate(c *fiber.Ctx) error {
 	return resp.OK(c, "")
 }
 
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
 type productPreceptReq struct {
 	req.PageReq
 	ProductId int `json:"product_id" query:"product_id"`
@@ -191,11 +188,6 @@ func (a *product) ProductPreceptDel(c *fiber.Ctx) error  {
 	ppt.Del(fmt.Sprintf("id = %d", input.Id))
 	return resp.OK(c, "")
 }
-=======
-=======
->>>>>>> 5fa5f02c1373b226cd4ab46bcdfa3326f6ae89d0
-=======
->>>>>>> 5fa5f02c1373b226cd4ab46bcdfa3326f6ae89d0
 type productUpdateForMch struct {
 	Id                  string `json:"id"`
 	ProductName         string `json:"productName"`
@@ -232,10 +224,3 @@ func (a *product) ProductUpdateForMch(c *fiber.Ctx) error {
 	p.Update(fmt.Sprintf("id=%d", p.Id))
 	return resp.OK(c, "")
 }
-<<<<<<< HEAD
-<<<<<<< HEAD
->>>>>>> 5fa5f02c1373b226cd4ab46bcdfa3326f6ae89d0
-=======
->>>>>>> 5fa5f02c1373b226cd4ab46bcdfa3326f6ae89d0
-=======
->>>>>>> 5fa5f02c1373b226cd4ab46bcdfa3326f6ae89d0

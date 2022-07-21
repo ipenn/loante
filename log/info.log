@@ -1,0 +1,592 @@
+2022-07-15 23:24:41 [EROR] [D:/works/ipenn/loante/service/model/admin.go:45] &{{} 0     0 0     0 0 0} err=sql: no rows in result set
+2022-07-15 23:25:47 [EROR] [D:/works/ipenn/loante/service/model/admin_right.go:33] &{{} 0        } err=sql: no rows in result set
+2022-07-16 00:12:06 [EROR] [D:/works/ipenn/loante/service/model/admin_right.go:33] &{{} 0        } err=Error 1054: Unknown column 'user_type' in 'where clause'
+2022-07-16 00:45:42 [EROR] [D:/works/ipenn/loante/service/model/admin_log.go:24] &{{} 0 {
+  "page": 1,
+  "size": 10,
+  "mchId": 1089,
+  "adminName": "11",
+  "roleId": 49,
+  "valid": 1,
+  "userType": 10,
+  "startTime": "2022-07-01 00:00:00",
+  "endTime": "2022-07-29 23:59:59"
+} /v1/admins 127.0.0.1 2022-07-16 00:45:42 sadmin } err=Error 1054: Unknown column 'operate' in 'field list'
+2022-07-16 00:46:00 [EROR] [D:/works/ipenn/loante/service/model/admin_log.go:24] &{{} 0 {
+  "page": 1,
+  "size": 10,
+  "mchId": 1089,
+  "adminName": "11",
+  "roleId": 49,
+  "valid": 1,
+  "userType": 10,
+  "startTime": "2022-07-01 00:00:00",
+  "endTime": "2022-07-29 23:59:59"
+} /v1/admins 127.0.0.1 2022-07-16 00:46:00 sadmin } err=Error 1054: Unknown column 'operate' in 'field list'
+2022-07-16 00:46:25 [EROR] [D:/works/ipenn/loante/service/model/admin_log.go:24] &{{} 0 {
+  "page": 1,
+  "size": 10,
+  "mchId": 1089,
+  "adminName": "11",
+  "roleId": 49,
+  "valid": 1,
+  "userType": 10,
+  "startTime": "2022-07-01 00:00:00",
+  "endTime": "2022-07-29 23:59:59"
+} /v1/admins 127.0.0.1 2022-07-16 00:46:25 sadmin } err=Error 1054: Unknown column 'operate' in 'field list'
+2022-07-16 00:47:07 [EROR] [D:/works/ipenn/loante/service/model/admin_log.go:24] &{{} 0 {
+  "page": 1,
+  "size": 10,
+  "mchId": 1089,
+  "adminName": "11",
+  "roleId": 49,
+  "valid": 1,
+  "userType": 10,
+  "startTime": "2022-07-01 00:00:00",
+  "endTime": "2022-07-29 23:59:59"
+} /v1/admins 127.0.0.1 2022-07-16 00:47:07 sadmin } err=Error 1054: Unknown column 'operate' in 'field list'
+2022-07-16 00:48:52 [EROR] [D:/works/ipenn/loante/service/model/admin_log.go:24] &{{} 0 {
+  "page": 1,
+  "size": 10,
+  "mchId": 1089,
+  "adminName": "11",
+  "roleId": 49,
+  "valid": 1,
+  "userType": 10,
+  "startTime": "2022-07-01 00:00:00",
+  "endTime": "2022-07-29 23:59:59"
+} /v1/admins 127.0.0.1 2022-07-16 00:48:52 sadmin } err=Error 1054: Unknown column 'operate' in 'field list'
+2022-07-16 00:58:39 [EROR] [D:/works/ipenn/loante/service/model/admin_log.go:24] &{{} 0 {
+
+  "adminName": "11",
+  "password": "12344"
+} /v1/admin/create 127.0.0.1 2022-07-16 00:58:39 sadmin } err=Error 1054: Unknown column 'operate' in 'field list'
+2022-07-16 01:06:26 [EROR] [D:/works/ipenn/loante/service/model/admin_log.go:24] &{{} 0 {
+  "adminName": "11",
+  "password": "12"
+} /v1/admin/create 127.0.0.1 2022-07-16 01:06:26 sadmin } err=Error 1054: Unknown column 'operate' in 'field list'
+2022-07-16 01:07:13 [EROR] [D:/works/ipenn/loante/service/model/admin_log.go:24] &{{} 0 {
+  "adminName": "11",
+  "password": "12"
+} /v1/admin/create 127.0.0.1 2022-07-16 01:07:13 sadmin } err=Error 1054: Unknown column 'operate' in 'field list'
+2022-07-16 10:40:43 [EROR] [D:/works/ipenn/loante/service/model/admin_right.go:33] &{{} 0        } err=sql: no rows in result set
+2022-07-16 11:05:24 [EROR] [D:/works/ipenn/loante/service/model/admin_log.go:24] &{{} 0 {
+  "id": 0,
+  "roleName": "HAHA",
+  "right": [554, 552]
+} /v1/roles/create 127.0.0.1 2022-07-16 11:05:24 sadmin } err=Error 1054: Unknown column 'operate' in 'field list'
+2022-07-16 11:06:31 [EROR] [D:/works/ipenn/loante/service/model/admin_log.go:24] &{{} 0 {
+  "id": 8,
+  "roleName": "HAHA",
+  "right": [554, 552]
+} /v1/roles/create 127.0.0.1 2022-07-16 11:06:31 sadmin } err=Error 1054: Unknown column 'operate' in 'field list'
+2022-07-16 11:12:29 [EROR] [D:/works/ipenn/loante/service/model/admin_log.go:24] &{{} 0 {
+  "id": 8,
+  "roleName": "HAHA",
+  "right": [554, 552]
+} /v1/roles/create 127.0.0.1 2022-07-16 11:12:29 sadmin } err=Error 1054: Unknown column 'operate' in 'field list'
+2022-07-16 11:12:29 [EROR] [D:/works/ipenn/loante/service/model/admin_right.go:42] &{{} 0        } err=sql: no rows in result set
+2022-07-16 11:14:29 [EROR] [D:/works/ipenn/loante/service/model/admin_log.go:24] &{{} 0 {
+  "id": 8,
+  "roleName": "HAHA",
+  "right": [554, 552]
+} /v1/roles/create 127.0.0.1 2022-07-16 11:14:29 sadmin } err=Error 1054: Unknown column 'operate' in 'field list'
+2022-07-16 11:14:29 [EROR] [D:/works/ipenn/loante/service/model/admin_right.go:42] &{{} 0        } err=sql: no rows in result set
+2022-07-16 11:14:57 [EROR] [D:/works/ipenn/loante/service/model/admin_log.go:24] &{{} 0 {
+  "id": 8
+} /v1/roles/delete 127.0.0.1 2022-07-16 11:14:57 sadmin } err=Error 1054: Unknown column 'operate' in 'field list'
+2022-07-16 11:14:57 [EROR] [D:/works/ipenn/loante/service/model/admin_right.go:42] &{{} 0        } err=sql: no rows in result set
+2022-07-16 11:15:09 [EROR] [D:/works/ipenn/loante/service/model/admin_log.go:24] &{{} 0 {
+  "id": 0,
+  "roleName": "HAHAHA",
+  "right": [554, 552]
+} /v1/roles/create 127.0.0.1 2022-07-16 11:15:09 sadmin } err=Error 1054: Unknown column 'operate' in 'field list'
+2022-07-16 11:16:04 [EROR] [D:/works/ipenn/loante/service/model/admin_log.go:24] &{{} 0 {
+  "id": 0,
+  "roleName": "HAHAHA",
+  "right": [554, 552]
+} /v1/roles/create 127.0.0.1 2022-07-16 11:16:04 sadmin } err=Error 1054: Unknown column 'operate' in 'field list'
+2022-07-16 11:17:03 [EROR] [D:/works/ipenn/loante/service/model/admin_log.go:24] &{{} 0 {
+  "id": 0,
+  "roleName": "HAHAHA",
+  "right": [554, 552]
+} /v1/roles/create 127.0.0.1 2022-07-16 11:17:03 sadmin } err=Error 1054: Unknown column 'operate' in 'field list'
+2022-07-16 11:17:22 [EROR] [D:/works/ipenn/loante/service/model/admin_log.go:24] &{{} 0 {
+  "id": 8
+} /v1/roles/delete 127.0.0.1 2022-07-16 11:17:22 sadmin } err=Error 1054: Unknown column 'operate' in 'field list'
+2022-07-16 11:17:22 [EROR] [D:/works/ipenn/loante/service/model/admin_right.go:42] &{{} 0        } err=sql: no rows in result set
+2022-07-16 11:17:31 [EROR] [D:/works/ipenn/loante/service/model/admin_log.go:24] &{{} 0 {
+  "id": 7
+} /v1/roles/delete 127.0.0.1 2022-07-16 11:17:31 sadmin } err=Error 1054: Unknown column 'operate' in 'field list'
+2022-07-16 11:17:44 [EROR] [D:/works/ipenn/loante/service/model/admin_log.go:24] &{{} 0 {
+  "id": 100
+} /v1/roles/delete 127.0.0.1 2022-07-16 11:17:44 sadmin } err=Error 1054: Unknown column 'operate' in 'field list'
+2022-07-16 11:19:57 [EROR] [D:/works/ipenn/loante/service/model/admin_log.go:24] &{{} 0 {
+  "id": 0,
+  "roleName": "HAHAHA",
+  "right": [554, 552]
+} /v1/roles/create 127.0.0.1 2022-07-16 11:19:57 sadmin } err=Error 1054: Unknown column 'operate' in 'field list'
+2022-07-16 13:06:52 [EROR] [D:/works/ipenn/loante/service/model/admin_log.go:24] &{{} 0 {
+  "adminName": "11",
+  "password": "12",
+  "mchId": 1,
+  "mobile": "",
+  "email": "",
+  "roleId": 1
+} /v1/admin/create 127.0.0.1 2022-07-16 13:06:52 sadmin } err=Error 1054: Unknown column 'operate' in 'field list'
+2022-07-16 13:07:09 [EROR] [D:/works/ipenn/loante/service/model/admin_log.go:24] &{{} 0 {
+  "adminName": "wahaha",
+  "password": "wahaha",
+  "mchId": 1,
+  "mobile": "",
+  "email": "",
+  "roleId": 1
+} /v1/admin/create 127.0.0.1 2022-07-16 13:07:09 sadmin } err=Error 1054: Unknown column 'operate' in 'field list'
+2022-07-16 13:07:09 [EROR] [D:/works/ipenn/loante/service/model/admin.go:47] &{{} 0     0 0     0 0 0 <nil>} err=sql: no rows in result set
+2022-07-16 13:07:15 [EROR] [D:/works/ipenn/loante/service/model/admin_log.go:24] &{{} 0 {
+  "adminName": "wahaha",
+  "password": "wahaha",
+  "mchId": 1,
+  "mobile": "",
+  "email": "",
+  "roleId": 1
+} /v1/admin/create 127.0.0.1 2022-07-16 13:07:15 sadmin } err=Error 1054: Unknown column 'operate' in 'field list'
+2022-07-16 13:09:12 [EROR] [D:/works/ipenn/loante/service/model/admin_log.go:24] &{{} 0 {
+  "adminName": "wahaha",
+  "password": "wahaha",
+  "mchId": 1,
+  "mobile": "",
+  "email": "",
+  "roleId": 1,
+  "id": 1
+} /v1/admin/create 127.0.0.1 2022-07-16 13:09:12 sadmin } err=Error 1054: Unknown column 'operate' in 'field list'
+2022-07-16 13:09:32 [EROR] [D:/works/ipenn/loante/service/model/admin_log.go:24] &{{} 0 {
+  "adminName": "wahaha2",
+  "password": "wahaha",
+  "mchId": 1,
+  "mobile": "122222",
+  "email": "3232323@qq.com",
+  "roleId": 1,
+  "id": 1
+} /v1/admin/create 127.0.0.1 2022-07-16 13:09:32 sadmin } err=Error 1054: Unknown column 'operate' in 'field list'
+2022-07-16 13:09:32 [EROR] [D:/works/ipenn/loante/service/model/admin.go:47] &{{} 0     0 0     0 0 0 <nil>} err=sql: no rows in result set
+2022-07-16 17:48:35 [EROR] [C:/app/loante/service/model/sms_template.go:320] {1   0 [] 停止注册(全局，0：否，1：是)} err=bun: Model(non-pointer struct { Id int "json:\"id\""; ParamKey string "json:\"param_key\""; ParamValue string "json:\"param_value\""; ParamValueType int "json:\"param_type\""; UpdateTime []int "json:\"update_time\""; Remark string "json:\"remark\"" })
+2022-07-16 17:48:35 [EROR] [C:/app/loante/service/model/sms_template.go:320] {2   0 [] 停止申请(全局，0：否，1：是)} err=bun: Model(non-pointer struct { Id int "json:\"id\""; ParamKey string "json:\"param_key\""; ParamValue string "json:\"param_value\""; ParamValueType int "json:\"param_type\""; UpdateTime []int "json:\"update_time\""; Remark string "json:\"remark\"" })
+2022-07-16 17:48:35 [EROR] [C:/app/loante/service/model/sms_template.go:320] {3   0 [] 活体检测分通过阈值} err=bun: Model(non-pointer struct { Id int "json:\"id\""; ParamKey string "json:\"param_key\""; ParamValue string "json:\"param_value\""; ParamValueType int "json:\"param_type\""; UpdateTime []int "json:\"update_time\""; Remark string "json:\"remark\"" })
+2022-07-16 17:48:35 [EROR] [C:/app/loante/service/model/sms_template.go:320] {4   0 [] 人脸对比分通过阈值} err=bun: Model(non-pointer struct { Id int "json:\"id\""; ParamKey string "json:\"param_key\""; ParamValue string "json:\"param_value\""; ParamValueType int "json:\"param_type\""; UpdateTime []int "json:\"update_time\""; Remark string "json:\"remark\"" })
+2022-07-16 17:48:35 [EROR] [C:/app/loante/service/model/sms_template.go:320] {7   0 [] kyc认证（ocr/活体/短信）24小时可重试次数} err=bun: Model(non-pointer struct { Id int "json:\"id\""; ParamKey string "json:\"param_key\""; ParamValue string "json:\"param_value\""; ParamValueType int "json:\"param_type\""; UpdateTime []int "json:\"update_time\""; Remark string "json:\"remark\"" })
+2022-07-16 17:48:35 [EROR] [C:/app/loante/service/model/sms_template.go:320] {8   0 [] 银行卡认证24小时可重试次数} err=bun: Model(non-pointer struct { Id int "json:\"id\""; ParamKey string "json:\"param_key\""; ParamValue string "json:\"param_value\""; ParamValueType int "json:\"param_type\""; UpdateTime []int "json:\"update_time\""; Remark string "json:\"remark\"" })
+2022-07-16 17:48:35 [EROR] [C:/app/loante/service/model/sms_template.go:320] {10   0 [] 借款周期（天），平台统一} err=bun: Model(non-pointer struct { Id int "json:\"id\""; ParamKey string "json:\"param_key\""; ParamValue string "json:\"param_value\""; ParamValueType int "json:\"param_type\""; UpdateTime []int "json:\"update_time\""; Remark string "json:\"remark\"" })
+2022-07-16 17:48:35 [EROR] [C:/app/loante/service/model/sms_template.go:320] {11   0 [] 最小借贷金额（单产品限制）} err=bun: Model(non-pointer struct { Id int "json:\"id\""; ParamKey string "json:\"param_key\""; ParamValue string "json:\"param_value\""; ParamValueType int "json:\"param_type\""; UpdateTime []int "json:\"update_time\""; Remark string "json:\"remark\"" })
+2022-07-16 17:48:35 [EROR] [C:/app/loante/service/model/sms_template.go:320] {12   0 [] 最大借贷金额（单产品限制）} err=bun: Model(non-pointer struct { Id int "json:\"id\""; ParamKey string "json:\"param_key\""; ParamValue string "json:\"param_value\""; ParamValueType int "json:\"param_type\""; UpdateTime []int "json:\"update_time\""; Remark string "json:\"remark\"" })
+2022-07-16 17:48:35 [EROR] [C:/app/loante/service/model/sms_template.go:320] {13   0 [] 新客最大在途产品数} err=bun: Model(non-pointer struct { Id int "json:\"id\""; ParamKey string "json:\"param_key\""; ParamValue string "json:\"param_value\""; ParamValueType int "json:\"param_type\""; UpdateTime []int "json:\"update_time\""; Remark string "json:\"remark\"" })
+2022-07-16 17:52:49 [EROR] [C:/app/loante/service/model/sms_template.go:319] {1   0 停止注册(全局，0：否，1：是)} err=bun: Model(non-pointer struct { Id int "json:\"id\""; ParamKey string "json:\"param_key\""; ParamValue string "json:\"param_value\""; ParamValueType int "json:\"param_type\""; Remark string "json:\"remark\"" })
+2022-07-16 17:52:49 [EROR] [C:/app/loante/service/model/sms_template.go:319] {2   0 停止申请(全局，0：否，1：是)} err=bun: Model(non-pointer struct { Id int "json:\"id\""; ParamKey string "json:\"param_key\""; ParamValue string "json:\"param_value\""; ParamValueType int "json:\"param_type\""; Remark string "json:\"remark\"" })
+2022-07-16 17:52:49 [EROR] [C:/app/loante/service/model/sms_template.go:319] {3   0 活体检测分通过阈值} err=bun: Model(non-pointer struct { Id int "json:\"id\""; ParamKey string "json:\"param_key\""; ParamValue string "json:\"param_value\""; ParamValueType int "json:\"param_type\""; Remark string "json:\"remark\"" })
+2022-07-16 17:52:49 [EROR] [C:/app/loante/service/model/sms_template.go:319] {4   0 人脸对比分通过阈值} err=bun: Model(non-pointer struct { Id int "json:\"id\""; ParamKey string "json:\"param_key\""; ParamValue string "json:\"param_value\""; ParamValueType int "json:\"param_type\""; Remark string "json:\"remark\"" })
+2022-07-16 17:52:49 [EROR] [C:/app/loante/service/model/sms_template.go:319] {7   0 kyc认证（ocr/活体/短信）24小时可重试次数} err=bun: Model(non-pointer struct { Id int "json:\"id\""; ParamKey string "json:\"param_key\""; ParamValue string "json:\"param_value\""; ParamValueType int "json:\"param_type\""; Remark string "json:\"remark\"" })
+2022-07-16 17:52:49 [EROR] [C:/app/loante/service/model/sms_template.go:319] {8   0 银行卡认证24小时可重试次数} err=bun: Model(non-pointer struct { Id int "json:\"id\""; ParamKey string "json:\"param_key\""; ParamValue string "json:\"param_value\""; ParamValueType int "json:\"param_type\""; Remark string "json:\"remark\"" })
+2022-07-16 17:52:49 [EROR] [C:/app/loante/service/model/sms_template.go:319] {10   0 借款周期（天），平台统一} err=bun: Model(non-pointer struct { Id int "json:\"id\""; ParamKey string "json:\"param_key\""; ParamValue string "json:\"param_value\""; ParamValueType int "json:\"param_type\""; Remark string "json:\"remark\"" })
+2022-07-16 17:52:49 [EROR] [C:/app/loante/service/model/sms_template.go:319] {11   0 最小借贷金额（单产品限制）} err=bun: Model(non-pointer struct { Id int "json:\"id\""; ParamKey string "json:\"param_key\""; ParamValue string "json:\"param_value\""; ParamValueType int "json:\"param_type\""; Remark string "json:\"remark\"" })
+2022-07-16 17:52:49 [EROR] [C:/app/loante/service/model/sms_template.go:319] {12   0 最大借贷金额（单产品限制）} err=bun: Model(non-pointer struct { Id int "json:\"id\""; ParamKey string "json:\"param_key\""; ParamValue string "json:\"param_value\""; ParamValueType int "json:\"param_type\""; Remark string "json:\"remark\"" })
+2022-07-16 17:52:49 [EROR] [C:/app/loante/service/model/sms_template.go:319] {13   0 新客最大在途产品数} err=bun: Model(non-pointer struct { Id int "json:\"id\""; ParamKey string "json:\"param_key\""; ParamValue string "json:\"param_value\""; ParamValueType int "json:\"param_type\""; Remark string "json:\"remark\"" })
+2022-07-16 17:58:22 [EROR] [C:/app/loante/service/model/sms_template.go:319] {1   0 停止注册(全局，0：否，1：是)} err=Error 1064: You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'SELECT * FROM `system_setting`' at line 1
+2022-07-16 17:58:22 [EROR] [C:/app/loante/service/model/sms_template.go:319] {2   0 停止申请(全局，0：否，1：是)} err=Error 1064: You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'SELECT * FROM `system_setting`' at line 1
+2022-07-16 17:58:22 [EROR] [C:/app/loante/service/model/sms_template.go:319] {3   0 活体检测分通过阈值} err=Error 1064: You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'SELECT * FROM `system_setting`' at line 1
+2022-07-16 17:58:22 [EROR] [C:/app/loante/service/model/sms_template.go:319] {4   0 人脸对比分通过阈值} err=Error 1064: You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'SELECT * FROM `system_setting`' at line 1
+2022-07-16 17:58:22 [EROR] [C:/app/loante/service/model/sms_template.go:319] {7   0 kyc认证（ocr/活体/短信）24小时可重试次数} err=Error 1064: You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'SELECT * FROM `system_setting`' at line 1
+2022-07-16 17:58:22 [EROR] [C:/app/loante/service/model/sms_template.go:319] {8   0 银行卡认证24小时可重试次数} err=Error 1064: You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'SELECT * FROM `system_setting`' at line 1
+2022-07-16 17:58:22 [EROR] [C:/app/loante/service/model/sms_template.go:319] {10   0 借款周期（天），平台统一} err=Error 1064: You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'SELECT * FROM `system_setting`' at line 1
+2022-07-16 17:58:22 [EROR] [C:/app/loante/service/model/sms_template.go:319] {11   0 最小借贷金额（单产品限制）} err=Error 1064: You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'SELECT * FROM `system_setting`' at line 1
+2022-07-16 17:58:23 [EROR] [C:/app/loante/service/model/sms_template.go:319] {12   0 最大借贷金额（单产品限制）} err=Error 1064: You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'SELECT * FROM `system_setting`' at line 1
+2022-07-16 17:58:23 [EROR] [C:/app/loante/service/model/sms_template.go:319] {13   0 新客最大在途产品数} err=Error 1064: You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'SELECT * FROM `system_setting`' at line 1
+2022-07-16 18:01:24 [EROR] [C:/app/loante/service/model/sms_template.go:319] {1   0 停止注册(全局，0：否，1：是)} err=Error 1064: You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'SELECT * FROM system_setting' at line 1
+2022-07-16 18:01:24 [EROR] [C:/app/loante/service/model/sms_template.go:319] {2   0 停止申请(全局，0：否，1：是)} err=Error 1064: You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'SELECT * FROM system_setting' at line 1
+2022-07-16 18:01:24 [EROR] [C:/app/loante/service/model/sms_template.go:319] {3   0 活体检测分通过阈值} err=Error 1064: You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'SELECT * FROM system_setting' at line 1
+2022-07-16 18:01:24 [EROR] [C:/app/loante/service/model/sms_template.go:319] {4   0 人脸对比分通过阈值} err=Error 1064: You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'SELECT * FROM system_setting' at line 1
+2022-07-16 18:01:24 [EROR] [C:/app/loante/service/model/sms_template.go:319] {7   0 kyc认证（ocr/活体/短信）24小时可重试次数} err=Error 1064: You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'SELECT * FROM system_setting' at line 1
+2022-07-16 18:01:24 [EROR] [C:/app/loante/service/model/sms_template.go:319] {8   0 银行卡认证24小时可重试次数} err=Error 1064: You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'SELECT * FROM system_setting' at line 1
+2022-07-16 18:01:24 [EROR] [C:/app/loante/service/model/sms_template.go:319] {10   0 借款周期（天），平台统一} err=Error 1064: You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'SELECT * FROM system_setting' at line 1
+2022-07-16 18:01:24 [EROR] [C:/app/loante/service/model/sms_template.go:319] {11   0 最小借贷金额（单产品限制）} err=Error 1064: You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'SELECT * FROM system_setting' at line 1
+2022-07-16 18:01:24 [EROR] [C:/app/loante/service/model/sms_template.go:319] {12   0 最大借贷金额（单产品限制）} err=Error 1064: You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'SELECT * FROM system_setting' at line 1
+2022-07-16 18:01:24 [EROR] [C:/app/loante/service/model/sms_template.go:319] {13   0 新客最大在途产品数} err=Error 1064: You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'SELECT * FROM system_setting' at line 1
+2022-07-16 18:04:05 [EROR] [C:/app/loante/service/model/sms_template.go:319] Error 1064: You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '(`id`, `param_key`, `param_value`, `param_value_type`, `remark`) VALUES (1, '', ' at line 1 err=%!v(MISSING)
+2022-07-16 18:04:05 [EROR] [C:/app/loante/service/model/sms_template.go:319] Error 1064: You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '(`id`, `param_key`, `param_value`, `param_value_type`, `remark`) VALUES (2, '', ' at line 1 err=%!v(MISSING)
+2022-07-16 18:04:05 [EROR] [C:/app/loante/service/model/sms_template.go:319] Error 1064: You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '(`id`, `param_key`, `param_value`, `param_value_type`, `remark`) VALUES (3, '', ' at line 1 err=%!v(MISSING)
+2022-07-16 18:04:05 [EROR] [C:/app/loante/service/model/sms_template.go:319] Error 1064: You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '(`id`, `param_key`, `param_value`, `param_value_type`, `remark`) VALUES (4, '', ' at line 1 err=%!v(MISSING)
+2022-07-16 18:04:05 [EROR] [C:/app/loante/service/model/sms_template.go:319] Error 1064: You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '(`id`, `param_key`, `param_value`, `param_value_type`, `remark`) VALUES (7, '', ' at line 1 err=%!v(MISSING)
+2022-07-16 18:04:05 [EROR] [C:/app/loante/service/model/sms_template.go:319] Error 1064: You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '(`id`, `param_key`, `param_value`, `param_value_type`, `remark`) VALUES (8, '', ' at line 1 err=%!v(MISSING)
+2022-07-16 18:04:05 [EROR] [C:/app/loante/service/model/sms_template.go:319] Error 1064: You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '(`id`, `param_key`, `param_value`, `param_value_type`, `remark`) VALUES (10, '',' at line 1 err=%!v(MISSING)
+2022-07-16 18:04:05 [EROR] [C:/app/loante/service/model/sms_template.go:319] Error 1064: You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '(`id`, `param_key`, `param_value`, `param_value_type`, `remark`) VALUES (11, '',' at line 1 err=%!v(MISSING)
+2022-07-16 18:04:05 [EROR] [C:/app/loante/service/model/sms_template.go:319] Error 1064: You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '(`id`, `param_key`, `param_value`, `param_value_type`, `remark`) VALUES (12, '',' at line 1 err=%!v(MISSING)
+2022-07-16 18:04:05 [EROR] [C:/app/loante/service/model/sms_template.go:319] Error 1064: You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '(`id`, `param_key`, `param_value`, `param_value_type`, `remark`) VALUES (13, '',' at line 1 err=%!v(MISSING)
+2022-07-16 18:04:55 [EROR] [C:/app/loante/service/model/sms_template.go:319] Error 1064: You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'SELECT * FROM system_setting' at line 1 err=%!v(MISSING)
+2022-07-16 18:04:55 [EROR] [C:/app/loante/service/model/sms_template.go:319] Error 1064: You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'SELECT * FROM system_setting' at line 1 err=%!v(MISSING)
+2022-07-16 18:04:55 [EROR] [C:/app/loante/service/model/sms_template.go:319] Error 1064: You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'SELECT * FROM system_setting' at line 1 err=%!v(MISSING)
+2022-07-16 18:04:55 [EROR] [C:/app/loante/service/model/sms_template.go:319] Error 1064: You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'SELECT * FROM system_setting' at line 1 err=%!v(MISSING)
+2022-07-16 18:04:55 [EROR] [C:/app/loante/service/model/sms_template.go:319] Error 1064: You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'SELECT * FROM system_setting' at line 1 err=%!v(MISSING)
+2022-07-16 18:04:55 [EROR] [C:/app/loante/service/model/sms_template.go:319] Error 1064: You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'SELECT * FROM system_setting' at line 1 err=%!v(MISSING)
+2022-07-16 18:04:55 [EROR] [C:/app/loante/service/model/sms_template.go:319] Error 1064: You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'SELECT * FROM system_setting' at line 1 err=%!v(MISSING)
+2022-07-16 18:04:55 [EROR] [C:/app/loante/service/model/sms_template.go:319] Error 1064: You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'SELECT * FROM system_setting' at line 1 err=%!v(MISSING)
+2022-07-16 18:04:55 [EROR] [C:/app/loante/service/model/sms_template.go:319] Error 1064: You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'SELECT * FROM system_setting' at line 1 err=%!v(MISSING)
+2022-07-16 18:04:55 [EROR] [C:/app/loante/service/model/sms_template.go:319] Error 1064: You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'SELECT * FROM system_setting' at line 1 err=%!v(MISSING)
+2022-07-16 18:09:40 [EROR] [C:/app/loante/service/model/sms_template.go:321] Error 1054: Unknown column 'param_value_type' in 'field list' err=%!v(MISSING)
+2022-07-16 20:01:01 [EROR] [C:/app/loante/service/model/admin.go:47] &{{} 0     0 0     0 0 0 <nil>} err=sql: no rows in result set
+2022-07-16 20:02:41 [EROR] [C:/app/loante/service/model/admin.go:47] &{{} 0     0 0     0 0 0 <nil>} err=sql: no rows in result set
+2022-07-16 20:28:06 [EROR] [C:/app/loante/service/model/admin_log.go:24] &{{} 0 ----------------------------861441226977568631569638
+Content-Disposition: form-data; name="description"
+
+备注
+----------------------------861441226977568631569638
+Content-Disposition: form-data; name="sender_id"
+
+1
+----------------------------861441226977568631569638
+Content-Disposition: form-data; name="principal_entity_id"
+
+1
+----------------------------861441226977568631569638
+Content-Disposition: form-data; name="company_id"
+
+1
+----------------------------861441226977568631569638
+Content-Disposition: form-data; name="sms_type"
+
+1
+----------------------------861441226977568631569638
+Content-Disposition: form-data; name="template_id"
+
+1
+----------------------------861441226977568631569638
+Content-Disposition: form-data; name="content"
+
+模板内容
+----------------------------861441226977568631569638--
+ /v1/sms_template/create 127.0.0.1 2022-07-16 20:28:06 wahaha2 } err=Error 1054: Unknown column 'operate' in 'field list'
+2022-07-16 20:30:22 [EROR] [C:/app/loante/service/model/admin_log.go:24] &{{} 0 company_id=1&sms_type=1&template_id=1&content=%E6%A8%A1%E6%9D%BF%E5%86%85%E5%AE%B9&description=%E5%A4%87%E6%B3%A8&sender_id=1&principal_entity_id=1 /v1/sms_template/create 127.0.0.1 2022-07-16 20:30:22 wahaha2 } err=Error 1054: Unknown column 'operate' in 'field list'
+2022-07-16 20:32:16 [EROR] [C:/app/loante/service/model/admin_log.go:24] &{{} 0  /v1/sms_template/create 127.0.0.1 2022-07-16 20:32:16 wahaha2 } err=Error 1054: Unknown column 'operate' in 'field list'
+2022-07-16 20:33:16 [EROR] [C:/app/loante/service/model/admin_log.go:24] &{{} 0 {"company_id":1,"sms_type":1,"template_id":1,"content":"模板内容","description":"备注","sender_id":"1","principal_entity_id":"1"} /v1/sms_template/create 127.0.0.1 2022-07-16 20:33:16 wahaha2 } err=Error 1054: Unknown column 'operate' in 'field list'
+2022-07-16 20:38:29 [EROR] [C:/app/loante/service/model/admin_log.go:24] &{{} 0 {"id":1,"companyId":2,"smsType":2,"templateId":2,"content":"模板内容","description":"备注","senderId":"1","principalEntityId":"1"} /v1/sms_template/update 127.0.0.1 2022-07-16 20:38:29 wahaha2 } err=Error 1054: Unknown column 'operate' in 'field list'
+2022-07-16 20:38:46 [EROR] [C:/app/loante/service/model/admin_log.go:24] &{{} 0 {"id":1,"companyId":2,"smsType":2,"templateId":2,"content":"模板内容","description":"备注","senderId":"1","principalEntityId":"1"} /v1/sms_template/update 127.0.0.1 2022-07-16 20:38:46 wahaha2 } err=Error 1054: Unknown column 'operate' in 'field list'
+2022-07-16 20:50:03 [EROR] [C:/app/loante/service/model/admin_log.go:24] &{{} 0 {"id":1,"companyId":2,"smsType":2,"templateId":2,"content":"模板内容","description":"备注","senderId":"3","principalEntityId":"3"} /v1/sms_template/create_or_update 127.0.0.1 2022-07-16 20:50:03 wahaha2 } err=Error 1054: Unknown column 'operate' in 'field list'
+2022-07-16 20:52:20 [EROR] [C:/app/loante/service/model/admin_log.go:24] &{{} 0 {"id":1,"companyId":2,"smsType":2,"templateId":2,"content":"模板内容","description":"备注","senderId":"3","principalEntityId":"3"} /v1/sms_template/create_or_update 127.0.0.1 2022-07-16 20:52:20 wahaha2 } err=Error 1054: Unknown column 'operate' in 'field list'
+2022-07-16 20:52:53 [EROR] [C:/app/loante/service/model/admin_log.go:24] &{{} 0 {"id":1,"companyId":2,"smsType":2,"templateId":2,"content":"模板内容","description":"备注","senderId":"3","principalEntityId":"3"} /v1/sms_template/create_or_update 127.0.0.1 2022-07-16 20:52:53 wahaha2 } err=Error 1054: Unknown column 'operate' in 'field list'
+2022-07-16 20:54:09 [EROR] [C:/app/loante/service/model/admin_log.go:24] &{{} 0 {"id":1,"companyId":2,"smsType":2,"templateId":2,"content":"模板内容","description":"备注","senderId":"3","principalEntityId":"3"} /v1/sms_template/create_or_update 127.0.0.1 2022-07-16 20:54:09 wahaha2 } err=Error 1054: Unknown column 'operate' in 'field list'
+2022-07-16 20:54:23 [EROR] [C:/app/loante/service/model/admin_log.go:24] &{{} 0 {"companyId":2,"smsType":2,"templateId":2,"content":"模板内容","description":"备注","senderId":"3","principalEntityId":"3"} /v1/sms_template/create_or_update 127.0.0.1 2022-07-16 20:54:23 wahaha2 } err=Error 1054: Unknown column 'operate' in 'field list'
+2022-07-16 22:23:55 [EROR] [C:/app/loante/service/model/admin_log.go:24] &{{} 0 {
+	"productName": "产品名称",
+	"iconPath": "",
+	"mchId": 2,
+	"dayMaxApply": 1,
+	"maxApply": 2,
+	"dayApplyPass": 3,
+	"startAmount": 4,
+	"todayApplyCount":5,
+	"totalApplyCount":6,
+	"applyStartTime":"2022",
+	"applyEndTime":"2022",
+	"totalMaxApplyCount":7,
+	"upTime":"2022",
+	"downTime":"2022",
+	"isAutoLending":8,
+	"isRejectNew":9,
+	"isRejectOld":10,
+	"isStopLending":,
+	"status":1,
+	"createTime":"2022",
+	"description":"简介",
+	"rateNormalInterest":11,
+	"rateOverdueInterest":12,
+	"rateService":13,
+	"rateTax":14,
+	
+} /v1/sms_template/create_or_update 127.0.0.1 2022-07-16 22:23:55 wahaha2 } err=Error 1054: Unknown column 'operate' in 'field list'
+2022-07-16 22:24:08 [EROR] [C:/app/loante/service/model/admin_log.go:24] &{{} 0 {
+	"productName": "产品名称",
+	"iconPath": "",
+	"mchId": 2,
+	"dayMaxApply": 1,
+	"maxApply": 2,
+	"dayApplyPass": 3,
+	"startAmount": 4,
+	"todayApplyCount":5,
+	"totalApplyCount":6,
+	"applyStartTime":"2022",
+	"applyEndTime":"2022",
+	"totalMaxApplyCount":7,
+	"upTime":"2022",
+	"downTime":"2022",
+	"isAutoLending":8,
+	"isRejectNew":9,
+	"isRejectOld":10,
+	"isStopLending":,
+	"status":1,
+	"createTime":"2022",
+	"description":"简介",
+	"rateNormalInterest":11,
+	"rateOverdueInterest":12,
+	"rateService":13,
+	"rateTax":14,
+	
+} /v1/sms_template/create_or_update 127.0.0.1 2022-07-16 22:24:08 wahaha2 } err=Error 1054: Unknown column 'operate' in 'field list'
+2022-07-16 22:26:03 [EROR] [C:/app/loante/service/model/admin_log.go:24] &{{} 0 {
+	"productName": "产品名称",
+	"iconPath": "",
+	"mchId": 2,
+	"dayMaxApply": 1,
+	"maxApply": 2,
+	"dayApplyPass": 3,
+	"startAmount": 4,
+	"todayApplyCount":5,
+	"totalApplyCount":6,
+	"applyStartTime":"2022",
+	"applyEndTime":"2022",
+	"totalMaxApplyCount":7,
+	"upTime":"2022",
+	"downTime":"2022",
+	"isAutoLending":8,
+	"isRejectNew":9,
+	"isRejectOld":10,
+	"isStopLending":,
+	"status":1,
+	"createTime":"2022",
+	"description":"简介",
+	"rateNormalInterest":11,
+	"rateOverdueInterest":12,
+	"rateService":13,
+	"rateTax":14,
+	
+} /v1/sms_template/create_or_update 127.0.0.1 2022-07-16 22:26:03 wahaha2 } err=Error 1054: Unknown column 'operate' in 'field list'
+2022-07-16 22:26:49 [EROR] [C:/app/loante/service/model/admin_log.go:24] &{{} 0 {
+	"productName": "产品名称",
+	"iconPath": "",
+	"mchId": 2,
+	"dayMaxApply": 1,
+	"maxApply": 2,
+	"dayApplyPass": 3,
+	"startAmount": 4,
+	"todayApplyCount":5,
+	"totalApplyCount":6,
+	"applyStartTime":"2022",
+	"applyEndTime":"2022",
+	"totalMaxApplyCount":7,
+	"upTime":"2022",
+	"downTime":"2022",
+	"isAutoLending":8,
+	"isRejectNew":9,
+	"isRejectOld":10,
+	"isStopLending":,
+	"status":1,
+	"createTime":"2022",
+	"description":"简介",
+	"rateNormalInterest":11,
+	"rateOverdueInterest":12,
+	"rateService":13,
+	"rateTax":14,
+	
+} /v1/sms_template/create_or_update 127.0.0.1 2022-07-16 22:26:49 wahaha2 } err=Error 1054: Unknown column 'operate' in 'field list'
+2022-07-16 22:27:46 [EROR] [C:/app/loante/service/model/admin_log.go:24] &{{} 0 {
+	"productName": "产品名称",
+	"iconPath": "",
+	"mchId": 2,
+	"dayMaxApply": 1,
+	"maxApply": 2,
+	"dayApplyPass": 3,
+	"startAmount": 4,
+	"todayApplyCount":5,
+	"totalApplyCount":6,
+	"applyStartTime":"2022",
+	"applyEndTime":"2022",
+	"totalMaxApplyCount":7,
+	"upTime":"2022",
+	"downTime":"2022",
+	"isAutoLending":8,
+	"isRejectNew":9,
+	"isRejectOld":10,
+	"isStopLending":,
+	"status":1,
+	"createTime":"2022",
+	"description":"简介",
+	"rateNormalInterest":11,
+	"rateOverdueInterest":12,
+	"rateService":13,
+	"rateTax":14,
+	
+} /v1/sms_template/create_or_update 127.0.0.1 2022-07-16 22:27:46 wahaha2 } err=Error 1054: Unknown column 'operate' in 'field list'
+2022-07-16 22:28:09 [EROR] [C:/app/loante/service/model/admin_log.go:24] &{{} 0 {
+	"productName": "产品名称",
+	"iconPath": "",
+	"mchId": 2,
+	"dayMaxApply": 1,
+	"maxApply": 2,
+	"dayApplyPass": 3,
+	"startAmount": 4,
+	"todayApplyCount":5,
+	"totalApplyCount":6,
+	"applyStartTime":"2022",
+	"applyEndTime":"2022",
+	"totalMaxApplyCount":7,
+	"upTime":"2022",
+	"downTime":"2022",
+	"isAutoLending":8,
+	"isRejectNew":9,
+	"isRejectOld":10,
+	"isStopLending":,
+	"status":1,
+	"createTime":"2022",
+	"description":"简介",
+	"rateNormalInterest":11,
+	"rateOverdueInterest":12,
+	"rateService":13,
+	"rateTax":14,
+	
+} /v1/sms_template/create_or_update 127.0.0.1 2022-07-16 22:28:09 wahaha2 } err=Error 1054: Unknown column 'operate' in 'field list'
+2022-07-16 22:29:46 [EROR] [C:/app/loante/service/model/admin_log.go:24] &{{} 0 {
+	"productName": "产品名称",
+	"iconPath": "",
+	"mchId": 2,
+	"dayMaxApply": 1,
+	"maxApply": 2,
+	"dayApplyPass": 3,
+	"startAmount": 4,
+	"todayApplyCount":5,
+	"totalApplyCount":6,
+	"applyStartTime":"2022",
+	"applyEndTime":"2022",
+	"totalMaxApplyCount":7,
+	"upTime":"2022",
+	"downTime":"2022",
+	"isAutoLending":8,
+	"isRejectNew":9,
+	"isRejectOld":10,
+	"isStopLending":,
+	"status":1,
+	"createTime":"2022",
+	"description":"简介",
+	"rateNormalInterest":11,
+	"rateOverdueInterest":12,
+	"rateService":13,
+	"rateTax":14
+} /v1/sms_template/create_or_update 127.0.0.1 2022-07-16 22:29:46 wahaha2 } err=Error 1054: Unknown column 'operate' in 'field list'
+2022-07-16 22:39:28 [EROR] [C:/app/loante/service/model/admin_log.go:24] &{{} 0 {"productName":"产品名称","iconPath":"","mchId":2,"dayMaxApply":1,"maxApply":2,"dayApplyPass":3,"startAmount":4,"todayApplyCount":5,"totalApplyCount":6,"applyStartTime":"2022","applyEndTime":"2022","totalMaxApplyCount":7,"upTime":"2022","downTime":"2022","isAutoLending":8,"isRejectNew":9,"isRejectOld":10,"isStopLending":10,"status":1,"createTime":"2022","description":"简介","rateNormalInterest":11,"rateOverdueInterest":12,"rateService":13,"rateTax":14} /v1/sms_template/create_or_update 127.0.0.1 2022-07-16 22:39:28 wahaha2 } err=Error 1054: Unknown column 'operate' in 'field list'
+2022-07-16 22:42:07 [EROR] [C:/app/loante/service/model/admin_log.go:24] &{{} 0 {"productName":"产品名称","iconPath":"","mchId":2,"dayMaxApply":1,"maxApply":2,"dayApplyPass":3,"startAmount":4,"todayApplyCount":5,"totalApplyCount":6,"applyStartTime":"2022","applyEndTime":"2022","totalMaxApplyCount":7,"upTime":"2022","downTime":"2022","isAutoLending":8,"isRejectNew":9,"isRejectOld":10,"isStopLending":10,"status":1,"createTime":"2022","description":"简介","rateNormalInterest":11,"rateOverdueInterest":12,"rateService":13,"rateTax":14} /v1/product/create_or_update 127.0.0.1 2022-07-16 22:42:07 wahaha2 } err=Error 1054: Unknown column 'operate' in 'field list'
+2022-07-17 00:15:27 [EROR] [C:/app/loante/service/model/admin_log.go:24] &{{} 0 {"id":1,"mchId":2,"productId":1,"delayDay":7,"delayRate":0.4,"status":1,"isShowDelay":1,"createTime":"2022"} /v1/productDelayConfig/create_or_update 127.0.0.1 2022-07-17 00:15:27 wahaha2 } err=Error 1054: Unknown column 'operate' in 'field list'
+2022-07-17 00:15:28 [EROR] [C:/app/loante/service/model/admin_log.go:24] &{{} 0 {"id":1,"mchId":2,"productId":1,"delayDay":7,"delayRate":0.4,"status":1,"isShowDelay":1,"createTime":"2022"} /v1/productDelayConfig/create_or_update 127.0.0.1 2022-07-17 00:15:28 wahaha2 } err=Error 1054: Unknown column 'operate' in 'field list'
+2022-07-17 00:16:20 [EROR] [C:/app/loante/service/model/admin_log.go:24] &{{} 0 {"mchId":2,"productId":1,"delayDay":7,"delayRate":0.4,"status":1,"isShowDelay":1,"createTime":"2022"} /v1/productDelayConfig/create_or_update 127.0.0.1 2022-07-17 00:16:20 wahaha2 } err=Error 1054: Unknown column 'operate' in 'field list'
+2022-07-17 00:17:38 [EROR] [C:/app/loante/service/model/admin_log.go:24] &{{} 0 {"id":1,"mchId":2,"productId":1,"delayDay":5,"delayRate":0.4,"status":1,"isShowDelay":1,"createTime":"2022"} /v1/productDelayConfig/create_or_update 127.0.0.1 2022-07-17 00:17:38 wahaha2 } err=Error 1054: Unknown column 'operate' in 'field list'
+2022-07-17 11:44:31 [EROR] [C:/app/loante/service/model/admin_log.go:24] &{{} 0 {"companyName":"预提醒公司","mchId":2,"userName":"suger","mobile":"18482084444","email":"@gamil","password":"123456","description":"开心就好"} /v1/remind_company/create 127.0.0.1 2022-07-17 11:44:10 wahaha2 } err=dial tcp 192.168.1.12:3306: connectex: A connection attempt failed because the connected party did not properly respond after a period of time, or established connection failed because connected host has failed to respond.
+2022-07-17 11:44:48 [EROR] [C:/app/loante/service/model/admin_log.go:24] &{{} 0 {"companyName":"预提醒公司","mchId":2,"userName":"suger","mobile":"18482084444","email":"@gamil","password":"123456","description":"开心就好"} /v1/remind_company/create 127.0.0.1 2022-07-17 11:44:27 wahaha2 } err=dial tcp 192.168.1.12:3306: connectex: A connection attempt failed because the connected party did not properly respond after a period of time, or established connection failed because connected host has failed to respond.
+2022-07-17 11:44:52 [EROR] [C:/app/loante/service/model/admin.go:47] &{{} 0     0 0     0 0 0 <nil>} err=dial tcp 192.168.1.12:3306: connectex: A connection attempt failed because the connected party did not properly respond after a period of time, or established connection failed because connected host has failed to respond.
+2022-07-17 11:45:09 [EROR] [C:/app/loante/service/model/admin.go:47] &{{} 0     0 0     0 0 0 <nil>} err=dial tcp 192.168.1.12:3306: connectex: A connection attempt failed because the connected party did not properly respond after a period of time, or established connection failed because connected host has failed to respond.
+2022-07-17 11:45:13 [EROR] [C:/app/loante/service/model/admin.go:33] &{{} 0 suger 557f80746ab91c994eb3c30a03aff3c8 SnGFa 2022-07-17 11:44:52 0 5   @gamil 18482084444 2 0 0 <nil>} err=dial tcp 192.168.1.12:3306: connectex: A connection attempt failed because the connected party did not properly respond after a period of time, or established connection failed because connected host has failed to respond.
+2022-07-17 11:45:30 [EROR] [C:/app/loante/service/model/admin.go:33] &{{} 0 suger c988c68217b0df2a5c68e385822dc9b4 KmOcr 2022-07-17 11:45:09 0 5   @gamil 18482084444 2 0 0 <nil>} err=dial tcp 192.168.1.12:3306: connectex: A connection attempt failed because the connected party did not properly respond after a period of time, or established connection failed because connected host has failed to respond.
+2022-07-17 11:47:42 [EROR] [C:/app/loante/service/model/admin_log.go:24] &{{} 0 {"companyName":"预提醒公司","mchId":2,"userName":"suger","mobile":"18482084444","email":"@gamil","password":"123456","description":"开心就好"} /v1/remind_company/create 127.0.0.1 2022-07-17 11:47:20 wahaha2 } err=dial tcp 192.168.1.12:3306: connectex: A connection attempt failed because the connected party did not properly respond after a period of time, or established connection failed because connected host has failed to respond.
+2022-07-17 11:48:03 [EROR] [C:/app/loante/service/model/admin.go:47] &{{} 0     0 0     0 0 0 <nil>} err=dial tcp 192.168.1.12:3306: connectex: A connection attempt failed because the connected party did not properly respond after a period of time, or established connection failed because connected host has failed to respond.
+2022-07-17 11:48:24 [EROR] [C:/app/loante/service/model/admin.go:33] &{{} 0 suger d9ed71a9c2be7aed6b6eb5fda5019a43 SUtRz 2022-07-17 11:48:03 0 5   @gamil 18482084444 2 0 0 <nil>} err=dial tcp 192.168.1.12:3306: connectex: A connection attempt failed because the connected party did not properly respond after a period of time, or established connection failed because connected host has failed to respond.
+2022-07-17 11:49:02 [EROR] [C:/app/loante/service/model/admin_log.go:24] &{{} 0 {"companyName":"预提醒公司","mchId":2,"userName":"suger","mobile":"18482084444","email":"@gamil","password":"123456","description":"开心就好"} /v1/remind_company/create 127.0.0.1 2022-07-17 11:49:02 wahaha2 } err=Error 1054: Unknown column 'operate' in 'field list'
+2022-07-17 11:49:02 [EROR] [C:/app/loante/service/model/admin.go:47] &{{} 0     0 0     0 0 0 <nil>} err=sql: no rows in result set
+2022-07-17 11:57:32 [EROR] [C:/app/loante/service/model/admin_log.go:24] &{{} 0 {"companyName":"预提醒公司","mchId":2,"userName":"suger","mobile":"18482084444","email":"@gamil","password":"123456","description":"开心就好"} /v1/remind_company/create 127.0.0.1 2022-07-17 11:57:32 wahaha2 } err=Error 1054: Unknown column 'operate' in 'field list'
+2022-07-17 11:57:38 [EROR] [C:/app/loante/service/model/admin_log.go:24] &{{} 0 {"companyName":"预提醒公司","mchId":2,"userName":"suger2","mobile":"18482084444","email":"@gamil","password":"123456","description":"开心就好"} /v1/remind_company/create 127.0.0.1 2022-07-17 11:57:38 wahaha2 } err=Error 1054: Unknown column 'operate' in 'field list'
+2022-07-17 11:57:38 [EROR] [C:/app/loante/service/model/admin.go:49] &{{} 0     0 0     0 0 0 <nil>} err=sql: no rows in result set
+2022-07-17 14:29:54 [EROR] [C:/app/loante/service/model/admin_log.go:24] &{{} 0 {"id":1,"adminId":6,"mchId":2,"companyName":"预提醒公司2","description":"哈哈哈"} /v1/remind_company/update 127.0.0.1 2022-07-17 14:29:54 wahaha2 } err=Error 1054: Unknown column 'operate' in 'field list'
+2022-07-17 14:30:59 [EROR] [C:/app/loante/service/model/admin_log.go:24] &{{} 0 {"id":1,"adminId":6,"mchId":2,"companyName":"预提醒公司3","description":"哈哈哈"} /v1/remind_company/update 127.0.0.1 2022-07-17 14:30:59 wahaha2 } err=Error 1054: Unknown column 'operate' in 'field list'
+2022-07-17 15:10:31 [EROR] [C:/app/loante/service/model/admin_log.go:24] &{{} 0 {"companyName":"预提醒公司3","mchId":2,"userName":"suger3","mobile":"18482084444","email":"@gamil","password":"123456","description":"开心就好"} /v1/remind_company/create 127.0.0.1 2022-07-17 15:10:31 wahaha2 } err=Error 1054: Unknown column 'operate' in 'field list'
+2022-07-17 15:10:31 [EROR] [C:/app/loante/service/model/admin.go:49] &{{} 0     0 0     0 0 0 <nil>} err=sql: no rows in result set
+2022-07-17 15:12:21 [EROR] [C:/app/loante/service/model/admin_log.go:24] &{{} 0 {"id":2,"adminId":7,"mchId":2,"companyName":"预提醒公司4","description":"嘿嘿嘿"} /v1/remind_company/update 127.0.0.1 2022-07-17 15:12:21 wahaha2 } err=Error 1054: Unknown column 'operate' in 'field list'
+2022-07-17 15:17:25 [EROR] [C:/app/loante/service/model/admin_log.go:24] &{{} 0 {"id":2,"adminId":7,"mchId":2,"companyName":"预提醒公司4","description":"开心就好"} /v1/remind_company/update 127.0.0.1 2022-07-17 15:17:25 wahaha2 } err=Error 1054: Unknown column 'operate' in 'field list'
+2022-07-17 17:58:28 [EROR] [C:/app/loante/service/model/admin_log.go:24] &{{} 0 {"company_id":1,"mch_id":2,"admin_id":0,"group_name":"天策","status":1} /v1/remind_group/create 127.0.0.1 2022-07-17 17:58:28 wahaha2 } err=Error 1054: Unknown column 'operate' in 'field list'
+2022-07-18 13:43:23 [EROR] [C:/app/loante/service/model/admin_log.go:24] &{{} 0 {"id":1,"admin_id":0,"group_name":"纯阳","status":1} /v1/remind_group/update 127.0.0.1 2022-07-18 13:43:23 wahaha2 } err=Error 1054: Unknown column 'operate' in 'field list'
+2022-07-18 13:44:28 [EROR] [C:/app/loante/service/model/admin_log.go:24] &{{} 0 {"id":1,"admin_id":0,"group_name":"纯阳","status":1} /v1/remind_group/update 127.0.0.1 2022-07-18 13:44:26 wahaha2 } err=Error 1054: Unknown column 'operate' in 'field list'
+2022-07-18 13:45:46 [EROR] [C:/app/loante/service/model/admin_log.go:24] &{{} 0 {"id":1,"admin_id":0,"group_name":"纯阳","status":1} /v1/remind_group/update 127.0.0.1 2022-07-18 13:45:45 wahaha2 } err=Error 1054: Unknown column 'operate' in 'field list'
+2022-07-18 13:46:03 [EROR] [C:/app/loante/service/model/admin_log.go:24] &{{} 0 {"id":1,"admin_id":0,"group_name":"纯阳","status":1} /v1/remind_group/update 127.0.0.1 2022-07-18 13:46:02 wahaha2 } err=Error 1054: Unknown column 'operate' in 'field list'
+2022-07-18 13:49:09 [EROR] [C:/app/loante/service/model/admin_log.go:24] &{{} 0 {"id":1,"admin_id":0,"group_name":"纯阳","status":1} /v1/remind_group/update 127.0.0.1 2022-07-18 13:49:05 wahaha2 } err=Error 1054: Unknown column 'operate' in 'field list'
+2022-07-18 13:49:38 [EROR] [C:/app/loante/service/model/admin_log.go:24] &{{} 0 {"company_id":1,"mch_id":2,"admin_id":0,"group_name":"纯阳","status":1} /v1/remind_group/create 127.0.0.1 2022-07-18 13:49:38 wahaha2 } err=Error 1054: Unknown column 'operate' in 'field list'
+2022-07-18 13:50:30 [EROR] [C:/app/loante/service/model/admin_log.go:24] &{{} 0 {"id":1,"admin_id":0,"group_name":"纯阳","status":1} /v1/remind_group/update 127.0.0.1 2022-07-18 13:50:30 wahaha2 } err=Error 1054: Unknown column 'operate' in 'field list'
+2022-07-18 13:51:29 [EROR] [C:/app/loante/service/model/admin_log.go:24] &{{} 0 {"id":1,"admin_id":0,"group_name":"纯阳","status":1} /v1/remind_group/update 127.0.0.1 2022-07-18 13:51:29 wahaha2 } err=Error 1054: Unknown column 'operate' in 'field list'
+2022-07-18 13:54:38 [EROR] [C:/app/loante/service/model/admin_log.go:24] &{{} 0 {"id":1,"admin_id":0,"group_name":"纯阳","status":1} /v1/remind_group/update 127.0.0.1 2022-07-18 13:54:38 wahaha2 } err=Error 1054: Unknown column 'operate' in 'field list'
+2022-07-18 13:55:24 [EROR] [C:/app/loante/service/model/admin_log.go:24] &{{} 0 {"id":1,"admin_id":0,"group_name":"纯阳","status":1} /v1/remind_group/update 127.0.0.1 2022-07-18 13:55:24 wahaha2 } err=Error 1054: Unknown column 'operate' in 'field list'
+2022-07-18 13:55:43 [EROR] [C:/app/loante/service/model/admin_log.go:24] &{{} 0 {"id":1,"admin_id":0,"group_name":"纯阳","status":1} /v1/remind_group/update 127.0.0.1 2022-07-18 13:55:43 wahaha2 } err=Error 1054: Unknown column 'operate' in 'field list'
+2022-07-18 13:56:09 [EROR] [C:/app/loante/service/model/admin_log.go:24] &{{} 0 {"id":1,"admin_id":0,"group_name":"纯阳","status":1} /v1/remind_group/update 127.0.0.1 2022-07-18 13:56:09 wahaha2 } err=Error 1054: Unknown column 'operate' in 'field list'
+2022-07-18 13:56:57 [EROR] [C:/app/loante/service/model/admin_log.go:24] &{{} 0 {"id":1,"admin_id":0,"group_name":"纯阳","status":1} /v1/remind_group/update 127.0.0.1 2022-07-18 13:56:57 wahaha2 } err=Error 1054: Unknown column 'operate' in 'field list'
+2022-07-18 13:57:17 [EROR] [C:/app/loante/service/model/admin_log.go:24] &{{} 0 {"id":1,"admin_id":0,"group_name":"七秀","status":1} /v1/remind_group/update 127.0.0.1 2022-07-18 13:57:17 wahaha2 } err=Error 1054: Unknown column 'operate' in 'field list'
+2022-07-18 14:53:05 [EROR] [C:/app/loante/service/model/admin_log.go:24] &{{} 0 {"companyId":2,"smsType":2,"templateId":2,"content":"模板内容","description":"备注","senderId":"3","principalEntityId":"3"} /v1/sms_template/create_or_update 192.168.1.12 2022-07-18 14:53:05 sadmin } err=Error 1054: Unknown column 'operate' in 'field list'
+2022-07-18 15:08:14 [EROR] [C:/app/loante/service/model/admin_log.go:24] &{{} 0 {"senderId":"sadfsd"} /v1/sms_template/create_or_update 192.168.1.12 2022-07-18 15:08:14 sadmin } err=Error 1054: Unknown column 'operate' in 'field list'
+2022-07-18 15:08:35 [EROR] [C:/app/loante/service/model/admin_log.go:24] &{{} 0 {"senderId":"asdf","principalEntityId":"sadf"} /v1/sms_template/create_or_update 192.168.1.12 2022-07-18 15:08:35 sadmin } err=Error 1054: Unknown column 'operate' in 'field list'
+2022-07-18 15:09:55 [EROR] [C:/app/loante/service/model/admin_log.go:24] &{{} 0 {"content":"23222222222222","description":"23222222222222","senderId":"fasdf","principalEntityId":"sadfsadf"} /v1/sms_template/create_or_update 192.168.1.12 2022-07-18 15:09:55 sadmin } err=Error 1054: Unknown column 'operate' in 'field list'
+2022-07-18 15:31:56 [EROR] [C:/app/loante/service/model/admin_log.go:24] &{{} 0 {"content":"","description":"","senderId":"asdf","principalEntityId":"sadf"} /v1/sms_template/create_or_update 192.168.1.12 2022-07-18 15:31:56 sadmin } err=Error 1054: Unknown column 'operate' in 'field list'
+2022-07-18 15:32:22 [EROR] [C:/app/loante/service/model/admin_log.go:24] &{{} 0 {"content":"111","description":"111","senderId":"111","principalEntityId":"111"} /v1/sms_template/create_or_update 192.168.1.12 2022-07-18 15:32:22 sadmin } err=Error 1054: Unknown column 'operate' in 'field list'
+2022-07-18 15:32:45 [EROR] [C:/app/loante/service/model/admin_log.go:24] &{{} 0 {"content":"222","description":"222","senderId":"222","principalEntityId":"222"} /v1/sms_template/create_or_update 192.168.1.12 2022-07-18 15:32:45 sadmin } err=Error 1054: Unknown column 'operate' in 'field list'
+2022-07-18 15:34:40 [EROR] [C:/app/loante/service/model/admin_log.go:24] &{{} 0 {"companyId":"2","smsType":{"label":"2","value":"2","key":"2"},"templateId":"2","content":"222","description":"222","senderId":"222","principalEntityId":"222"} /v1/sms_template/create_or_update 192.168.1.12 2022-07-18 15:34:40 sadmin } err=Error 1054: Unknown column 'operate' in 'field list'
+2022-07-18 15:47:31 [EROR] [C:/app/loante/service/model/admin_log.go:24] &{{} 0 {"companyId":0,"templateId":0,"content":"222","description":"222","senderId":"222","principalEntityId":"222"} /v1/sms_template/create_or_update 192.168.1.12 2022-07-18 15:47:31 sadmin } err=Error 1054: Unknown column 'operate' in 'field list'
+2022-07-18 15:47:48 [EROR] [C:/app/loante/service/model/admin_log.go:24] &{{} 0 {"companyId":0,"templateId":0,"content":"23222222222222","description":"23222222222222","senderId":"fasdf","principalEntityId":"sadfsadf"} /v1/sms_template/create_or_update 192.168.1.12 2022-07-18 15:47:48 sadmin } err=Error 1054: Unknown column 'operate' in 'field list'
+2022-07-18 15:51:16 [EROR] [C:/app/loante/service/model/admin_log.go:24] &{{} 0 {"companyId":0,"templateId":0,"content":"222","description":"222","senderId":"222","principalEntityId":"222"} /v1/sms_template/create_or_update 192.168.1.12 2022-07-18 15:51:16 sadmin } err=Error 1054: Unknown column 'operate' in 'field list'
+2022-07-18 15:52:39 [EROR] [C:/app/loante/service/model/admin_log.go:24] &{{} 0 {"companyId":"0","templateId":"0","content":"222","description":"222","senderId":"222","principalEntityId":"222"} /v1/sms_template/create_or_update 192.168.1.12 2022-07-18 15:52:39 sadmin } err=Error 1054: Unknown column 'operate' in 'field list'
+2022-07-18 15:52:58 [EROR] [C:/app/loante/service/model/admin_log.go:24] &{{} 0 {"companyId":"0","templateId":"0","content":"222","description":"222","senderId":"222","principalEntityId":"222"} /v1/sms_template/create_or_update 192.168.1.12 2022-07-18 15:52:58 sadmin } err=Error 1054: Unknown column 'operate' in 'field list'
+2022-07-18 15:56:07 [EROR] [C:/app/loante/service/model/admin_log.go:24] &{{} 0 {"companyId":"0","templateId":"0","content":"222","description":"222","senderId":"222","principalEntityId":"222"} /v1/sms_template/create_or_update 192.168.1.12 2022-07-18 15:56:07 sadmin } err=Error 1054: Unknown column 'operate' in 'field list'
+2022-07-18 16:21:34 [EROR] [C:/app/loante/service/model/admin_log.go:24] &{{} 0 {"company_id":1,"group_id":1,"max_day":-1,"min_day":-2,"remark":"开心就好","is_auto_apply":1} /v1/remind_rules/create 127.0.0.1 2022-07-18 16:21:33 wahaha2 } err=Error 1054: Unknown column 'operate' in 'field list'
+2022-07-18 16:22:07 [EROR] [C:/app/loante/service/model/admin_log.go:24] &{{} 0 {
+"company_id":"1",
+"group_id":"1",
+"max_day":-"1",
+"min_day":"-2",
+"remark":"开心就好",
+"is_auto_apply":"1"
+} /v1/remind_rules/create 127.0.0.1 2022-07-18 16:22:07 wahaha2 } err=Error 1054: Unknown column 'operate' in 'field list'
+2022-07-18 16:22:25 [EROR] [C:/app/loante/service/model/admin_log.go:24] &{{} 0 {
+"company_id":"1",
+"group_id":"1",
+"max_day":-"1",
+"min_day":"-2",
+"remark":"开心就好",
+"is_auto_apply":"1"
+} /v1/remind_rules/create 127.0.0.1 2022-07-18 16:22:25 wahaha2 } err=Error 1054: Unknown column 'operate' in 'field list'
+2022-07-18 16:23:00 [EROR] [C:/app/loante/service/model/admin_log.go:24] &{{} 0 {"company_id":"1","group_id":"1","max_day":"-1","min_day":"-2","remark":"开心就好","is_auto_apply":"1"} /v1/remind_rules/create 127.0.0.1 2022-07-18 16:23:00 wahaha2 } err=Error 1054: Unknown column 'operate' in 'field list'
+2022-07-18 16:26:26 [EROR] [C:/app/loante/service/model/admin_log.go:24] &{{} 0 {"id":"1","company_id":"1","group_id":"1","max_day":"-10","min_day":"-2","remark":"开心就好","is_auto_apply":"1"} /v1/remind_rules/create 127.0.0.1 2022-07-18 16:26:26 wahaha2 } err=Error 1054: Unknown column 'operate' in 'field list'
+2022-07-18 16:26:43 [EROR] [C:/app/loante/service/model/admin_log.go:24] &{{} 0 {"id":"1","company_id":"1","group_id":"1","max_day":"-10","min_day":"-2","remark":"开心就好","is_auto_apply":"1"} /v1/remind_rules/create 127.0.0.1 2022-07-18 16:26:43 wahaha2 } err=Error 1054: Unknown column 'operate' in 'field list'
+2022-07-18 16:27:04 [EROR] [C:/app/loante/service/model/admin_log.go:24] &{{} 0 {"id":"1","company_id":"1","group_id":"1","max_day":"-10","min_day":"-2","remark":"开心就好","is_auto_apply":"1"} /v1/remind_rules/create_or_update 127.0.0.1 2022-07-18 16:27:04 wahaha2 } err=Error 1054: Unknown column 'operate' in 'field list'
+2022-07-18 16:39:38 [EROR] [C:/app/loante/service/model/admin_log.go:24] &{{} 0 {"productName":"喜洋洋","iconPath":"","mchId":2,"dayMaxApply":1,"maxApply":2,"dayApplyPass":3,"startAmount":4,"todayApplyCount":5,"totalApplyCount":6,"applyStartTime":"2022","applyEndTime":"2022","totalMaxApplyCount":7,"upTime":"2022","downTime":"2022","isAutoLending":8,"isRejectNew":9,"isRejectOld":10,"isStopLending":10,"status":1,"createTime":"2022","description":"简介","rateNormalInterest":11,"rateOverdueInterest":12,"rateService":13,"rateTax":14} /v1/product/create_or_update 127.0.0.1 2022-07-18 16:39:38 wahaha2 } err=Error 1054: Unknown column 'operate' in 'field list'
+2022-07-18 16:40:18 [EROR] [C:/app/loante/service/model/admin_log.go:24] &{{} 0 {"productName":"喜洋洋","iconPath":"","mchId":"2","dayMaxApply":"1","maxApply":"2","dayApplyPass":"3","startAmount":"4","todayApplyCount":"5","totalApplyCount":"6","applyStartTime":"2022","applyEndTime":"2022","totalMaxApplyCount":"7","upTime":"2022","downTime":"2022","isAutoLending":"8","isRejectNew":"9","isRejectOld":"10","isStopLending":"10","status":"1","createTime":"2022","description":"简介","rateNormalInterest":"11","rateOverdueInterest":"12","rateService":"13","rateTax":"14"} /v1/product/create_or_update 127.0.0.1 2022-07-18 16:40:18 wahaha2 } err=Error 1054: Unknown column 'operate' in 'field list'
+2022-07-18 16:40:41 [EROR] [C:/app/loante/service/model/admin_log.go:24] &{{} 0 {"productName":"懒洋洋","iconPath":"","mchId":"2","dayMaxApply":"1","maxApply":"2","dayApplyPass":"3","startAmount":"4","todayApplyCount":"5","totalApplyCount":"6","applyStartTime":"2022","applyEndTime":"2022","totalMaxApplyCount":"7","upTime":"2022","downTime":"2022","isAutoLending":"8","isRejectNew":"9","isRejectOld":"10","isStopLending":"10","status":"1","createTime":"2022","description":"简介","rateNormalInterest":"11","rateOverdueInterest":"12","rateService":"13","rateTax":"14"} /v1/product/create_or_update 127.0.0.1 2022-07-18 16:40:41 wahaha2 } err=Error 1054: Unknown column 'operate' in 'field list'
+2022-07-18 16:40:52 [EROR] [C:/app/loante/service/model/admin_log.go:24] &{{} 0 {"productName":"沸羊羊","iconPath":"","mchId":"2","dayMaxApply":"1","maxApply":"2","dayApplyPass":"3","startAmount":"4","todayApplyCount":"5","totalApplyCount":"6","applyStartTime":"2022","applyEndTime":"2022","totalMaxApplyCount":"7","upTime":"2022","downTime":"2022","isAutoLending":"8","isRejectNew":"9","isRejectOld":"10","isStopLending":"10","status":"1","createTime":"2022","description":"简介","rateNormalInterest":"11","rateOverdueInterest":"12","rateService":"13","rateTax":"14"} /v1/product/create_or_update 127.0.0.1 2022-07-18 16:40:52 wahaha2 } err=Error 1054: Unknown column 'operate' in 'field list'
+2022-07-18 17:54:44 [EROR] [C:/app/loante/service/model/admin_log.go:24] &{{} 0 {"companyName":"微信","mchId":2,"userName":"suger3","mobile":"18482084444","email":"@gamil","password":"123456","description":"开心就好"} /v1/urge_company/create 127.0.0.1 2022-07-18 17:54:44 wahaha2 } err=Error 1054: Unknown column 'operate' in 'field list'
+2022-07-18 17:54:52 [EROR] [C:/app/loante/service/model/admin_log.go:24] &{{} 0 {"companyName":"微信","mchId":"2","userName":"suger3","mobile":"18482084444","email":"@gamil","password":"123456","description":"开心就好"} /v1/urge_company/create 127.0.0.1 2022-07-18 17:54:52 wahaha2 } err=Error 1054: Unknown column 'operate' in 'field list'
+2022-07-18 17:55:06 [EROR] [C:/app/loante/service/model/admin_log.go:24] &{{} 0 {"companyName":"微信","mchId":"2","userName":"just-because","mobile":"18482084444","email":"@gamil","password":"123456","description":"开心就好"} /v1/urge_company/create 127.0.0.1 2022-07-18 17:55:06 wahaha2 } err=Error 1054: Unknown column 'operate' in 'field list'
+2022-07-18 17:55:06 [EROR] [C:/app/loante/service/model/admin.go:52] &{{} 0     0 0     0 0 0 0 <nil> <nil> <nil>} err=sql: no rows in result set
+2022-07-18 17:58:02 [EROR] [C:/app/loante/service/model/admin_log.go:24] &{{} 0 {"id":"1","adminId":"9","mchId":"2","companyName":"支付宝","description":"开心不好"} /v1/remind_company/update 127.0.0.1 2022-07-18 17:58:02 wahaha2 } err=Error 1054: Unknown column 'operate' in 'field list'
+2022-07-18 18:00:08 [EROR] [C:/app/loante/service/model/admin_log.go:24] &{{} 0 {"id":"1","adminId":"9","mchId":"2","companyName":"支付宝","description":"开心不好"} /v1/urge_company/update 127.0.0.1 2022-07-18 18:00:08 wahaha2 } err=Error 1054: Unknown column 'operate' in 'field list'
+2022-07-18 20:27:36 [EROR] [C:/app/loante/service/model/admin_log.go:24] &{{} 0 {"company_id":1,"mch_id":2,"admin_id":0,"group_name":"唐门","status":1} /v1/remind_group/create 127.0.0.1 2022-07-18 20:27:36 wahaha2 } err=Error 1054: Unknown column 'operate' in 'field list'
+2022-07-18 20:27:45 [EROR] [C:/app/loante/service/model/admin_log.go:24] &{{} 0 {"company_id":"1","mch_id":"2","admin_id":"0","group_name":"唐门","status":"1"} /v1/remind_group/create 127.0.0.1 2022-07-18 20:27:45 wahaha2 } err=Error 1054: Unknown column 'operate' in 'field list'
+2022-07-18 20:28:23 [EROR] [C:/app/loante/service/model/admin_log.go:24] &{{} 0 {"company_id":"1","mch_id":"2","admin_id":"0","group_name":"唐门","status":"1"} /v1/urge_group/create 127.0.0.1 2022-07-18 20:28:23 wahaha2 } err=Error 1054: Unknown column 'operate' in 'field list'
+2022-07-18 20:29:06 [EROR] [C:/app/loante/service/model/admin_log.go:24] &{{} 0 {"id":"1","admin_id":"0","group_name":"明教","status":"1"} /v1/urge_group/update 127.0.0.1 2022-07-18 20:29:06 wahaha2 } err=Error 1054: Unknown column 'operate' in 'field list'
+2022-07-18 20:35:33 [EROR] [C:/app/loante/service/model/admin_log.go:24] &{{} 0 {"companyId":"0","templateId":"0","content":"222","description":"222","senderId":"222","principalEntityId":"222"} /v1/sms_template/create_or_update 192.168.1.12 2022-07-18 20:35:33 sadmin } err=Error 1054: Unknown column 'operate' in 'field list'
+2022-07-18 20:47:47 [EROR] [C:/app/loante/service/model/admin_log.go:24] &{{} 0 {"company_id":"1","group_id":"1","max_day":"-1","min_day":"-2","remark":"开心就好","is_auto_apply":"1"} /v1/urge_rules/create_or_update 127.0.0.1 2022-07-18 20:47:47 wahaha2 } err=Error 1054: Unknown column 'operate' in 'field list'
+2022-07-18 20:48:03 [EROR] [C:/app/loante/service/model/admin_log.go:24] &{{} 0 {"id":"1","company_id":"1","group_id":"1","max_day":"-10","min_day":"-2","remark":"开心就好","is_auto_apply":"1"} /v1/urge_rules/create_or_update 127.0.0.1 2022-07-18 20:48:03 wahaha2 } err=Error 1054: Unknown column 'operate' in 'field list'
+2022-07-18 21:24:05 [EROR] [C:/app/loante/service/model/admin_log.go:24] &{{} 0 {"companyId":"0","templateId":"0","content":"222","description":"222","senderId":"222","principalEntityId":"222"} /v1/sms_template/create_or_update 192.168.1.12 2022-07-18 21:24:05 sadmin } err=Error 1054: Unknown column 'operate' in 'field list'
+2022-07-18 21:40:48 [EROR] [C:/app/loante/service/model/admin_log.go:24] &{{} 0 {"productName":"懒洋洋","mchId":"2","maxApply":"2","dayApplyPass":"3","startAmount":"4","todayApplyCount":"5","totalApplyCount":"qwe","applyStartTime":"2022","applyEndTime":"2022","upTime":"2022","downTime":"2022","isAutoLending":"8","isRejectNew":"9","isRejectOld":"10","isStopLending":"10","status":"1","createTime":"2022-07-18 16:40:41","description":"简介","rateNormalInterest":"11","rateOverdueInterest":"12","rateService":"13","rateTax":"14"} /v1/product/create_or_update 192.168.1.12 2022-07-18 21:40:48 sadmin } err=Error 1054: Unknown column 'operate' in 'field list'
+2022-07-18 22:53:26 [EROR] [C:/app/loante/service/model/admin_log.go:24] &{{} 0 {"mchId":"2","productId":"1","delayDay":"5","delayRate":"0.4","status":"1","isShowDelay":"1","token":"Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJJZCI6MSwiUm9sZUlkIjoxLCJVc2VyVHlwZSI6Iui2hee6p-euoeeQhuWRmCIsIlVzZXJuYW1lIjoic2FkbWluIiwiZXhwIjoxNzU4MTI2MTk0fQ.-oWmaZeoegFDFTmM89Tbqz8oXiSfBKvhdPMFDHzUmzo"} /v1/productDelayConfig/create_or_update 192.168.1.12 2022-07-18 22:53:26 sadmin } err=Error 1054: Unknown column 'operate' in 'field list'
+2022-07-18 22:54:05 [EROR] [C:/app/loante/service/model/admin_log.go:24] &{{} 0 {"mchId":"2","productId":"1","delayDay":"5","delayRate":"0.4","status":"1","isShowDelay":"1","token":"Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJJZCI6MSwiUm9sZUlkIjoxLCJVc2VyVHlwZSI6Iui2hee6p-euoeeQhuWRmCIsIlVzZXJuYW1lIjoic2FkbWluIiwiZXhwIjoxNzU4MTI2MTk0fQ.-oWmaZeoegFDFTmM89Tbqz8oXiSfBKvhdPMFDHzUmzo"} /v1/productDelayConfig/create_or_update 192.168.1.12 2022-07-18 22:54:05 sadmin } err=Error 1054: Unknown column 'operate' in 'field list'
+2022-07-18 22:54:41 [EROR] [C:/app/loante/service/model/admin_log.go:24] &{{} 0 {"mchId":"2","productId":"1","delayDay":"5","delayRate":"0.4","status":"1","isShowDelay":"1","token":"Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJJZCI6MSwiUm9sZUlkIjoxLCJVc2VyVHlwZSI6Iui2hee6p-euoeeQhuWRmCIsIlVzZXJuYW1lIjoic2FkbWluIiwiZXhwIjoxNzU4MTI2MTk0fQ.-oWmaZeoegFDFTmM89Tbqz8oXiSfBKvhdPMFDHzUmzo"} /v1/productDelayConfig/create_or_update 192.168.1.12 2022-07-18 22:54:41 sadmin } err=Error 1054: Unknown column 'operate' in 'field list'
+2022-07-18 22:55:28 [EROR] [C:/app/loante/service/model/admin_log.go:24] &{{} 0 {"mchId":"2","productId":"1","delayDay":"5","delayRate":"0.4","status":"1","isShowDelay":"1","token":"Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJJZCI6MSwiUm9sZUlkIjoxLCJVc2VyVHlwZSI6Iui2hee6p-euoeeQhuWRmCIsIlVzZXJuYW1lIjoic2FkbWluIiwiZXhwIjoxNzU4MTI2MTk0fQ.-oWmaZeoegFDFTmM89Tbqz8oXiSfBKvhdPMFDHzUmzo"} /v1/productDelayConfig/create_or_update 192.168.1.12 2022-07-18 22:55:28 sadmin } err=Error 1054: Unknown column 'operate' in 'field list'
+2022-07-18 22:55:49 [EROR] [C:/app/loante/service/model/admin_log.go:24] &{{} 0 {"mchId":"2","productId":"1","delayDay":"5","delayRate":"0.4","status":"1","isShowDelay":"1","token":"Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJJZCI6MSwiUm9sZUlkIjoxLCJVc2VyVHlwZSI6Iui2hee6p-euoeeQhuWRmCIsIlVzZXJuYW1lIjoic2FkbWluIiwiZXhwIjoxNzU4MTI2MTk0fQ.-oWmaZeoegFDFTmM89Tbqz8oXiSfBKvhdPMFDHzUmzo"} /v1/productDelayConfig/create_or_update 192.168.1.12 2022-07-18 22:55:49 sadmin } err=Error 1054: Unknown column 'operate' in 'field list'
+2022-07-18 22:56:23 [EROR] [C:/app/loante/service/model/admin_log.go:24] &{{} 0 {"delayDay":"123","delayRate":"123","status":"0","isShowDelay":"0","token":"Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJJZCI6MSwiUm9sZUlkIjoxLCJVc2VyVHlwZSI6Iui2hee6p-euoeeQhuWRmCIsIlVzZXJuYW1lIjoic2FkbWluIiwiZXhwIjoxNzU4MTI2MTk0fQ.-oWmaZeoegFDFTmM89Tbqz8oXiSfBKvhdPMFDHzUmzo"} /v1/productDelayConfig/create_or_update 192.168.1.12 2022-07-18 22:56:23 sadmin } err=Error 1054: Unknown column 'operate' in 'field list'
+2022-07-19 00:55:31 [EROR] [C:/app/loante/service/model/admin_log.go:24] &{{} 0 {"companyName":"123","mchId":"123","userName":"123","mobile":"123","password":"123"} /v1/remind_company/create 192.168.1.12 2022-07-19 00:55:31 sadmin } err=Error 1054: Unknown column 'operate' in 'field list'
+2022-07-19 00:55:31 [EROR] [C:/app/loante/service/model/admin.go:52] &{{} 0     0 0     0 0 0 0 <nil> <nil> <nil>} err=sql: no rows in result set
+2022-07-19 01:02:14 [EROR] [C:/app/loante/service/model/admin_log.go:24] &{{} 0 {"companyName":"123","mchId":"123","userName":"123","password":"123"} /v1/remind_company/create 192.168.1.12 2022-07-19 01:02:14 sadmin } err=Error 1054: Unknown column 'operate' in 'field list'
+2022-07-19 01:02:27 [EROR] [C:/app/loante/service/model/admin_log.go:24] &{{} 0 {"companyName":"123","mchId":"123","userName":"123","password":"123"} /v1/remind_company/create 192.168.1.12 2022-07-19 01:02:27 sadmin } err=Error 1054: Unknown column 'operate' in 'field list'
+2022-07-19 01:03:34 [EROR] [C:/app/loante/service/model/admin_log.go:24] &{{} 0 {"companyName":"123","mchId":"123","userName":"123","password":"123"} /v1/remind_company/create 192.168.1.12 2022-07-19 01:03:34 sadmin } err=Error 1054: Unknown column 'operate' in 'field list'
+2022-07-19 01:04:00 [EROR] [C:/app/loante/service/model/admin_log.go:24] &{{} 0 {"companyName":"123","mchId":"123","userName":"123","password":"123"} /v1/remind_company/create 192.168.1.12 2022-07-19 01:04:00 sadmin } err=Error 1054: Unknown column 'operate' in 'field list'
+2022-07-19 01:04:11 [EROR] [C:/app/loante/service/model/admin_log.go:24] &{{} 0 {"companyName":"123","mchId":"123","userName":"123","password":"123"} /v1/remind_company/create 192.168.1.12 2022-07-19 01:04:11 sadmin } err=Error 1054: Unknown column 'operate' in 'field list'
+2022-07-19 01:05:51 [EROR] [C:/app/loante/service/model/admin_log.go:24] &{{} 0 {"companyName":"1231","mchId":"1231","userName":"1231","password":"123"} /v1/remind_company/create 192.168.1.12 2022-07-19 01:05:51 sadmin } err=Error 1054: Unknown column 'operate' in 'field list'
+2022-07-19 01:05:51 [EROR] [C:/app/loante/service/model/admin.go:52] &{{} 0     0 0     0 0 0 0 <nil> <nil> <nil>} err=sql: no rows in result set
+2022-07-19 01:06:50 [EROR] [C:/app/loante/service/model/admin_log.go:24] &{{} 0 {"companyName":"12312","mchId":"12312","userName":"123123","password":"123123"} /v1/remind_company/create 192.168.1.12 2022-07-19 01:06:50 sadmin } err=Error 1054: Unknown column 'operate' in 'field list'
+2022-07-19 01:06:50 [EROR] [C:/app/loante/service/model/admin.go:52] &{{} 0     0 0     0 0 0 0 <nil> <nil> <nil>} err=sql: no rows in result set
+2022-07-19 01:20:35 [EROR] [C:/app/loante/service/model/admin_log.go:24] &{{} 0 {"id":"5","adminId":"12","mchId":"127","companyName":"12312","description":"123"} /v1/remind_company/update 192.168.1.12 2022-07-19 01:20:35 sadmin } err=Error 1054: Unknown column 'operate' in 'field list'
+2022-07-19 11:54:09 [EROR] [C:/app/loante/loante/service/model/admin.go:55] &{{} 0     0 0     0 0 0 0 0 <nil> <nil> <nil> <nil> <nil>} err=sql: no rows in result set
+2022-07-19 13:57:44 [EROR] [C:/app/loante/loante/service/model/admin.go:55] &{{} 0     0 0     0 0 0 0 0 <nil> <nil> <nil> <nil> <nil>} err=sql: no rows in result set
+2022-07-19 14:26:52 [EROR] [C:/app/loante/loante/service/model/admin.go:55] &{{} 0     0 0     0 0 0 0 0 <nil> <nil> <nil> <nil> <nil>} err=sql: no rows in result set
+2022-07-19 14:27:25 [EROR] [C:/app/loante/loante/service/model/admin.go:55] &{{} 0     0 0     0 0 0 0 0 <nil> <nil> <nil> <nil> <nil>} err=sql: no rows in result set
+2022-07-19 14:28:35 [EROR] [C:/app/loante/loante/service/model/admin.go:55] &{{} 0     0 0     0 0 0 0 0 <nil> <nil> <nil> <nil> <nil>} err=sql: no rows in result set
+2022-07-19 14:31:43 [EROR] [C:/app/loante/loante/service/model/user_black.go:19] &{0 18482084444 今天过的整没用 1 2022-07-19 14:31:43} err=Error 1146: Table 'loante_db.user_blacks' doesn't exist
+2022-07-19 14:38:59 [EROR] [C:/app/loante/loante/service/model/admin.go:55] &{{} 0     0 0     0 0 0 0 0 <nil> <nil> <nil> <nil> <nil>} err=sql: no rows in result set
+2022-07-19 14:39:15 [EROR] [C:/app/loante/loante/service/model/admin.go:55] &{{} 0     0 0     0 0 0 0 0 <nil> <nil> <nil> <nil> <nil>} err=sql: no rows in result set
+2022-07-20 10:55:01 [EROR] [C:/app/loante/loante/service/model/admin_right.go:34] &{{} 0        } err=invalid connection

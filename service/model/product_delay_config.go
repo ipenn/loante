@@ -44,10 +44,3 @@ func (a *ProductDelayConfig) Page(where string, page, limit int) ([]ProductDelay
 	count, _ := global.C.DB.NewSelect().Model(&d).Relation("Merchant").Relation("Product").Where(where).Order(fmt.Sprintf("pdc.id desc")).Offset((page - 1) * limit).Limit(limit).ScanAndCount(global.C.Ctx)
 	return d, count
 }
-
-func (a *ProductDelayConfig) One(where string) {
-	err := global.C.DB.NewSelect().Model(a).Where(where).Scan(global.C.Ctx)
-	if err != nil {
-		global.Log.Error("%v err=%v", a, err.Error())
-	}
-}
