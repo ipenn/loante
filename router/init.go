@@ -31,7 +31,11 @@ func Init() {
 	whitePhoneHandle := v1.NewWhitePhone()
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 	uploadHandle := v1.NewUpload()
+=======
+	StatTrafficHandle := v1.NewStatTraffic()
+>>>>>>> 5fa5f02c1373b226cd4ab46bcdfa3326f6ae89d0
 =======
 	StatTrafficHandle := v1.NewStatTraffic()
 >>>>>>> 5fa5f02c1373b226cd4ab46bcdfa3326f6ae89d0
@@ -98,6 +102,12 @@ func Init() {
 	v.Get("/report_pay_in", StatTrafficHandle.ReportPayIn)
 	v.Get("/report_pay_out", StatTrafficHandle.ReportPayOut)
 
+	//统计报表
+	v.Get("/stat_traffic", StatTrafficHandle.StatTrafficList)
+	v.Get("/after_report_unified", StatTrafficHandle.AfterReportUnifiedList)
+	v.Get("/report_pay_in", StatTrafficHandle.ReportPayIn)
+	v.Get("/report_pay_out", StatTrafficHandle.ReportPayOut)
+
 	//渠道
 	v.Get("/utm/lists", utmHandle.Lists)
 	v.Post("/utm/create", utmHandle.Create)
@@ -144,6 +154,7 @@ func Init() {
 
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 	v.Get("/visit/reminds", visitHandle.RemindBorrowAll)	//预提醒订单列表
 	v.Get("/visit/reminding", visitHandle.RemindBorrowing)	//预提醒中订单
 	v.Get("/visit/reminded", visitHandle.RemindBorrowed)	//预提醒完成的订单
@@ -165,6 +176,12 @@ func Init() {
 	v.Get("/visit/reminded", visitHandle.RemindBorrowed)    //预提醒完成的订单
 	v.Get("/visit/remind_detail", visitHandle.RemindDetail) //预提醒记录 一笔借贷可能会有多条记录
 >>>>>>> 5fa5f02c1373b226cd4ab46bcdfa3326f6ae89d0
+=======
+	v.Get("/visit/reminds", visitHandle.RemindBorrowAll)    //预提醒订单列表
+	v.Get("/visit/reminding", visitHandle.RemindBorrowing)  //预提醒中订单
+	v.Get("/visit/reminded", visitHandle.RemindBorrowed)    //预提醒完成的订单
+	v.Get("/visit/remind_detail", visitHandle.RemindDetail) //预提醒记录 一笔借贷可能会有多条记录
+>>>>>>> 5fa5f02c1373b226cd4ab46bcdfa3326f6ae89d0
 	v.Get("/visit/urges", visitHandle.UrgeBorrowAll)        //催收订单列表
 	v.Get("/visit/urging", visitHandle.UrgeBorrowing)       //催收中订单
 	v.Get("/visit/urged", visitHandle.UrgeBorrowed)         //催收完成的订单
@@ -172,6 +189,9 @@ func Init() {
 	v.Get("/visit/urge_report", visitHandle.UrgeReport)     //催收业绩
 	v.Post("/visit/urge/action", visitHandle.UrgeAction)    //新增催记
 <<<<<<< HEAD
+<<<<<<< HEAD
+>>>>>>> 5fa5f02c1373b226cd4ab46bcdfa3326f6ae89d0
+=======
 >>>>>>> 5fa5f02c1373b226cd4ab46bcdfa3326f6ae89d0
 =======
 >>>>>>> 5fa5f02c1373b226cd4ab46bcdfa3326f6ae89d0
@@ -202,11 +222,16 @@ func Init() {
 	v.Get("/product", productHandle.Product)
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 	v.Post("/product/create_or_update", productHandle.ProductCreateOrUpdate)
 	//提额规则
 	v.Get("/product/precept", productHandle.ProductPrecept)
 	v.Post("/product/precept_create", productHandle.ProductPreceptCreate)
 	v.Post("/product/precept_del", productHandle.ProductPreceptDel)
+=======
+	v.Post("/product/create_or_update", productHandle.ProductCreateOrUpdate) //修改产品
+	v.Post("/product/update_For_mch", productHandle.ProductUpdateForMch)     //修改产品(商户)
+>>>>>>> 5fa5f02c1373b226cd4ab46bcdfa3326f6ae89d0
 =======
 	v.Post("/product/create_or_update", productHandle.ProductCreateOrUpdate) //修改产品
 	v.Post("/product/update_For_mch", productHandle.ProductUpdateForMch)     //修改产品(商户)

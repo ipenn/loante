@@ -108,12 +108,15 @@ func (a *Orders) PayAfter(amount float64) {
 	borrowData.Update(fmt.Sprintf("id = %d", borrowData.Id))
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 	//更新产品额度
 	if borrowData.Status == 8 || borrowData.Status == 9{
 		new(UserQuota).Increase(borrowData.ProductId, borrowData.Uid, borrowData.Status)
 	}
 }
 =======
+=======
+>>>>>>> 5fa5f02c1373b226cd4ab46bcdfa3326f6ae89d0
 =======
 >>>>>>> 5fa5f02c1373b226cd4ab46bcdfa3326f6ae89d0
 }
@@ -165,6 +168,9 @@ GROUP BY
 	return ordersForStatistics
 }
 <<<<<<< HEAD
+<<<<<<< HEAD
+>>>>>>> 5fa5f02c1373b226cd4ab46bcdfa3326f6ae89d0
+=======
 >>>>>>> 5fa5f02c1373b226cd4ab46bcdfa3326f6ae89d0
 =======
 >>>>>>> 5fa5f02c1373b226cd4ab46bcdfa3326f6ae89d0

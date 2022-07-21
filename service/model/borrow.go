@@ -25,6 +25,7 @@ type Borrow struct {
 	BorrowLittle
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 	Postponed          	int				`json:"postponed"`
 	PostponedPeriod    	int				`json:"postponed_period"`
 	PostponeValuation 	int				`json:"postpone_valuation"`
@@ -47,6 +48,8 @@ type Borrow struct {
 =======
 =======
 >>>>>>> 5fa5f02c1373b226cd4ab46bcdfa3326f6ae89d0
+=======
+>>>>>>> 5fa5f02c1373b226cd4ab46bcdfa3326f6ae89d0
 	Postponed         int             `json:"postponed"`
 	PostponedPeriod   int             `json:"postponed_period"`
 	PostponeValuation int             `json:"postpone_valuation"`
@@ -66,6 +69,9 @@ type Borrow struct {
 	Merchant          *MerchantLittle `json:"merchant" bun:"rel:belongs-to,join:mch_id=id"`
 	Product           *Product        `json:"product" bun:"rel:belongs-to,join:product_id=id"`
 <<<<<<< HEAD
+<<<<<<< HEAD
+>>>>>>> 5fa5f02c1373b226cd4ab46bcdfa3326f6ae89d0
+=======
 >>>>>>> 5fa5f02c1373b226cd4ab46bcdfa3326f6ae89d0
 =======
 >>>>>>> 5fa5f02c1373b226cd4ab46bcdfa3326f6ae89d0
@@ -110,6 +116,7 @@ func (a *Borrow) Del(where string) {
 	global.C.DB.NewDelete().Model(a).Where(where).Exec(global.C.Ctx)
 }
 
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 type PPConfig struct {
@@ -173,6 +180,8 @@ func (a *Borrow)PayAfter()  {
 =======
 =======
 >>>>>>> 5fa5f02c1373b226cd4ab46bcdfa3326f6ae89d0
+=======
+>>>>>>> 5fa5f02c1373b226cd4ab46bcdfa3326f6ae89d0
 type BorrowForStatistics struct {
 	Count      int    `json:"count"`
 	Payment    int    `json:"payment"`
@@ -219,6 +228,9 @@ GROUP BY
 	global.C.DB.ScanRows(global.C.Ctx, rows, &borrowForStatistics)
 	return borrowForStatistics
 <<<<<<< HEAD
+<<<<<<< HEAD
+>>>>>>> 5fa5f02c1373b226cd4ab46bcdfa3326f6ae89d0
+=======
 >>>>>>> 5fa5f02c1373b226cd4ab46bcdfa3326f6ae89d0
 =======
 >>>>>>> 5fa5f02c1373b226cd4ab46bcdfa3326f6ae89d0
