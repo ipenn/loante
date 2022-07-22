@@ -1,8 +1,10 @@
 package model
 
 import (
+	"fmt"
 	"github.com/uptrace/bun"
 	"loante/global"
+	"loante/tools"
 )
 
 type StatTraffic struct {
@@ -89,4 +91,75 @@ func (a *StatTraffic) Page(where, group string, page, limit int) ([]StatTrafficL
 		Where(where).GroupExpr(group).Offset((page-1)*limit).
 		Relation("Product").Relation("Merchant").Relation("ReferrerConfig").Limit(limit).ScanAndCount(global.C.Ctx, &datas)
 	return datas, count
+}
+
+type statTrafficValue struct {
+	Count     int `json:"count"`
+	Amount    int `json:"amount"`
+	ProductId int `json:"product_id"`
+	MchId     int `json:"mch_id"`
+	Type      int `json:"type"`
+}
+
+type productId struct {
+	ProductId int `json:"product_id"`
+}
+
+func getStatTrafficValue() {
+	var product []productId
+	rows, _ := global.C.DB.QueryContext(global.C.Ctx, `SELECT product_id FROM borrow WHERE TO_DAYS(NOW())- TO_DAYS( create_time ) = 1 GROUP BY product_id`)
+
+	global.C.DB.ScanRows(global.C.Ctx, rows, &product)
+	if len(product) != 0 {
+		for _, id := range product {
+			var st StatTraffic
+			var stv []statTrafficValue
+			rows2, _ := global.C.DB.QueryContext(global.C.Ctx, fmt.Sprintf("SELECT\n\tCOUNT( id ) AS count,\n\t0 AS amount,\n\tIFNULL( product_id, 0 ) product_id,\n\tIFNULL( mch_id, 0 ) mch_id,\n\t1 AS type \nFROM\n\tborrow \nWHERE\n\tTO_DAYS(\n\tNOW())- TO_DAYS( create_time ) = 1 \n\tAND loan_type = 0 \n\tAND product_id = %d UNION ALL\nSELECT\n\tCOUNT( id ) AS count,\n\t0 AS amount,\n\tIFNULL( product_id, 0 ) product_id,\n\tIFNULL( mch_id, 0 ) mch_id,\n\t2 AS type \nFROM\n\tborrow \nWHERE\n\tTO_DAYS(\n\tNOW())- TO_DAYS( create_time ) = 1 \n\tAND `status` >= 4 \n\tAND loan_type = 0 \n\tAND product_id = %d UNION ALL\nSELECT\n\tCOUNT( id ) AS count,\n\tIFNULL( SUM( loan_amount ), 0 ) AS amount,\n\tIFNULL( product_id, 0 ) product_id,\n\tIFNULL( mch_id, 0 ) mch_id,\n\t3 AS type \nFROM\n\tborrow \nWHERE\n\tTO_DAYS(\n\tNOW())- TO_DAYS( create_time ) = 1 \n\tAND `status` >= 5 \n\tAND loan_type = 0 \n\tAND product_id = %d UNION ALL\nSELECT\n\tIFNULL( COUNT( id ), 0 ) AS count,\n\t0 AS amount,\n\tIFNULL( product_id, 0 ) product_id,\n\tIFNULL( mch_id, 0 ) mch_id,\n\t4 AS type \nFROM\n\tborrow \nWHERE\n\tTO_DAYS(\n\tNOW())- TO_DAYS( create_time ) = 1 \n\tAND loan_type = 0 \n\tAND product_id = %d \nGROUP BY\n\tuid UNION ALL\nSELECT\n\tCOUNT( id ) AS count,\n\t0 AS amount,\n\tIFNULL( product_id, 0 ) product_id,\n\tIFNULL( mch_id, 0 ) mch_id,\n\t11 AS type \nFROM\n\tborrow \nWHERE\n\tTO_DAYS(\n\tNOW())- TO_DAYS( create_time ) = 1 \n\tAND loan_type > 0 \n\tAND product_id = %d UNION ALL\nSELECT\n\tCOUNT( id ) AS count,\n\t0 AS amount,\n\tIFNULL( product_id, 0 ) product_id,\n\tIFNULL( mch_id, 0 ) mch_id,\n\t12 AS type \nFROM\n\tborrow \nWHERE\n\tTO_DAYS(\n\tNOW())- TO_DAYS( create_time ) = 1 \n\tAND `status` >= 4 \n\tAND loan_type > 0 \n\tAND product_id = %d UNION ALL\nSELECT\n\tCOUNT( id ) AS count,\n\tIFNULL( SUM( loan_amount ), 0 ) AS amount,\n\tIFNULL( product_id, 0 ) product_id,\n\tIFNULL( mch_id, 0 ) mch_id,\n\t13 AS type \nFROM\n\tborrow \nWHERE\n\tTO_DAYS(\n\tNOW())- TO_DAYS( create_time ) = 1 \n\tAND STATUS >= 5 \n\tAND loan_type > 0 \n\tAND product_id = %d UNION ALL\nSELECT\n\tIFNULL( COUNT( id ), 0 ) AS count,\n\t0 AS amount,\n\tIFNULL( product_id, 0 ) product_id,\n\tIFNULL( mch_id, 0 ) mch_id,\n\t14 AS type \nFROM\n\tborrow \nWHERE\n\tTO_DAYS(\n\tNOW())- TO_DAYS( create_time ) = 1 \n\tAND loan_type > 0 \n\tAND product_id = %d \nGROUP BY\n\tuid", id, id, id, id, id, id, id, id))
+			global.C.DB.ScanRows(global.C.Ctx, rows2, &stv)
+			for _, value := range stv {
+				if value.Type == 1 {
+					st.NewApply = value.Count
+					st.ProductId = value.ProductId
+					st.MchId = value.MchId
+				}
+				if value.Type == 2 {
+					st.NewApplyPass = value.Count
+				}
+				if value.Type == 3 {
+					st.NewLoanPass = value.Count
+					st.NewLoanAmount = value.Amount
+				}
+				if value.Type == 4 {
+					st.NewApplyUser = value.Count
+				}
+				if value.Type == 11 {
+					st.OldApply = value.Count
+				}
+				if value.Type == 12 {
+					st.OldApplyPass = value.Count
+				}
+				if value.Type == 13 {
+					st.OldLoanPass = value.Count
+					st.OldLoanAmount = value.Amount
+				}
+				if value.Type == 14 {
+					st.OldApplyUser = value.Count
+				}
+				st.Apply = st.NewApply + st.OldApply
+				st.ApplyUser = st.NewApplyUser + st.OldApplyUser
+				st.ApplyPass = st.NewApplyPass + st.OldApplyPass
+				st.LoanPass = st.NewLoanPass + st.OldLoanPass
+				st.LoanAmount = st.NewLoanAmount + st.OldLoanAmount
+				st.Time = tools.GetFormatDay()
+				st.Insert()
+			}
+		}
+	}
+}
+
+func (a *StatTraffic) Insert() {
+	_, err := global.C.DB.NewInsert().Model(a).Returning("*").Exec(global.C.Ctx)
+	if err != nil {
+		global.Log.Error("%v err=%v", a, err.Error())
+	}
 }
