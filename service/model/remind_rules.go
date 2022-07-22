@@ -9,6 +9,7 @@ import (
 type RemindRules struct {
 	bun.BaseModel `bun:"table:remind_rules,alias:rr"`
 	Id            int            `json:"id"`
+	MchId     	  int            `json:"mch_id"`
 	CompanyId     int            `json:"company_id"`
 	GroupId       int            `json:"group_id"`
 	MaxDay        int            `json:"max_day"`

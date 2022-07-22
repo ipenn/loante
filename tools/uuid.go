@@ -82,3 +82,8 @@ func InviteCode(l int) string {
 	}
 	return sb[:l]
 }
+
+
+func Sprintf(tpl string, arg []interface{}) string {
+	return  fmt.Sprintf(tpl, arg...)
+}

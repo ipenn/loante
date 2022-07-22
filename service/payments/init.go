@@ -5,9 +5,9 @@ import (
 )
 
 type Payments interface {
-	PayIn(config string, pays Pays) (bool, map[string]interface{}, error) //收款
-	PayOut(config string, pays Pays) (bool, error) //放款
-	Verify(config string, ctx *fiber.Ctx) (bool,float64, error) //验证签名
+	PayIn(config string, pays *Pays) (bool, map[string]interface{}, error) //收款
+	PayOut(config string, pays *Pays) (bool, error) //放款
+	Verify(config string, ctx *fiber.Ctx) (bool,float64, error) //验证签名代收
 }
 
 type Pays struct {
@@ -18,10 +18,10 @@ type Pays struct {
 	CustomEmail string	//客户email地址
 	BankAccount string	//收款人银行账号
 	IfscCode string		//收款人IFSC CODE
-	UpiAccount string		//收款人UPI账户
 	Remark string		//备注
 	NotifyUrl string //异步通知回调地址
 	CallbackUrl string //页面回跳地址
+	PlatOrderId string //平台相应的编号
 }
 type ReturnPay struct {
 	OrderId string
@@ -35,6 +35,8 @@ func SelectPay(name string) *Payments {
 		pp = new(TPays)
 	}else if name == "HXPay"{
 		pp = new(HXPays)
+	}else if name == "WhalePay"{
+		pp = new(WhalePay)
 	}
 	return &pp
 }
@@ -52,7 +54,7 @@ func MchOrderId(ctx *fiber.Ctx) string {
 	}
 	return ""
 }
-//
+
 //func VerifySign(ctx *fiber.Ctx) ReturnPay {
 //	//解析 TPays
 //	var pp = Payments(nil)

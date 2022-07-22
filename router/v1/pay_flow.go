@@ -47,7 +47,7 @@ func (a *payFlow) Repayments(c *fiber.Ctx) error {
 	if err := tools.ParseBody(c, input); err != nil {
 		return resp.Err(c, 1, err.Error())
 	}
-	where := "o.id > 0"
+	where := "o.type < 3"
 	if input.MchId > 0 {
 		where += fmt.Sprintf("o.mch_id = %d", input.MchId)
 	}
@@ -128,7 +128,7 @@ func (a *payFlow)Reconciliation(c *fiber.Ctx) error {
 	if err := tools.ParseBody(c, input); err != nil {
 		return resp.Err(c, 1, err.Error())
 	}
-	where := "b.id > 0"
+	where := "o.type = 3"
 	if input.BorrowId > 0{ //订单编号
 		where += fmt.Sprintf("borrow_id = %d", input.BorrowId)
 	}
@@ -326,7 +326,6 @@ func (a *payFlow)PayPartial(c *fiber.Ctx) error {
 	visit.One(fmt.Sprintf("borrow_id = %d", borrow.Id))
 	userData := new(model.User)
 	userData.One(fmt.Sprintf("id = %d", borrow.Uid))
-
 	//校对金额
 	if input.Type != 1 && input.Type != 2{
 		return resp.Err(c, 1, "还款方式不正确！")
@@ -338,15 +337,18 @@ func (a *payFlow)PayPartial(c *fiber.Ctx) error {
 		}
 	}
 	if input.Type == 2{ //展期
-		//获取产品服务费
-		product := new(model.Product)
-		product.One(fmt.Sprintf("id = %d", borrow.ProductId))
-		if product.Id == 0{
-			return resp.Err(c, 1, "未找到产品！")
+		//获取产品展期费用
+		productConfig := new(model.ProductDelayConfig)
+		productConfig.One(fmt.Sprintf("product_id = %d", borrow.ProductId))
+		if productConfig.Id == 0{
+			return resp.Err(c, 1, "未找到产品展期配置！")
+		}
+		if productConfig.Status == 0{
+			return resp.Err(c, 1, "产品展期未开启！")
 		}
 		//borrow.PostponedPeriod += 1 展期还款成功以后才能 + 1
 		//展期需要先还滞纳金 和 展期费用
-		input.Amount = int( float32(borrow.LoanAmount) * product.RateService) + borrow.LatePaymentFee
+		input.Amount = int(float32(borrow.LoanAmount) * float32(productConfig.DelayRate)) + borrow.LatePaymentFee
 	}
 	//获取产品的默认支付通道
 	if input.PaymentId == 0{
@@ -378,11 +380,10 @@ func (a *payFlow)PayPartial(c *fiber.Ctx) error {
 		BankAccount:userData.Bankcard,
 		IfscCode:userData.Ifsc,
 		Remark:"",
-		UpiAccount:"",
 		NotifyUrl:"http://127.0.0.1/notify",
 		CallbackUrl:"http://127.0.0.1/notify",
 	}
-	ret, data, err := (*payModel).PayIn(pp.Configuration, paysData)
+	ret, data, err := (*payModel).PayIn(pp.Configuration, &paysData)
 	if !ret {
 		fmt.Println(err)
 		return  resp.Err(c, 1, err.Error())
@@ -408,9 +409,70 @@ func (a *payFlow)PayPartial(c *fiber.Ctx) error {
 	orders.PaymentRequestNo = paysData.OrderId
 	orders.PaymentRespondNo = data["platId"].(string)
 	orders.Insert()
-	return resp.OK(c, "")
+	return resp.OK(c, map[string]string{
+		"url":data["url"].(string),
+	})
 }
 
+type payOutReq struct {
+	BorrowId 			int		`json:"borrow_id"` //借贷
+}
+//PayOut 代付用于放款
+func (a *payFlow)PayOut(c *fiber.Ctx) error {
+	input := new(payOutReq)
+	if err := tools.ParseBody(c, input); err != nil {
+		return resp.Err(c, 1, err.Error())
+	}
+	//检测借贷是否存在
+	borrow := new(model.Borrow)
+	borrow.One(fmt.Sprintf("id = %d", input.BorrowId))
+	if borrow.Id == 0{
+		return resp.Err(c, 1, "借款数据不存在！")
+	}
+	if borrow.Status != 4{ //放款中
+		return resp.Err(c, 1, "状态不正确！")
+	}
+	amount := float32(borrow.LoanAmount)
+	//获取服务费
+	productData := new(model.Product)
+	productData.One(fmt.Sprintf("id = %d", borrow.ProductId))
+	if productData.IsStopLending == 1{//已经停止
+		return resp.Err(c, 1, "已停止放款！")
+	}
+	amount = amount - amount * productData.RateService
+	userData := new(model.User)
+	userData.One(fmt.Sprintf("id = %d", borrow.Uid))
+
+	ppc, err := borrow.GetPaymentConfig("out")
+	if err!= nil{
+		return resp.Err(c, 1, err.Error())
+	}
+	payModel :=  payments.SelectPay(ppc.Name)
+	paysData := payments.Pays{
+		OrderId:fmt.Sprintf("%s-%d-%d", tools.InviteCode(6), borrow.Id, borrow.ProductId),
+		Amount:float64(amount),
+		CustomName:userData.AadhaarName,
+		CustomMobile:userData.Phone,
+		CustomEmail:userData.Email,
+		BankAccount:userData.Bankcard,
+		IfscCode:userData.Ifsc,
+		Remark:"",
+		NotifyUrl:"http://127.0.0.1/notify",
+		CallbackUrl:"http://127.0.0.1/notify",
+	}
+	ret, err := (*payModel).PayOut(ppc.Config, &paysData)
+	if !ret {
+		return  resp.Err(c, 1, err.Error())
+	}
+	//开始
+	borrow.Payment = ppc.Id
+	borrow.PaymentRequestNo = paysData.OrderId
+	borrow.PaymentRespond = paysData.PlatOrderId
+	borrow.Update(fmt.Sprintf("id = %d", borrow.Id))
+	return resp.OK(c, map[string]string{
+		"url":"",
+	})
+}
 func (a *payFlow)UtrsVerify(c *fiber.Ctx) error {
 	input := new(req.IdReq)
 	if err := tools.ParseBody(c, input); err != nil {

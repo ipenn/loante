@@ -30,6 +30,7 @@ type Orders struct {
 	PaymentRequestNo string          `json:"payment_request_no"`
 	PaymentRespondNo string          `json:"payment_respond_no"`
 	LatePaymentFee   int             `json:"late_payment_fee"`
+	Remark   		 string           `json:"remark"`
 	User             *UserLittle     `json:"user" bun:"rel:belongs-to,join:uid=id"`
 	Borrow           *BorrowLittle   `json:"borrow" bun:"rel:belongs-to,join:bid=id"`
 	Merchant         *MerchantLittle `json:"merchant" bun:"rel:belongs-to,join:mch_id=id"`
@@ -95,16 +96,22 @@ func (a *Orders) PayAfter(amount float64) {
 		borrowData.BeRepaidAmount -= a.ActualAmount
 	} else if a.Type == 2 { //展期还款
 		//获取产品的展期天数
-		//productData := new(ProductDelayConfig)
-		//productData.One(fmt.Sprintf("id = %d", borrowData.ProductId))
+		productData := new(ProductDelayConfig)
+		productData.One(fmt.Sprintf("id = %d", borrowData.ProductId))
 		borrowData.PostponedPeriod += 1
+		borrowData.Postponed = 1
 		borrowData.Status = 5
-		endTimeUnix := tools.StrToUnixTime(borrowData.EndTime) + 6*24*3600
+		endTimeUnix := tools.StrToUnixTime(borrowData.EndTime) + int64(productData.DelayDay *24*3600)
 		borrowData.EndTime = tools.UnixTimeToStr(endTimeUnix)
 	}
 	a.Update(fmt.Sprintf("id = %d", a.Id))
 	borrowData.Update(fmt.Sprintf("id = %d", borrowData.Id))
+	//更新产品额度
+	if borrowData.Status == 8 || borrowData.Status == 9{
+		new(UserQuota).Increase(borrowData.ProductId, borrowData.Uid, borrowData.Status)
+	}
 }
+
 
 type OrdersForStatistics struct {
 	Count      int    `json:"count"`

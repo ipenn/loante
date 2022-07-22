@@ -1,0 +1,24 @@
+
+###
+POST {{host}}/sms/send
+token:{{token}}
+Content-Type: application/json
+
+{
+  "mch_id": 1,
+  "type": 1,
+  "params": ["62000"],
+  "phone": "+919538189742"
+}
+
+###
+POST {{host}}/sms/send
+token:{{token}}
+Content-Type: application/json
+
+{
+  "mch_id": 1,
+  "type": 2,
+  "params": [],
+  "phone": "+919538189742"
+}

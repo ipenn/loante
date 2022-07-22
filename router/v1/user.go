@@ -77,7 +77,61 @@ func (a *user) Details(c *fiber.Ctx) error {
 		"info": info,
 	})
 }
+type userInfoReq struct {
+	req.PageReq
+	UserId int	`query:"user_id" json:"user_id"`
+}
+//Contact 获取用户的通讯录
+func (a *user) Contact(c *fiber.Ctx) error {
+	input := new(userInfoReq)
+	if err := tools.ParseBody(c, input); err != nil {
+		return resp.Err(c, 1, err.Error())
+	}
+	lists, count := new(model.UserPrivacyContact).Page(fmt.Sprintf("uid = %d", input.UserId), input.Page, input.Size)
+	return resp.OK(c, map[string]interface{}{
+		"count": count,
+		"list":  lists,
+	})
+}
 
+//Sms 获取用户的短信
+func (a *user) Sms(c *fiber.Ctx) error {
+	input := new(userInfoReq)
+	if err := tools.ParseBody(c, input); err != nil {
+		return resp.Err(c, 1, err.Error())
+	}
+	lists, count := new(model.UserPrivacySms).Page(fmt.Sprintf("uid = %d", input.UserId), input.Page, input.Size)
+	return resp.OK(c, map[string]interface{}{
+		"count": count,
+		"list":  lists,
+	})
+}
+
+//App 获取用户的APP
+func (a *user) App(c *fiber.Ctx) error {
+	input := new(userInfoReq)
+	if err := tools.ParseBody(c, input); err != nil {
+		return resp.Err(c, 1, err.Error())
+	}
+	lists, count := new(model.UserPrivacyApp).Page(fmt.Sprintf("uid = %d", input.UserId), input.Page, input.Size)
+	return resp.OK(c, map[string]interface{}{
+		"count": count,
+		"list":  lists,
+	})
+}
+
+//Call 获取用户的通话记录
+func (a *user) Call(c *fiber.Ctx) error {
+	input := new(userInfoReq)
+	if err := tools.ParseBody(c, input); err != nil {
+		return resp.Err(c, 1, err.Error())
+	}
+	lists, count := new(model.UserPrivacyCall).Page(fmt.Sprintf("uid = %d", input.UserId), input.Page, input.Size)
+	return resp.OK(c, map[string]interface{}{
+		"count": count,
+		"list":  lists,
+	})
+}
 //
 //type setUserInfoReq struct {
 //	TrueName string `json:"true_name"`

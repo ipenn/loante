@@ -19,21 +19,14 @@ type NxCloudSendResp struct {
 }
 
 const NXURL = "http://api2.nxcloud.com"
-
 //Send 发送
-func (x *NxCloud)Send(phone, content string, smsType int) (bool,error) {
+func (x *NxCloud)Send(phone, content string) (bool,error) {
 	url := fmt.Sprintf("%s%s", NXURL, "/api/sms/mtsend")
-	key := "v3tIfD7v"
-	secret := "qBV5wN7L"
-	if smsType > 1{
-		key = "Jx8Ubn2v"
-		secret = "SK0jHWxG"
-	}
 	resp, err := req.Post(url,req.Header{
 		"Content-Type":"application/x-www-form-urlencoded",
 	}, req.Param{
-		"appkey": key,
-		"secretkey": secret,
+		"appkey":"vAT0gVDZ",
+		"secretkey":"XyC5VSz9",
 		"phone":phone,
 		"content":content,
 	})

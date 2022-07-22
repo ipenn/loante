@@ -1,0 +1,44 @@
+POST http://127.0.0.1:51111/v1/upload
+Content-Type: multipart/form-data; boundary=WebAppBoundary
+
+--WebAppBoundary
+Content-Disposition: form-data; name="file"; filename="59ed88e6b46deba2b47852bba8d6d498.jpg"
+
+< D:\works\ipenn\loante\/static/upload/1/59ed88e6b46deba2b47852bba8d6d498.jpg
+--WebAppBoundary--
+
+###
+### 提额
+GET {{host}}/product/precept
+token:{{token}}
+Content-Type: application/json
+
+{
+  "product_id": 1,
+  "status": 1,
+  "page": 1,
+  "size":10
+}
+
+### 提额
+POST {{host}}/product/precept_create
+token:{{token}}
+Content-Type: application/json
+
+{
+  "id": 1,
+  "product_id": 1,
+  "status":1,
+  "amount": 2000,
+  "min_count": 0
+}
+
+### 提额
+POST {{host}}/product/precept_del
+token:{{token}}
+Content-Type: application/json
+
+{
+  "id": 1
+}
+

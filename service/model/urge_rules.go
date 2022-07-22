@@ -9,6 +9,7 @@ import (
 type UrgeRules struct {
 	bun.BaseModel `bun:"table:urge_rules,alias:ur"`
 	Id            int          `json:"id"`
+	MchId     	  int          `json:"mch_id"`
 	CompanyId     int          `json:"company_id"`
 	GroupId       int          `json:"group_id"`
 	MaxDay        int          `json:"max_day"`

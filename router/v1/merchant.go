@@ -71,6 +71,7 @@ func (a *merchant) Create(c *fiber.Ctx) error {
 	if input.Id > 0 {
 		mch.One(fmt.Sprintf("id = '%d'", input.Id))
 	}
+	mch.Type = input.Type
 	mch.Name = input.Name
 	mch.Status = input.Status
 	mch.CnyCredit = input.CnyCredit
