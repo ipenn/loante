@@ -6,11 +6,16 @@ import (
 	"loante/global"
 )
 
-type UrgeCompany struct {
+
+type UrgeCompanyLittle struct {
 	bun.BaseModel `bun:"table:urge_company,alias:uc"`
 	Id            int       `json:"id" bun:",pk"`
-	AdminId       int       `json:"admin_id"`
 	UserName      string    `json:"user_name"`
+}
+type UrgeCompany struct {
+	bun.BaseModel `bun:"table:urge_company,alias:uc"`
+	UrgeCompanyLittle
+	AdminId       int       `json:"admin_id"`
 	MchId         int       `json:"mch_id"`
 	CreateTime    string    `json:"create_time"`
 	CompanyName   string    `json:"company_name"`

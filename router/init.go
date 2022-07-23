@@ -85,24 +85,6 @@ func Init() {
 	v.Get("/report_pay_in", StatTrafficHandle.ReportPayIn)
 	v.Get("/report_pay_out", StatTrafficHandle.ReportPayOut)
 
-	//统计报表
-	v.Get("/stat_traffic", StatTrafficHandle.StatTrafficList)
-	v.Get("/after_report_unified", StatTrafficHandle.AfterReportUnifiedList)
-	v.Get("/report_pay_in", StatTrafficHandle.ReportPayIn)
-	v.Get("/report_pay_out", StatTrafficHandle.ReportPayOut)
-
-	//统计报表
-	v.Get("/stat_traffic", StatTrafficHandle.StatTrafficList)
-	v.Get("/after_report_unified", StatTrafficHandle.AfterReportUnifiedList)
-	v.Get("/report_pay_in", StatTrafficHandle.ReportPayIn)
-	v.Get("/report_pay_out", StatTrafficHandle.ReportPayOut)
-
-	//统计报表
-	v.Get("/stat_traffic", StatTrafficHandle.StatTrafficList)
-	v.Get("/after_report_unified", StatTrafficHandle.AfterReportUnifiedList)
-	v.Get("/report_pay_in", StatTrafficHandle.ReportPayIn)
-	v.Get("/report_pay_out", StatTrafficHandle.ReportPayOut)
-
 	//渠道
 	v.Get("/utm/lists", utmHandle.Lists)
 	v.Post("/utm/create", utmHandle.Create)
@@ -114,7 +96,8 @@ func Init() {
 	v.Get("/merchant/list", merchantHandle.Lists)
 	v.Post("/merchant/create", merchantHandle.Create)
 	v.Post("/merchant/modify", merchantHandle.Modify)
-	v.Post("/merchant/fund/create", merchantHandle.FundCreate)
+	v.Get("/merchant/funds", merchantHandle.Funds) //商户资金列表 财务 -> 流水
+	v.Post("/merchant/fund/create", merchantHandle.FundCreate)	//商户充值和退款
 	v.Get("/merchant/service_rule", merchantHandle.ServiceRule)                 //进件计价规则
 	v.Post("/merchant/service_rule/create", merchantHandle.ServiceRuleCreate)   //进件计价规则创建
 	v.Post("/merchant/service_rule/del", merchantHandle.ServiceRuleDel)         //进件计价规则删除
@@ -139,6 +122,7 @@ func Init() {
 	//客户管理
 	v.Get("/user/list", userHandle.UserQuery)
 	v.Get("/user/detail", userHandle.Details)
+	v.Post("/user/black/set", userHandle.SetBlack)
 	v.Get("/user/contact", userHandle.Contact) //获取用户的通讯录
 	v.Get("/user/sms", userHandle.Sms) //获取用户的短信
 	v.Get("/user/app", userHandle.App) //获取用户的APP
@@ -158,23 +142,13 @@ func Init() {
 	v.Get("/visit/urge_report", visitHandle.UrgeReport) //催收业绩
 	v.Post("/visit/urge/action", visitHandle.UrgeAction) //新增催记
 
-	v.Get("/visit/reminds", visitHandle.RemindBorrowAll)    //预提醒订单列表
-	v.Get("/visit/reminding", visitHandle.RemindBorrowing)  //预提醒中订单
-	v.Get("/visit/reminded", visitHandle.RemindBorrowed)    //预提醒完成的订单
-	v.Get("/visit/remind_detail", visitHandle.RemindDetail) //预提醒记录 一笔借贷可能会有多条记录
-
-	v.Get("/visit/urges", visitHandle.UrgeBorrowAll)        //催收订单列表
-	v.Get("/visit/urging", visitHandle.UrgeBorrowing)       //催收中订单
-	v.Get("/visit/urged", visitHandle.UrgeBorrowed)         //催收完成的订单
-	v.Get("/visit/urge_detail", visitHandle.UrgeDetail)     //催收记录 一笔借贷可能会有多条记录
-	v.Get("/visit/urge_report", visitHandle.UrgeReport)     //催收业绩
-	v.Post("/visit/urge/action", visitHandle.UrgeAction)    //新增催记
-
 	//借贷
 	v.Get("/borrow/list", borrowHandle.Query)                     //获取借贷信息列表
 	v.Get("/borrow/export", borrowHandle.QueryExport)             //获取借贷信息导出的功能
 	v.Post("/borrow/reconciliation", borrowHandle.Reconciliation) //平账操作
 	v.Post("/borrow/deposit", borrowHandle.Deposit)               //入账操作
+	v.Post("/borrow/funds", borrowHandle.Funds)               	//费用变更
+	v.Post("/borrow/set_loan/fail", borrowHandle.SetLoanFail)     //设置放款失败
 
 	//还款
 	v.Get("/pay_flow/repayments", payHandle.Repayments)              //还款记录
@@ -187,7 +161,7 @@ func Init() {
 	v.Get("/pay_flow/utr", payHandle.Utrs)                      //UTR对账单
 	v.Get("/pay_flow/utr_dismissed", payHandle.UtrsDismissed)   //UTR对账单验证失败的
 	v.Post("/pay_flow/utr_verify", payHandle.UtrsVerify)
-	v.Post("/pay_flow/pay_partial", payHandle.PayPartial) //生成 部分还款链接
+	v.Post("/pay_flow/pay_partial", payHandle.PayPartial) 	 //生成 部分还款链接
 
 	//短信模板
 	v.Get("/sms_template", smsTemplateHandle.SmsTemplate)

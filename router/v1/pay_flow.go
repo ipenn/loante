@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"github.com/gofiber/fiber/v2"
 	"github.com/xuri/excelize/v2"
+	"loante/global"
 	"loante/service/model"
 	"loante/service/payments"
 	"loante/service/req"
@@ -305,7 +306,7 @@ func (a *payFlow)UtrsDismissed(c *fiber.Ctx) error {
 }
 
 type payPartialReq struct {
-	BorrowId int	`query:"borrow" json:"borrow_id"`
+	BorrowId int	`query:"borrow_id" json:"borrow_id"`
 	Type   int	`query:"type" json:"type"` //0 全额还款 1 部分还款 2 展期还款
 	Amount   int	`query:"amount" json:"amount"`
 	PaymentId   int	`query:"payment_id" json:"payment_id"`
@@ -380,12 +381,11 @@ func (a *payFlow)PayPartial(c *fiber.Ctx) error {
 		BankAccount:userData.Bankcard,
 		IfscCode:userData.Ifsc,
 		Remark:"",
-		NotifyUrl:"http://127.0.0.1/notify",
-		CallbackUrl:"http://127.0.0.1/notify",
+		NotifyUrl:global.C.Http.PayInNotify,
+		CallbackUrl:global.C.Http.PayInNotify,
 	}
 	ret, data, err := (*payModel).PayIn(pp.Configuration, &paysData)
 	if !ret {
-		fmt.Println(err)
 		return  resp.Err(c, 1, err.Error())
 	}
 	//保存order

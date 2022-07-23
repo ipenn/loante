@@ -12,3 +12,38 @@ Content-Type: application/json
   "size": 10,
   "product_id": 10
 }
+
+
+### 平账
+POST {{host}}/borrow/reconciliation
+token:{{token}}
+Content-Type: application/json
+
+{
+  "id": 1,
+  "amount": 3000,
+  "remark": "haha"
+}
+
+### 收账
+POST {{host}}/borrow/deposit
+token:{{token}}
+Content-Type: application/json
+
+{
+  "id": 1,
+  "amount": 3000,
+  "payment_id": 1,
+  "order_no": "川A8890001"
+}
+
+### 费用变更
+POST {{host}}/borrow/funds
+token:{{token}}
+Content-Type: application/json
+
+{
+  "id": 1,
+  "page": 1,
+  "size": 10
+}

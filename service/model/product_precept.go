@@ -42,7 +42,7 @@ func (a *ProductPrecept) One(where string) {
 
 func (a *ProductPrecept) Page(where string, page, limit int) ([]ProductPrecept, int) {
 	var datas []ProductPrecept
-	count, _ := global.C.DB.NewSelect().Model(&datas).Relation("Product").Where(where).Order(fmt.Sprintf("id desc")).Offset((page - 1) * limit).Limit(limit).ScanAndCount(global.C.Ctx)
+	count, _ := global.C.DB.NewSelect().Model(&datas).Relation("Product").Where(where).Order(fmt.Sprintf("min_count asc")).Offset((page - 1) * limit).Limit(limit).ScanAndCount(global.C.Ctx)
 	return datas, count
 }
 

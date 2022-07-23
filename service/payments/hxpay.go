@@ -20,7 +20,8 @@ const (
 
 type HXPays struct {
 	Merchant string `json:"merchant"`
-	Key      string `json:"key"`
+	KeyIn      string `json:"key_in"`
+	KeyOut      string `json:"key_out"`
 }
 
 type HXPayInSuc struct {
@@ -63,7 +64,7 @@ func (hx *HXPays) buildUrl(data req.Param) string {
 	for _, k := range keys {
 		query = append(query, fmt.Sprintf("%s=%v", k, data[k]))
 	}
-	return strings.Join(query, `&`) + "&key=" + hx.Key
+	return strings.Join(query, `&`)
 }
 
 func (hx *HXPays) init(config string) {
@@ -73,8 +74,8 @@ func (hx *HXPays) init(config string) {
 	}
 }
 
-func (hx *HXPays) sign(data req.Param) string {
-	signTemp := hx.buildUrl(data)
+func (hx *HXPays) sign(data req.Param, key string) string {
+	signTemp := hx.buildUrl(data)+ "&key=" + key
 	fmt.Println(signTemp)
 	signData := tools.Md5(signTemp)
 	return strings.ToLower(signData)
@@ -91,13 +92,16 @@ func (hx *HXPays)Verify(config string, ctx *fiber.Ctx) (bool,float64, error) {
 			pa[index] = item
 		}
 	}
-	if hx.sign(pa) != body.Sign{
-		return false, 0, errors.New("sign fail")
+	if hx.sign(pa, hx.KeyIn) == body.Sign ||  hx.sign(pa, hx.KeyOut) == body.Sign{
+		return true, body.PaidAmount, nil
+	}else{
+		if body.Status != "SUCCESS"{
+			return false, 0, errors.New(body.Status)
+		}else{
+			return false, 0, errors.New("sign fail")
+		}
 	}
-	if body.Status != "SUCCESS"{
-		return false, 0, errors.New(body.Status)
-	}
-	return true, body.PaidAmount, nil
+	return false, 0, errors.New("sign fail")
 }
 
 func (hx *HXPays)PayIn(config string, pays *Pays) (bool, map[string]interface{}, error) {
@@ -111,7 +115,7 @@ func (hx *HXPays)PayIn(config string, pays *Pays) (bool, map[string]interface{},
 		"email":         pays.CustomEmail,
 		"remark":        pays.Remark,
 	}
-	data["sign"] = hx.sign(data)
+	data["sign"] = hx.sign(data, hx.KeyIn)
 	fmt.Println(data["sign"])
 	bdata, err := json.Marshal(&data)
 	resp, err := req.Post(HXPayUrl+HXPayInUrl, req.Header{
@@ -120,7 +124,7 @@ func (hx *HXPays)PayIn(config string, pays *Pays) (bool, map[string]interface{},
 	if err != nil {
 		return false, nil, err
 	}
-	fmt.Println(resp.String())
+	global.Log.Info(resp.String())
 	res := HXPayInSuc{}
 	if err := resp.ToJSON(&res); err != nil {
 		return false, nil, err
@@ -150,7 +154,7 @@ func (hx *HXPays) PayOut(config string, pays *Pays) (bool, error) {
 		"remark":        pays.Remark,
 		"notifyUrl":     pays.NotifyUrl,
 	}
-	data["sign"] = hx.sign(data)
+	data["sign"] = hx.sign(data, hx.KeyIn)
 	bdata, err := json.Marshal(&data)
 	resp, err := req.Post(TPayUrl+TPayOutUrl, req.Header{
 		"Content-Type": "application/json",
@@ -158,6 +162,7 @@ func (hx *HXPays) PayOut(config string, pays *Pays) (bool, error) {
 	if err != nil {
 		return false, err
 	}
+	global.Log.Info(resp.String())
 	res := HXPayOutSuc{}
 	if err := resp.ToJSON(&res); err != nil {
 		return false, err

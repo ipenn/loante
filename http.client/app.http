@@ -7,7 +7,7 @@ Content-Type: application/json
 {
   "mch_id": 1,
   "type": 1,
-  "params": ["62000"],
+  "params": ["62500"],
   "phone": "+919538189742"
 }
 

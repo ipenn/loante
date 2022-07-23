@@ -74,7 +74,7 @@ func (a *Merchant) Set(col string, where string) error {
 	return nil
 }
 
-//AddService 服务消费  <count 件数> <t 类型 = 1 短信 2=服务费 >
+//AddService 服务消费  <count 件数> <t 类型 = 1 短信 2=风控服务费 >
 func (a *Merchant)AddService(count, t int)  {
 	//获取费用标准
 	sPrice := ServicePrice{}
@@ -89,8 +89,12 @@ func (a *Merchant)AddService(count, t int)  {
 	fund := new(MerchantFund) //mch_id,create_time,amount,type,fund_no,path,remark,currency,in_account_no,rate
 	fund.MchId = a.Id
 	fund.CreateTime = tools.GetFormatTime()
-	fund.Amount = amount
-	fund.Type = t
+	fund.Amount = amount * -1
+	if t == 1{
+		fund.Type = 4 //短信扣费
+	}else if t == 2{
+		fund.Type = 5 //风控服务费
+	}
 	fund.FundNo = fmt.Sprintf("%s-%d", tools.InviteCode(8), a.Id)
 	fund.Remark = ""
 	fund.Currency = sPrice.DeductType

@@ -59,7 +59,15 @@ type User struct {
 	Ifsc                          string `json:"ifsc"`
 	BankName                      string `json:"bank_name"`
 	BankDidTransferred            int    `json:"bank_did_transferred"`
-	SocialAccounts                string `json:"social_accounts"`
+	SocialAccounts 				  string `json:"social_accounts"`
+	IdNo                          string `json:"id_no"`
+}
+
+type UserList struct {
+	User
+	ApplyingLoad				int		`json:"applying_load" bun:"applying_load"` //申请中的贷款
+	Loading						int		`json:"loading" bun:"loading"` //贷款中的贷款
+	LoanRepaid					int		`json:"loan_repaid" bun:"loan_repaid"` //已还款的贷款
 }
 
 func (a *User) Insert() {
@@ -91,9 +99,16 @@ func (a *User) Update(where string) {
 	}
 }
 
-func (a *User) Page(where string, page, limit int) ([]User, int) {
-	var datas []User
-	count, _ := global.C.DB.NewSelect().Model(&datas).Where(where).Order(fmt.Sprintf("u.id desc")).Offset((page - 1) * limit).Limit(limit).ScanAndCount(global.C.Ctx)
+func (a *User) Page(where string, page, limit int) ([]UserList, int) {
+	var datas []UserList
+	count, _ := global.C.DB.NewSelect().Model((*User)(nil)).
+		ColumnExpr("u.*").
+		ColumnExpr("b1.applying_load, b2.loading,b3.loan_repaid").
+		Join("LEFT JOIN (select uid,count(*) as applying_load from borrow where status < 5 and status > 0 group by uid) as b1").JoinOn("b1.uid = u.id").
+		Join("LEFT JOIN (select uid,count(*) as loading from borrow where status = 5 group by uid) as b2").JoinOn("b2.uid = u.id").
+		Join("LEFT JOIN (select uid,count(*) as loan_repaid from borrow where status > 7 group by uid) as b3").JoinOn("b3.uid = u.id").
+		Where(where).Order(fmt.Sprintf("u.id desc")).
+		Offset((page - 1) * limit).Limit(limit).ScanAndCount(global.C.Ctx, &datas)
 	return datas, count
 }
 
@@ -215,15 +230,15 @@ func (a *UserQuota) Increase(pid, uid, overdue int)  {
 	//获取规则
 	config19 := new(SystemSetting)
 	config19.One("id = 19") //逾期结清不提额（0：否，1：是）
-	rules, _ := new(ProductPrecept).Page(fmt.Sprintf("status = 1 and product_id = %d", pid),1,1000)
-	where := fmt.Sprintf("uid = %d and product_id = %d and (status = 8", uid, pid)
+	rules, _ := new(ProductPrecept).Page(fmt.Sprintf("ppt.status = 1 and ppt.product_id = %d", pid),1,1000)
+	where := fmt.Sprintf("b.uid = %d and b.product_id = %d and (b.status = 8", uid, pid)
 	remark := ""
 	if config19.ParamValue == "0"{
-		where += " or status = 9)"
-		remark += "逾期结清不提额"
+		where += " or b.status = 9)"
+		remark += "逾期结清也提额"
 	}else{
 		where += ")"
-		remark += "逾期结清也提额"
+		remark += "逾期结清不提额"
 	}
 	config21 := new(SystemSetting)
 	config21.One("id = 21")
@@ -238,16 +253,16 @@ func (a *UserQuota) Increase(pid, uid, overdue int)  {
 	count := borrow.Count(where)
 	amount := 0.0
 	for _, item := range rules{
-		if item.MinCount == count{
+		if item.MinCount <= count{
 			amount = item.Amount
-			remark += fmt.Sprintf(" count = %d", item.MinCount)
 		}
 	}
+	remark += fmt.Sprintf(" count = %d", count)
 	if amount > 0{
 		// 插入提额数据
 		uq := new(UserQuota)
 		uq.ProductId = pid
-		uq.ProductId = uid
+		uq.UserId = uid
 		uq.Quota = int(amount)
 		uq.Remark = remark
 		uq.Insert()
@@ -275,9 +290,9 @@ func (a *UserQuota) Increase(pid, uid, overdue int)  {
 		if product.Id > 0{
 			uq := new(UserQuota)
 			uq.ProductId = pid
-			uq.ProductId = uid
+			uq.UserId = uid
 			uq.Quota = product.StartAmount
-			uq.Remark = remark
+			uq.Remark = "逾期重置额度"
 			uq.Insert()
 			global.Log.Info("逾期重置额度 %v", uq)
 		}

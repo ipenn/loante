@@ -27,6 +27,8 @@ type Config struct {
 		Port  int
 		Host  string
 		Debug bool
+		PayInNotify string
+		PayOutNotify string
 	}
 	//安全配置的
 	Safety struct {
@@ -48,6 +50,8 @@ type Config struct {
 		VisitTag map[string]string 	`json:"visit_tag"`
 		RepaymentRelationship map[string]string 	`json:"repayment_relationship"`
 		UTRStatus map[string]string 	`json:"utr_status"`
+		GenderType map[string]string 	`json:"gender_type"`
+		MchFundType map[string]string 	`json:"mch_fund_type"`
 	}  `json:"maps"`
 }
 

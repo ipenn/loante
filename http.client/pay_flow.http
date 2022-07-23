@@ -1,0 +1,12 @@
+
+### 部分还款
+POST {{host}}/pay_flow/pay_partial
+token:{{token}}
+Content-Type: application/json
+
+{
+  "borrow_id": 1,
+  "type":1,
+  "amount": 420,
+  "payment_id":0
+}

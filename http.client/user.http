@@ -6,15 +6,39 @@ Content-Type: application/json
 {
   "page": 1,
   "size": 10,
-  "start_date": "",
-  "end_date":"",
+  "start_time": "",
+  "end_time": "",
   "name": "",
-  "mobile":"",
-  "sex": "",
-  "old":"",
-  "traffic_id": "",
-  "market_id":"",
-  "id": ""
+  "phone": "",
+  "gender":-1,
+  "new": -1,
+  "traffic_id": -1,
+  "token":"",
+  "id":""
+}
+
+###
+POST {{host}}/user/black/set
+token:{{token}}
+Content-Type: application/json
+
+{
+  "id": 1,
+  "black": 0
+}
+
+###
+GET {{host}}/borrow/list
+token:{{token}}
+Content-Type: application/json
+
+{
+  "page": 1,
+  "size": 10,
+  "name":"Va jacky",
+  "postponed": -1,
+  "loan_type": -1,
+  "status": -1
 }
 
 ###
@@ -65,7 +89,5 @@ token:{{token}}
 Content-Type: application/json
 
 {
-  "page": 1,
-  "size": 10,
-  "user_id": 1
+  "id": 1
 }
