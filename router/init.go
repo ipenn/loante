@@ -7,7 +7,6 @@ import (
 	"loante/global"
 	v1 "loante/router/v1"
 	"loante/service/middleware"
-	"loante/service/model"
 )
 
 func Init() {
@@ -43,7 +42,6 @@ func Init() {
 	app.Static("/static", "./static")
 
 	app.Get("/", func(c *fiber.Ctx) error {
-		model.GetMerchantStatisticsValue()
 		return c.SendString("Hello, World!")
 	})
 
@@ -192,6 +190,7 @@ func Init() {
 	//产品配置
 	v.Get("/productDelayConfig", productDelayConfigHandle.ProductDelayConfig)
 	v.Post("/productDelayConfig/create_or_update", productDelayConfigHandle.ProductDelayConfigCreateOrUpdate)
+
 	//预提醒管理
 	v.Get("/remind_company", remindHandle.RemindCompany)
 	v.Post("/remind_company/create", remindHandle.RemindCompanyCreate)

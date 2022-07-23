@@ -627,3 +627,4 @@ Content-Disposition: form-data; name="content"
 2022-07-23 11:26:32 [INFO] [D:/works/ipenn/loante/service/model/user.go:269] 插入提额数据 &{{} 10 1 1 8000 2022-07-23 11:26:32 逾期结清也提额 不满24小时也提额 count = 1}
 2022-07-23 11:26:32 [INFO] [D:/works/ipenn/loante/service/model/user.go:297] 逾期重置额度 &{{} 11 1 1 5000 2022-07-23 11:26:32 逾期重置额度}
 2022-07-23 21:38:08 [INFO] [D:/works/ipenn/loante/service/model/user.go:269] 插入提额数据 &{{} 12 1 1 8000 2022-07-23 21:38:08 逾期结清也提额 不满24小时也提额 count = 1}
+2022-07-23 22:56:13 [EROR] [D:/works/ipenn/loante/service/model/referrer_config.go:55] &{{} {{} 0  } 0     0 0 0} err=sql: no rows in result set

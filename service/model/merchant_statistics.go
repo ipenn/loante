@@ -28,7 +28,7 @@ type MerchantStatisticsList struct {
 	ApplyCount       int             `json:"apply_count"`
 	CreateTime       string          `json:"create_time"`
 	AvgServiceAmount float64         `json:"avg_service_amount"`
-	AvgLoan          int             `json:"avg_loan"`
+	AvgLoan          float64         `json:"avg_loan"`
 	Merchant         *MerchantLittle `json:"merchant" bun:"rel:belongs-to,join:mch_id=id"`
 }
 
@@ -49,7 +49,7 @@ func (a *MerchantStatistics) Page(where string, page, limit int) ([]MerchantStat
 			if data.LoanCount == 0 {
 				data.AvgLoan = 0
 			} else {
-				data.AvgLoan = data.LoanCount * 100 / data.ApplyCount
+				data.AvgLoan = tools.ToFloat64(data.LoanCount )/ tools.ToFloat64(data.ApplyCount)
 			}
 		}
 	}
@@ -63,7 +63,7 @@ type GetMerchantStatistics struct {
 	MchId  int     `bun:"mch_id" json:"mch_id"`
 }
 
-// GetMerchantStatisticsValue 定时任务,插入商户费用统计
+// GetMerchantStatisticsValue 定时任务,插入商户日报
 func GetMerchantStatisticsValue() {
 	var mchid []MerchantId
 	//rows, _ := global.C.DB.QueryContext(global.C.Ctx, `SELECT mch_id FROM merchant_fund WHERE TO_DAYS(NOW())- TO_DAYS( create_time ) = 1 GROUP BY mch_id`)

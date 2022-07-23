@@ -90,51 +90,51 @@ func GetExpendStatisticsValue() {
 			var esv []ExpendStatisticsValue
 			var ev ExpendStatistics
 			global.C.DB.NewSelect().Model(&MerchantFund{}).
-				Column("id", "mch_id", "type","currency").
+				Column("id", "mch_id", "type", "currency").
 				ColumnExpr("SUM( amount ) as amount").
 				ColumnExpr("COUNT(id) as count").
 				Where("amount != 0").
 				Where(" TO_DAYS(NOW())- TO_DAYS( create_time ) = 1").
 				Where(fmt.Sprintf("mch_id=%d", id.MchId)).
-			GroupExpr("type").GroupExpr("currency").GroupExpr("amount").
-				GroupExpr("SIGN(amount)").Scan(global.C.Ctx, &esv)
+				GroupExpr("type").GroupExpr("currency").GroupExpr("amount").
+				Scan(global.C.Ctx, &esv)
 			for _, value := range esv {
 				ev.MchId = value.MchId
 				ev.CreateTime = tools.GetFormatDay()
-				if value.Type == 0 && value.Amount > 0 && value.Currency == 1 {
+				if value.Type == 0 && value.Currency == 1 {
 					ev.PutInAmount = value.Amount
 				}
-				if value.Type == 0 && value.Amount > 0 && value.Currency == 2 {
+				if value.Type == 0 && value.Currency == 2 {
 					ev.PutInUamount = value.Amount
 				}
-				if value.Type == 0 && value.Amount > 0 {
+				if value.Type == 0 {
 					ev.PutInCount += value.Count
 				}
-				if value.Type == 0 && value.Amount < 0 && value.Currency == 1 {
+				if value.Type == 1 && value.Currency == 1 {
 					ev.PutOutAmount = value.Amount
 				}
-				if value.Type == 0 && value.Amount < 0 && value.Currency == 2 {
+				if value.Type == 1 && value.Currency == 2 {
 					ev.PutOutUamount = value.Amount
 				}
-				if value.Type == 0 && value.Amount < 0 {
+				if value.Type == 1 {
 					ev.PutOutCount += value.Count
 				}
-				if value.Type == 1 && value.Currency == 1 {
+				if value.Type == 5 && value.Currency == 1 {
 					ev.RiskAmount = value.Amount
 				}
-				if value.Type == 1 && value.Currency == 2 {
+				if value.Type == 5 && value.Currency == 2 {
 					ev.RiskUamount = value.Amount
 				}
-				if value.Type == 1 {
+				if value.Type == 5 {
 					ev.RiskCount += value.Count
 				}
-				if value.Type == 2 && value.Currency == 1 {
+				if value.Type == 4 && value.Currency == 1 {
 					ev.SmsAmount = value.Amount
 				}
-				if value.Type == 2 && value.Currency == 2 {
+				if value.Type == 4 && value.Currency == 2 {
 					ev.SmsUamount = value.Amount
 				}
-				if value.Type == 2 {
+				if value.Type == 4 {
 					ev.SmsCount += value.Count
 				}
 				if value.Type == 3 && value.Currency == 1 {
