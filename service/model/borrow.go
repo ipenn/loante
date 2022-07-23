@@ -19,12 +19,14 @@ type BorrowLittle struct {
 	BeRepaidAmount int    `json:"be_repaid_amount"`
 	EndTime        string `json:"end_time"`
 	LoanAmount     int    `json:"loan_amount"`
+	PostponedPeriod    	int				`json:"postponed_period"` //展期期数
+	ExpireDay 			int             `json:"expire_day"` //到期剩余天数 或者 逾期天数
+
 }
 type Borrow struct {
 	bun.BaseModel `bun:"table:borrow,alias:b"`
 	BorrowLittle
 	Postponed          	int				`json:"postponed"`
-	PostponedPeriod    	int				`json:"postponed_period"`
 	PostponeValuation 	int				`json:"postpone_valuation"`
 	LoanType         	int				`json:"loan_type"`
 	Score            	int				`json:"score"`
@@ -38,10 +40,10 @@ type Borrow struct {
 	CompleteTime       string          `json:"complete_time"`
 	ActualAmount       int             `json:"actual_amount"`
 	LatePaymentFee     int             `json:"late_payment_fee"`      //滞纳金
-	LatePaymentFeeRate float64             `json:"late_payment_fee_rate"` //滞纳金
+	LatePaymentFeeRate float64          `json:"late_payment_fee_rate"` //滞纳金
 	User               *UserLittle     `json:"user" bun:"rel:belongs-to,join:uid=id"`
 	Merchant           *MerchantLittle `json:"merchant" bun:"rel:belongs-to,join:mch_id=id"`
-	Product            *Product        `json:"product" bun:"rel:belongs-to,join:product_id=id"`
+	Product            *ProductLittle        `json:"product" bun:"rel:belongs-to,join:product_id=id"`
 }
 
 func (a *Borrow) Insert() {
@@ -75,7 +77,8 @@ func (a *Borrow) Update(where string) {
 
 func (a *Borrow) Page(where string, page, limit int) ([]Borrow, int) {
 	var datas []Borrow
-	count, _ := global.C.DB.NewSelect().Model(&datas).Where(where).Order(fmt.Sprintf("b.id desc")).Offset((page - 1) * limit).Limit(limit).ScanAndCount(global.C.Ctx)
+	count, _ := global.C.DB.NewSelect().Model(&datas).Relation("User").Relation("Merchant").Relation("Product").
+		Where(where).Order(fmt.Sprintf("b.id desc")).Offset((page - 1) * limit).Limit(limit).ScanAndCount(global.C.Ctx)
 	return datas, count
 }
 

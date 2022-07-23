@@ -9,6 +9,8 @@ dbName="loante_db"
 port=51111
 debug=true
 host="http://192.168.1.5:51111"
+payInNotify="http://192.168.1.5:51111/v1/pay_notify" #代收回调
+payOutNotify="http://192.168.1.5:51111/v1/out_notify" #代付回调
 
 [safety]
 secret="theconditionofbeingprotectedfromorunlikely"
@@ -24,8 +26,9 @@ BlankTypes={1="身份证号", 2="手机号", 3="银行卡号", 4="姓名", 5="�
 SystemSettingType={1="bool值", 2="数字", 3="普通字符串"}
 StatisticsCompany={1="adjust"}
 RiskModel={1="水星"}
-MchFundType={1="现金充值",2="服务退款",3="现金退款",4="服务扣款",5="催收提醒短信扣款",6="风控服务费扣款"}
+MchFundType={1="现金充值",2="现金退款",3="服务扣款",4="短信扣款",5="风控服务费扣款"}
 RepaymentWish={ 1 = "有能力有意愿还款",2 = "有能力无意愿还款", 3 = "无能力有意愿还款", 4 = "无意愿无能力还款", 5 = "其他"}
 VisitTag={ 1="有人接听", 2="WhatsApp可联", 3="whatsAPP未回复", 4="无人接听", 5="电话占线", 6="关机", 7="其他方式可联", 8="没有whatsap账号", 9="空号错号", 10="停机", 11="特殊【中介黑产催收】", 12="其他"}
 RepaymentRelationship={ 1="本人", 2="配偶", 3="父母", 4="子女", 5="亲人", 6="同事", 7="朋友", 8="其他"}
 UTRStatus={ 1="待处理", 2="审核驳回", 3="已到账", 4="等待到账"}
+GenderType={ 10="男", 20="女", 30="未知"}

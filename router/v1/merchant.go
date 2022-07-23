@@ -7,6 +7,7 @@ import (
 	"loante/service/req"
 	"loante/service/resp"
 	"loante/tools"
+	"math"
 )
 
 type merchant struct{}
@@ -114,10 +115,10 @@ func (a *merchant) Modify(c *fiber.Ctx) error {
 
 type merchantFundReq struct {
 	req.PageReq
-	MchId     int    `json:"mch_id"`
-	Type      string `json:"type"`
-	StartTime string `json:"start_time"`
-	EndTime   string `json:"end_time"`
+	MchId     int    `json:"mch_id" query:"mch_id"`
+	Type      int `json:"type" query:"type"`
+	StartTime string `json:"start_time" query:"start_time"`
+	EndTime   string `json:"end_time" query:"end_time"`
 }
 
 func (a *merchant) Funds(c *fiber.Ctx) error {
@@ -129,8 +130,8 @@ func (a *merchant) Funds(c *fiber.Ctx) error {
 	if input.MchId > 0 {
 		where += fmt.Sprintf(" and mf.mch_id='%d'", input.MchId)
 	}
-	if len(input.Type) > 0 {
-		where += fmt.Sprintf(" and mf.type='%s'", input.Type)
+	if input.Type > 0 {
+		where += fmt.Sprintf(" and mf.type='%d'", input.Type)
 	}
 	if len(input.StartTime) > 0 {
 		where += fmt.Sprintf(" and mf.create_time > '%s'", input.StartTime)
@@ -154,6 +155,7 @@ type fundCreateReq struct {
 	FundNo      string  `json:"fund_no"`
 	Remark      string  `json:"remark"`
 	Path        string  `json:"path"`
+	Type        int  	`json:"type"` //充值类型   1="现金充值",2="现金退款",3="服务扣款",4="短信扣款",5="风控服务费扣款"
 }
 
 func (a *merchant) FundCreate(c *fiber.Ctx) error {
@@ -167,6 +169,12 @@ func (a *merchant) FundCreate(c *fiber.Ctx) error {
 	if mch.Id == 0 {
 		return resp.Err(c, 1, "商户不存在")
 	}
+	if input.Type == 1{
+		input.Amount = math.Abs(input.Amount)
+	}
+	if input.Type == 2{
+		input.Amount = math.Abs(input.Amount) * -1
+	}
 	fund := new(model.MerchantFund)
 	fund.MchId = input.MchId
 	fund.InAccountNo = input.InAccountNo
@@ -176,7 +184,15 @@ func (a *merchant) FundCreate(c *fiber.Ctx) error {
 	fund.FundNo = input.FundNo
 	fund.Remark = input.Remark
 	fund.Path = input.Path
+	fund.Type = input.Type
 	fund.Insert()
+	//充值到商户Balance
+	if input.Currency == 1{ //充值人民币
+		mch.CnyBalance += input.Amount
+	}else{
+		mch.CnyBalance += input.Amount
+	}
+	mch.Update(fmt.Sprintf("id = %d", input.MchId))
 	return resp.OK(c, "")
 }
 

@@ -7,7 +7,6 @@ import (
 	"loante/global"
 	v1 "loante/router/v1"
 	"loante/service/middleware"
-	"loante/service/model"
 )
 
 func Init() {
@@ -43,7 +42,6 @@ func Init() {
 	app.Static("/static", "./static")
 
 	app.Get("/", func(c *fiber.Ctx) error {
-		model.GetMerchantStatisticsValue()
 		return c.SendString("Hello, World!")
 	})
 
@@ -102,7 +100,8 @@ func Init() {
 	v.Get("/merchant/list", merchantHandle.Lists)
 	v.Post("/merchant/create", merchantHandle.Create)
 	v.Post("/merchant/modify", merchantHandle.Modify)
-	v.Post("/merchant/fund/create", merchantHandle.FundCreate)
+	v.Get("/merchant/funds", merchantHandle.Funds) //商户资金列表 财务 -> 流水
+	v.Post("/merchant/fund/create", merchantHandle.FundCreate)	//商户充值和退款
 	v.Get("/merchant/service_rule", merchantHandle.ServiceRule)                 //进件计价规则
 	v.Post("/merchant/service_rule/create", merchantHandle.ServiceRuleCreate)   //进件计价规则创建
 	v.Post("/merchant/service_rule/del", merchantHandle.ServiceRuleDel)         //进件计价规则删除
@@ -127,6 +126,7 @@ func Init() {
 	//客户管理
 	v.Get("/user/list", userHandle.UserQuery)
 	v.Get("/user/detail", userHandle.Details)
+	v.Post("/user/black/set", userHandle.SetBlack)
 	v.Get("/user/contact", userHandle.Contact) //获取用户的通讯录
 	v.Get("/user/sms", userHandle.Sms)         //获取用户的短信
 	v.Get("/user/app", userHandle.App)         //获取用户的APP
@@ -163,6 +163,8 @@ func Init() {
 	v.Get("/borrow/export", borrowHandle.QueryExport)             //获取借贷信息导出的功能
 	v.Post("/borrow/reconciliation", borrowHandle.Reconciliation) //平账操作
 	v.Post("/borrow/deposit", borrowHandle.Deposit)               //入账操作
+	v.Post("/borrow/funds", borrowHandle.Funds)               	//费用变更
+	v.Post("/borrow/set_loan/fail", borrowHandle.SetLoanFail)     //设置放款失败
 
 	//还款
 	v.Get("/pay_flow/repayments", payHandle.Repayments)              //还款记录
@@ -175,7 +177,7 @@ func Init() {
 	v.Get("/pay_flow/utr", payHandle.Utrs)                      //UTR对账单
 	v.Get("/pay_flow/utr_dismissed", payHandle.UtrsDismissed)   //UTR对账单验证失败的
 	v.Post("/pay_flow/utr_verify", payHandle.UtrsVerify)
-	v.Post("/pay_flow/pay_partial", payHandle.PayPartial) //生成 部分还款链接
+	v.Post("/pay_flow/pay_partial", payHandle.PayPartial) 	 //生成 部分还款链接
 
 	//短信模板
 	v.Get("/sms_template", smsTemplateHandle.SmsTemplate)

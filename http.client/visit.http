@@ -1,0 +1,30 @@
+###
+GET {{host}}/visit/reminds
+token:{{token}}
+Content-Type: application/json
+
+{
+  "page": 1,
+  "size": 10
+}
+
+###
+GET {{host}}/visit/reminding
+token:{{token}}
+Content-Type: application/json
+
+{
+  "page": 1,
+  "size": 10
+}
+
+
+###
+GET {{host}}/visit/urges
+token:{{token}}
+Content-Type: application/json
+
+{
+  "page": 1,
+  "size": 10
+}

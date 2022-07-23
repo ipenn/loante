@@ -56,7 +56,7 @@ func verify(token string) (*TokenPayload, error) {
 	if !ok {
 		return nil, errors.New("Something went wrong")
 	}
-	username, ok := claims["Username"].(string)
+	username, ok := claims["AdminName"].(string)
 	if !ok {
 		return nil, errors.New("Something went wrong")
 	}
@@ -82,7 +82,7 @@ func verify(token string) (*TokenPayload, error) {
 		Id:            int(id),
 		AdminName:     username,
 		RoleId:        roleId,
-		AdminType:     claims["UserType"].(string),
+		AdminType:     claims["AdminType"].(string),
 		MchId:         MchId,
 		RemindId:      RemindId,
 		UrgeId:        UrgeId,

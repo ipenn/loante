@@ -143,7 +143,7 @@ func (t *TPays)PayIn(config string, pays *Pays) (bool, map[string]interface{}, e
 	if err != nil {
 		return false, nil, err
 	}
-	fmt.Println(resp.String())
+	global.Log.Info(resp.String())
 	res := TPayInSuc{}
 	if err := resp.ToJSON(&res); err != nil {
 		return false, nil, err
@@ -182,6 +182,7 @@ func (t *TPays) PayOut(config string, pays *Pays) (bool, error) {
 	if err != nil {
 		return false, err
 	}
+	global.Log.Info(resp.String())
 	res := TPayOutSuc{}
 	if err := resp.ToJSON(&res); err != nil {
 		return false, err

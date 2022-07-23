@@ -3,6 +3,7 @@ package v1
 import (
 	"fmt"
 	"github.com/gofiber/fiber/v2"
+	"loante/global"
 	"loante/service/model"
 	"loante/service/req"
 	"loante/service/resp"
@@ -73,9 +74,41 @@ func (a *user) Details(c *fiber.Ctx) error {
 	}
 	info := new(model.User)
 	info.One(fmt.Sprintf("id = %d", input.Id))
+	var applyingLoad int = 0
+	var loading int = 0
+	var loanRepaid int = 0
+	global.C.DB.NewSelect().Model((*model.Borrow)(nil)).ColumnExpr("count(*)").Where(fmt.Sprintf("status < 5 and status > 0 and uid = %d", input.Id)).Scan(global.C.Ctx, &applyingLoad)
+	global.C.DB.NewSelect().Model((*model.Borrow)(nil)).ColumnExpr("count(*)").Where(fmt.Sprintf("status = 5 and uid = %d", input.Id)).Scan(global.C.Ctx, &loading)
+	global.C.DB.NewSelect().Model((*model.Borrow)(nil)).ColumnExpr("count(*)").Where(fmt.Sprintf("status > 7 and uid = %d", input.Id)).Scan(global.C.Ctx, &loanRepaid)
+	//global.C.DB.QueryContext(global.C.Ctx,fmt.Sprintf("select count(*) as applying_load from borrow where status < 5 and status > 0 and uid = %d", input.Id), &applyingLoad)
+	//global.C.DB.QueryContext(global.C.Ctx,fmt.Sprintf("select count(*) as loading from borrow where status = 5 and uid = %d", input.Id), &loading)
+	//global.C.DB.QueryContext(global.C.Ctx,fmt.Sprintf("select count(*) as applying_load from borrow where status > 7 and uid = %d", input.Id), &loanRepaid)
+
 	return resp.OK(c, map[string]interface{}{
 		"info": info,
+		"applying_load": applyingLoad,
+		"loading": loading,
+		"loan_repaid": loanRepaid,
 	})
+}
+
+type setBlackReq struct {
+	req.IdReq
+	Black int `json:"black"`
+}
+//SetBlack 设置黑名单
+func (a *user) SetBlack(c *fiber.Ctx) error {
+	input := new(setBlackReq)
+	if err := tools.ParseBody(c, input); err != nil {
+		return resp.Err(c, 1, err.Error())
+	}
+	info := new(model.User)
+	info.One(fmt.Sprintf("id = %d", input.Id))
+	if info.Id > 0{
+		info.Blacklist = input.Black
+		info.Update(fmt.Sprintf("id = %d", input.Id))
+	}
+	return resp.OK(c, "")
 }
 type userInfoReq struct {
 	req.PageReq

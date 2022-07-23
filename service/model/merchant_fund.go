@@ -16,7 +16,7 @@ type MerchantFund struct {
 	Type          int      `json:"type"`
 	FundNo        string   `json:"fund_no"`
 	Path          string   `json:"path"`
-	Currency      int      `json:"remark"`
+	Currency      int      `json:"currency"`
 	Rate          float64  `json:"rate"`
 	Remark        string   `json:"remark"`
 	InAccountNo   string   `json:"in_account_no"`

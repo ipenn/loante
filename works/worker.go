@@ -12,6 +12,12 @@ func main()  {
 	//c.AddFunc("* 1 * * * *", func() {
 	//	fmt.Println(tools.GetFormatTime())
 	//})
+	//c2.OrdersPayTimeOut()
+	//c2.BorrowToRemind()
+	//c2.BorrowToUrge()
+	//c2.BorrowRepaymentTimeout()
+	//c2.BorrowLatePaymentFee()
+	//c2.BorrowExpireDay()
 
 	//1 每分钟 查找支付超时的订单
 	c.AddFunc("@every 1m", c2.OrdersPayTimeOut)
@@ -27,6 +33,9 @@ func main()  {
 
 	//5 每天 扫描 计算滞纳金
 	c.AddFunc("@every 1m", c2.BorrowLatePaymentFee)
+
+	//6 每天零点更新剩余天数
+	c.AddFunc("@every 1m", c2.BorrowExpireDay)
 
 	c.Start()
 

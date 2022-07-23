@@ -47,8 +47,8 @@ Content-Type: application/json
 {
   "page": 1,
   "size":10,
-  "mch_id": 0,
-  "type":"0",
+  "mch_id": 1,
+  "type":1,
   "start_time": "",
   "end_time":""
 }

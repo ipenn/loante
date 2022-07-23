@@ -126,7 +126,7 @@ func (t *WhalePay)PayIn(config string, pays *Pays) (bool, map[string]interface{}
 	if err != nil {
 		return false, nil, err
 	}
-	fmt.Println(resp.String())
+	global.Log.Info(resp.String())
 	res := WhalePayInSuc{}
 	if err := resp.ToJSON(&res); err != nil {
 		return false, nil, err
@@ -162,6 +162,7 @@ func (t *WhalePay) PayOut(config string, pays *Pays) (bool, error) {
 	if err != nil {
 		return false, err
 	}
+	global.Log.Info(resp.String())
 	res := WhalePayOutSuc{}
 	if err := resp.ToJSON(&res); err != nil {
 		return false, err

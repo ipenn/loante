@@ -6,13 +6,17 @@ import (
 	"loante/global"
 )
 
-type RemindGroup struct {
+type RemindGroupLittle struct {
 	bun.BaseModel `bun:"table:remind_group,alias:rg"`
 	Id            int             `json:"id" bun:",pk"`
+	GroupName     string          `json:"group_name"`
+}
+type RemindGroup struct {
+	bun.BaseModel `bun:"table:remind_group,alias:rg"`
+	RemindGroupLittle
 	CompanyId     int             `json:"company_id"`
 	MchId         int             `json:"mch_id"`
 	AdminId       int             `json:"admin_id"`
-	GroupName     string          `json:"group_name"`
 	Status        int             `json:"status"`
 	RemindCompany *RemindCompany  `json:"remind_company" bun:"rel:belongs-to,join:company_id=id"`
 	Merchant      *MerchantLittle `json:"merchant" bun:"rel:belongs-to,join:mch_id=id"`

@@ -58,6 +58,7 @@ func (a *BorrowVisitDetail)Update(where string)  {
 
 func (a *BorrowVisitDetail)Page(where string, page, limit int) ([]BorrowVisitDetail, int) {
 	var datas []BorrowVisitDetail
-	count, _ := global.C.DB.NewSelect().Model(&datas).Where(where).Order(fmt.Sprintf("bvd.id desc")).Offset((page-1)*limit).Limit(limit).ScanAndCount(global.C.Ctx)
+	count, _ := global.C.DB.NewSelect().Model(&datas).Relation("User").Relation("Borrow").Relation("UrgeCompany").Relation("UrgeUser").
+		Where(where).Order(fmt.Sprintf("bvd.id desc")).Offset((page-1)*limit).Limit(limit).ScanAndCount(global.C.Ctx)
 	return datas, count
 }
