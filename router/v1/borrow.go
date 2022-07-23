@@ -226,7 +226,7 @@ func (a *borrow)Deposit(c *fiber.Ctx) error {
 	fundData.Uid = borrowData.Uid
 	fundData.RepaidType = 1
 	fundData.RepaidStatus = 1
-	fundData.Type = 3
+	fundData.Type = 4
 	fundData.ApplyAmount = int(input.Amount)
 	fundData.ActualAmount = int(input.Amount)
 	fundData.CreateTime = t

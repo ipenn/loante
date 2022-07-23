@@ -8,8 +8,36 @@ Content-Type: application/json
   "size": 10
 }
 
-###
+### 催收中的订单
 GET {{host}}/visit/reminding
+token:{{token}}
+Content-Type: application/json
+
+{
+  "page": 1,
+  "size": 10,
+  "name": "",
+  "phone":"",
+  "borrow_id": 0,
+  "tag":"",
+  "over_due_days": 0,
+  "wish":"",
+  "status": "",
+  "mch_id":0,
+  "product_id": 0,
+  "remind_company_id":0,
+  "remind_group_id": 0,
+  "remind_id":0,
+  "pay_start_time": "",
+  "pay_end_time":"",
+  "visit_start_time": "",
+  "visit_end_time":"",
+  "repayment_start_time": "",
+  "repayment_end_time":""
+}
+
+### 预提醒完成的订单
+GET {{host}}/visit/reminded
 token:{{token}}
 Content-Type: application/json
 
@@ -18,6 +46,56 @@ Content-Type: application/json
   "size": 10
 }
 
+### 预提醒记录
+GET {{host}}/visit/remind_detail
+token:{{token}}
+Content-Type: application/json
+
+{
+  "page": 1,
+  "size": 10,
+  "name": "",
+  "phone":"",
+  "borrow_id": 0,
+  "over_due_days":0,
+  "contact_phone": "",
+  "wish":"",
+  "relationship": "",
+  "tag":"",
+  "urge_id": 0,
+  "urge_company_id":0,
+  "urge_group_id":0,
+  "start_time":"",
+  "end_time": ""
+}
+
+### 新增提醒记录
+POST {{host}}/visit/remind/action
+token:{{token}}
+Content-Type: application/json
+
+{
+  "borrow_id": 1,
+  "relationship":"本人",
+  "contact_name": "Patel Kirtankumar Arvindbhai",
+  "contact_phone":"9909793425",
+  "promised_repayment_amount": "100",
+  "promised_repayment_time":"2022-07-29",
+  "next_visit_time": "2022-07-29",
+  "tag":"有人接听",
+  "wish": "有能力有意愿还款",
+  "remark":"BBAA"
+}
+
+### 分配预提醒专员
+POST {{host}}/visit/remind/assign
+token:{{token}}
+Content-Type: application/json
+
+{
+  "borrow_id": 1,
+  "admin_id":6
+}
 
 ###
 GET {{host}}/visit/urges
@@ -27,4 +105,64 @@ Content-Type: application/json
 {
   "page": 1,
   "size": 10
+}
+
+
+### utr记录
+GET {{host}}/pay_flow/utr
+token:{{token}}
+Content-Type: application/json
+
+{
+  "page": 1,
+  "size":10,
+  "name": "Va jacky",
+  "phone":"",
+  "utr_code": "",
+  "mch_id": 0,
+  "product_id": 0,
+  "status": 0,
+  "start_time": "",
+  "end_time":""
+}
+
+### utr 审核驳回记录
+GET {{host}}/pay_flow/utr_dismissed
+token:{{token}}
+Content-Type: application/json
+
+{
+  "page": 1,
+  "size":10,
+  "name": "Va jacky",
+  "phone":"",
+  "utr_code": "",
+  "mch_id": 0,
+  "product_id": 0,
+  "status": 0,
+  "start_time": "",
+  "end_time":""
+}
+
+### 新增utr记录
+POST {{host}}/visit/utr/create
+token:{{token}}
+Content-Type: application/json
+
+{
+  "borrow_id": 1,
+  "path":"https://bun.uptrace.dev/hero/logo.png",
+  "utr_code": "A0000002",
+  "remark":"vA0000002A0000002"
+}
+
+### utr审核
+POST {{host}}/visit/utr/examine
+token:{{token}}
+Content-Type: application/json
+
+{
+  "id": 2,
+  "status":2,
+  "reject_reason": "A0000002"
 }

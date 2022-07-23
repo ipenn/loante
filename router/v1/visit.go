@@ -18,30 +18,30 @@ func NewVisit() *visit {
 
 type remindPageReq struct {
 	req.PageReq
-	UserName           string `json:"user_name"`            //用户名
-	Phone              string `json:"phone"`                //手机号
-	BorrowId           int    `json:"borrow_id"`            //订单编号
-	Tag                string `json:"tag"`                  //标签
-	OverDueDays        int    `json:"over_due_days"`        //逾期天数
-	Wish               string `json:"wish"`                 //还款意愿
-	Status             string    `json:"status"`               //订单状态
-	MchId              int    `json:"mch_id"`               //商户名称
-	ProductId          int    `json:"product_id"`           //产品名称
-	RemindCompanyId    int    `json:"remind_company_id"`    //催收公司
-	RemindGroupId      int    `json:"remind_group_id"`      //催收组
-	RemindId           int    `json:"remind_id"`            //催收员
-	PayStartTime       string `json:"pay_start_time"`       //还款开始时间
-	PayEndTime         string `json:"pay_end_time"`         //还款结束时间
-	VisitStartTime     string `json:"visit_start_time"`     //最近一次跟进时间
-	VisitEndTime       string `json:"visit_end_time"`       //最近一次跟进时间
-	RepaymentStartTime string `json:"repayment_start_time"` //应还款时间
-	RepaymentEndTime   string `json:"repayment_end_time"`   //应还款时间
+	Name           	   string `json:"name" query:"name"`            //用户名
+	Phone              string `json:"phone" query:"phone"`                //手机号
+	BorrowId           int    `json:"borrow_id" query:"borrow_id"`            //订单编号
+	Tag                string `json:"tag" query:"tag"`                  //标签
+	OverDueDays        int    `json:"over_due_days" query:"over_due_days"`        //逾期天数
+	Wish               string `json:"wish" query:"wish"`                 //还款意愿
+	Status             string `json:"status" query:"status"`               //订单状态
+	MchId              int    `json:"mch_id" query:"mch_id"`               //商户名称
+	ProductId          int    `json:"product_id" query:"product_id"`           //产品名称
+	RemindCompanyId    int    `json:"remind_company_id" query:"remind_company_id"`    //催收公司
+	RemindGroupId      int    `json:"remind_group_id" query:"remind_group_id"`      //催收组
+	RemindId           int    `json:"remind_id" query:"remind_id"`            //催收员
+	PayStartTime       string `json:"pay_start_time" query:"pay_start_time"`       //还款开始时间
+	PayEndTime         string `json:"pay_end_time" query:"pay_end_time"`         //还款结束时间
+	VisitStartTime     string `json:"visit_start_time" query:"visit_start_time"`     //最近一次跟进时间
+	VisitEndTime       string `json:"visit_end_time" query:"visit_end_time"`       //最近一次跟进时间
+	RepaymentStartTime string `json:"repayment_start_time" query:"repayment_start_time"` //应还款时间
+	RepaymentEndTime   string `json:"repayment_end_time" query:"repayment_end_time"`   //应还款时间
 }
 
 func (a *visit) remindBorrowQuery(input *remindPageReq) string {
 	where := " "
-	if len(input.UserName) > 0 {
-		where += fmt.Sprintf(" and user.aadhaar_name='%s'", input.UserName)
+	if len(input.Name) > 0 {
+		where += fmt.Sprintf(" and user.aadhaar_name='%s'", input.Name)
 	}
 	if len(input.Phone) > 0 {
 		where += fmt.Sprintf(" and user.phone='%s'", input.Phone)
@@ -308,7 +308,7 @@ type visitActionReq struct {
 	Relationship            string  `json:"relationship"`
 	ContactName             string  `json:"contact_name"`
 	ContactPhone            string  `json:"contact_phone"`
-	PromisedRepaymentAmount float64 `json:"promised_repayment_amount"`
+	PromisedRepaymentAmount string  `json:"promised_repayment_amount"`
 	PromisedRepaymentTime   string  `json:"promised_repayment_time"`
 	NextVisitTime           string  `json:"next_visit_time"`
 	Tag                     string  `json:"tag"`
@@ -328,7 +328,7 @@ func (a *visit) UrgeAction(c *fiber.Ctx) error {
 		return resp.Err(c, 1, "借款不存在")
 	}
 	borrowVisitData := new(model.BorrowVisit)
-	borrowVisitData.One(fmt.Sprintf("id = %d", input.BorrowId))
+	borrowVisitData.One(fmt.Sprintf("borrow_id = %d", input.BorrowId))
 	if borrowVisitData.BorrowId == 0 {
 		return resp.Err(c, 1, "借款还没有分配")
 	}
@@ -338,6 +338,55 @@ func (a *visit) UrgeAction(c *fiber.Ctx) error {
 	//开始新增
 	t := tools.GetFormatTime()
 	visitData := new(model.BorrowVisitDetail)
+	visitData.Type = 1
+	visitData.MchId = borrowData.MchId
+	visitData.ProductId = borrowData.ProductId
+	visitData.BorrowId = borrowData.Id
+	visitData.UserId = borrowData.Uid
+	visitData.UrgeCompanyId = borrowVisitData.RemindCompanyId
+	visitData.UrgeId = borrowVisitData.RemindId
+	visitData.UrgeGroupId = borrowVisitData.RemindGroupId
+	visitData.NextVisitTime = input.NextVisitTime
+	visitData.Wish = input.Wish
+	visitData.Tag = input.Tag
+	visitData.Remark = input.Remark
+	visitData.Relationship = input.Relationship
+	visitData.ContactName = input.ContactName
+	visitData.ContactPhone = input.ContactPhone
+	visitData.CreateTime = t
+	visitData.PromisedRepaymentAmount = input.PromisedRepaymentAmount
+	visitData.PromisedRepaymentTime = input.PromisedRepaymentTime
+	visitData.Insert()
+	borrowVisitData.Wish = input.Wish
+	borrowVisitData.Tag = input.Tag
+	borrowVisitData.UrgeLastTime = t
+	borrowVisitData.Update(fmt.Sprintf("borrow_id = %d", input.BorrowId))
+	return resp.OK(c, "")
+}
+
+//RemindAction 新增预提醒
+func (a *visit) RemindAction(c *fiber.Ctx) error {
+	input := new(visitActionReq)
+	if err := tools.ParseBody(c, input); err != nil {
+		return resp.Err(c, 1, err.Error())
+	}
+	borrowData := new(model.Borrow)
+	borrowData.One(fmt.Sprintf("id = %d", input.BorrowId))
+	if borrowData.Id == 0 {
+		return resp.Err(c, 1, "借款不存在")
+	}
+	borrowVisitData := new(model.BorrowVisit)
+	borrowVisitData.One(fmt.Sprintf("borrow_id = %d", input.BorrowId))
+	if borrowVisitData.BorrowId == 0 {
+		return resp.Err(c, 1, "借款还没有分配")
+	}
+	if borrowVisitData.RemindId == 0 {
+		return resp.Err(c, 1, "借款还没有分配给提醒员")
+	}
+	//开始新增
+	t := tools.GetFormatTime()
+	visitData := new(model.BorrowVisitDetail)
+	visitData.Type = 0
 	visitData.MchId = borrowData.MchId
 	visitData.ProductId = borrowData.ProductId
 	visitData.BorrowId = borrowData.Id
@@ -360,5 +409,137 @@ func (a *visit) UrgeAction(c *fiber.Ctx) error {
 	borrowVisitData.Tag = input.Tag
 	borrowVisitData.UrgeLastTime = t
 	borrowVisitData.Update(fmt.Sprintf("borrow_id = %d", input.BorrowId))
+	return resp.OK(c, "")
+}
+
+type assignReq struct {
+	BorrowId	int		`json:"borrow_id" query:"borrow_id""`
+	AdminId	int		`json:"admin_id" query:"admin_id""`
+}
+func (a *visit) RemindAssign(c *fiber.Ctx) error {
+	input := new(assignReq)
+	if err := tools.ParseBody(c, input); err != nil {
+		return resp.Err(c, 1, err.Error())
+	}
+	borrowData := new(model.Borrow)
+	borrowData.One(fmt.Sprintf("id = %d", input.BorrowId))
+	if borrowData.Id == 0 {
+		return resp.Err(c, 1, "借款不存在")
+	}
+	//判断admin_id 跟商户匹配
+	adminData := new(model.Admin)
+	adminData.One(fmt.Sprintf("id = %d", input.AdminId))
+	if adminData.RoleId != 7{
+		return resp.Err(c, 1, "请分配给提醒专员")
+	}
+	if adminData.MchId != borrowData.MchId {
+		return resp.Err(c, 1, "提醒专员跟商户不匹配")
+	}
+	visitData := new(model.BorrowVisit)
+	visitData.One(fmt.Sprintf("borrow_id = %d", input.BorrowId))
+	if visitData.BorrowId == 0{
+		return resp.Err(c, 1, "没有到分配的时间")
+	}
+	visitData.RemindId = input.AdminId
+	visitData.RemindAssignTime = tools.GetFormatTime()
+	visitData.Update(fmt.Sprintf("borrow_id = %d", input.BorrowId))
+
+	return resp.OK(c, "")
+}
+
+func (a *visit) UrgeAssign(c *fiber.Ctx) error {
+	input := new(assignReq)
+	if err := tools.ParseBody(c, input); err != nil {
+		return resp.Err(c, 1, err.Error())
+	}
+	borrowData := new(model.Borrow)
+	borrowData.One(fmt.Sprintf("id = %d", input.BorrowId))
+	if borrowData.Id == 0 {
+		return resp.Err(c, 1, "借款不存在")
+	}
+	//判断admin_id 跟商户匹配
+	adminData := new(model.Admin)
+	adminData.One(fmt.Sprintf("id = %d", input.AdminId))
+	if adminData.RoleId != 3{
+		return resp.Err(c, 1, "请分配给催收专员")
+	}
+	if adminData.MchId != borrowData.MchId {
+		return resp.Err(c, 1, "催收专员跟商户不匹配")
+	}
+	visitData := new(model.BorrowVisit)
+	visitData.One(fmt.Sprintf("borrow_id = %d", input.BorrowId))
+	if visitData.BorrowId == 0{
+		return resp.Err(c, 1, "没有到分配的时间")
+	}
+	visitData.UrgeId = input.AdminId
+	visitData.UrgeAssignTime = tools.GetFormatTime()
+	visitData.Update(fmt.Sprintf("borrow_id = %d", input.BorrowId))
+	return resp.OK(c, "")
+}
+
+type utrCreateReq struct {
+	BorrowId int	`json:"borrow_id"`
+	Path    string	`json:"path"`
+	UtrCode string	`json:"utr_code"`
+	Remark  string	`json:"remark"`
+}
+//UtrCreate Utr提交 创建
+func (a *visit) UtrCreate(c *fiber.Ctx) error  {
+	input := new(utrCreateReq)
+	if err := tools.ParseBody(c, input); err != nil {
+		return resp.Err(c, 1, err.Error())
+	}
+	//验证borrow
+	borrowData := new(model.Borrow)
+	borrowData.One(fmt.Sprintf("id = %d", input.BorrowId))
+	if borrowData.Id == 0{
+		return resp.Err(c, 1, "没有找到记录")
+	}
+
+	utrData := new(model.BorrowUtr)
+	utrData.BorrowId = borrowData.Id
+	utrData.UrgeId = c.Locals("adminId").(int)
+	utrData.MchId = borrowData.MchId
+	utrData.ProductId = borrowData.ProductId
+	utrData.UserId = borrowData.Uid
+	utrData.CreateTime = tools.GetFormatTime()
+	utrData.UtrPath = input.Path
+	utrData.Status = 1 //等待处理
+	utrData.UtrCode = input.UtrCode
+	utrData.Remark = input.Remark
+	utrData.Remark = input.Remark
+	utrData.Insert()
+	return resp.OK(c, "")
+}
+
+type utrExamineReq struct {
+	req.IdReq
+	Status    int	`json:"status" query:"status"`
+	RejectReason    string	`json:"reject_reason" query:"reject_reason"`
+}
+//UtrExamine Utr提交 审核
+func (a *visit) UtrExamine(c *fiber.Ctx) error  {
+	input := new(utrExamineReq)
+	if err := tools.ParseBody(c, input); err != nil {
+		return resp.Err(c, 1, err.Error())
+	}
+	//验证borrow
+	utrData := new(model.BorrowUtr)
+	utrData.One(fmt.Sprintf("id = %d", input.Id))
+	if utrData.Id == 0{
+		return resp.Err(c, 1, "没有找到记录")
+	}
+	//status 状态
+	if input.Status > 4 || input.Status < 1{
+		return resp.Err(c, 1, "状态不正确")
+	}
+	utrData.Status = input.Status
+	utrData.RejectReason = input.RejectReason
+	utrData.Update(fmt.Sprintf("id = %d", input.Id))
+	if input.Status == 3{
+		//已到账
+		//borrowData := new(model.Borrow)
+		//borrowData.One(fmt.Sprintf("id = %d", utrData.BorrowId))
+	}
 	return resp.OK(c, "")
 }

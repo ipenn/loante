@@ -149,7 +149,7 @@ func BorrowLatePaymentFee()  {
 //BorrowExpireDay 更新剩余天数或者逾期天数
 func BorrowExpireDay()  {
 	if !(time.Now().Hour() == 0 && time.Now().Minute() == 0){
-		return
+		//return
 	}
 	t0 := tools.GetFormatTime()[0:10]
 	where := fmt.Sprintf("status > 4 and status < 8")

@@ -10,3 +10,51 @@ Content-Type: application/json
   "amount": 420,
   "payment_id":0
 }
+
+### 放款记录
+GET {{host}}/pay_flow/loan
+token:{{token}}
+Content-Type: application/json
+
+{
+  "page": 1,
+  "size":10,
+  "borrow_id":1,
+  "product_id":1,
+  "payment_id":10,
+  "pay_success":"",
+  "request_no":"",
+  "start_time":"",
+  "end_time":"",
+  "load_start_time":"",
+  "load_end_time":"",
+}
+
+### 平账记录
+GET {{host}}/pay_flow/reconciliation
+token:{{token}}
+Content-Type: application/json
+
+{
+  "page": 1,
+  "size":10,
+  "borrow_id":0,
+  "name":"",
+  "phone":"",
+  "start_time":"",
+  "end_time":""
+}
+### 入账记录
+GET {{host}}/pay_flow/deposit
+token:{{token}}
+Content-Type: application/json
+
+{
+  "page": 1,
+  "size":10,
+  "borrow_id":0,
+  "name":"",
+  "phone":"",
+  "start_time":"",
+  "end_time":""
+}
