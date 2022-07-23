@@ -55,6 +55,12 @@ type StatTrafficList struct {
 	ApplyPassRate    float64               `json:"apply_pass_rate"`
 	LendingRate      float64               `json:"lending_rate"`
 	LoanPassRate     float64               `json:"loan_pass_rate"`
+	NewApplyPassRate float64               `json:"new_apply_pass_rate"`
+	NewLendingRate   float64               `json:"new_lending_rate"`
+	NewLoanPassRate  float64               `json:"new_loan_pass_rate"`
+	OldApplyPassRate float64               `json:"old_apply_pass_rate"`
+	OldLendingRate   float64               `json:"old_lending_rate"`
+	OldLoanPassRate  float64               `json:"old_loan_pass_rate"`
 	ApplyUser        int                   `json:"apply_user"`
 	NewApplyUser     int                   `json:"new_apply_user"`
 	OldApplyUser     int                   `json:"old_apply_user"`
@@ -68,28 +74,66 @@ type StatTrafficList struct {
 
 func (a *StatTraffic) Page(where, group string, page, limit int) ([]StatTrafficList, int) {
 	var datas []StatTrafficList
-	count, _ := global.C.DB.NewSelect().Model(&StatTraffic{}).
-		Column("id", "mch_id", "product_id", "time").
-		ColumnExpr("SUM( apply ) AS apply").
-		ColumnExpr("SUM( apply_pass ) AS apply_pass").
-		ColumnExpr("SUM( loan_pass ) AS loan_pass").
-		ColumnExpr("SUM( loan_amount ) AS loan_amount").
-		ColumnExpr("SUM( new_apply ) AS new_apply").
-		ColumnExpr("SUM( new_apply_pass ) AS new_apply_pass").
-		ColumnExpr("SUM( new_loan_pass ) AS new_loan_pass").
-		ColumnExpr("SUM( new_loan_amount ) AS new_loan_amount").
-		ColumnExpr("SUM( old_apply ) AS old_apply").
-		ColumnExpr("SUM( old_apply_pass ) AS old_apply_pass").
-		ColumnExpr("SUM( old_loan_pass ) AS old_loan_pass").
-		ColumnExpr("SUM( old_loan_amount ) AS old_loan_amount").
-		ColumnExpr("SUM(apply_pass)*100/SUM(apply) as apply_pass_rate").
-		ColumnExpr("SUM(loan_pass)*100/SUM(apply) as lending_rate").
-		ColumnExpr("SUM(loan_pass)*100/SUM(apply_pass) as loan_pass_rate").
-		ColumnExpr("SUM(apply)/SUM(apply_user) as avg_apply").
-		ColumnExpr("SUM(new_apply)/SUM(new_apply_user) as new_avg_apply").
-		ColumnExpr("SUM(old_apply) /SUM(old_apply_user)as old_avg_apply").
-		Where(where).GroupExpr(group).Offset((page-1)*limit).
-		Relation("Product").Relation("Merchant").Relation("ReferrerConfig").Limit(limit).ScanAndCount(global.C.Ctx, &datas)
+	count := 0
+	if group == "" {
+		count, _ = global.C.DB.NewSelect().Model(&StatTraffic{}).
+			Column("id", "mch_id", "product_id", "time").
+			ColumnExpr("SUM( apply ) AS apply").
+			ColumnExpr("SUM( apply_pass ) AS apply_pass").
+			ColumnExpr("SUM( loan_pass ) AS loan_pass").
+			ColumnExpr("SUM( loan_amount ) AS loan_amount").
+			ColumnExpr("SUM( new_apply ) AS new_apply").
+			ColumnExpr("SUM( new_apply_pass ) AS new_apply_pass").
+			ColumnExpr("SUM( new_loan_pass ) AS new_loan_pass").
+			ColumnExpr("SUM( new_loan_amount ) AS new_loan_amount").
+			ColumnExpr("SUM( old_apply ) AS old_apply").
+			ColumnExpr("SUM( old_apply_pass ) AS old_apply_pass").
+			ColumnExpr("SUM( old_loan_pass ) AS old_loan_pass").
+			ColumnExpr("SUM( old_loan_amount ) AS old_loan_amount").
+			ColumnExpr("SUM(apply_pass)/SUM(apply) as apply_pass_rate").
+			ColumnExpr("SUM(loan_pass)/SUM(apply) as lending_rate").
+			ColumnExpr("SUM(loan_pass)/SUM(apply_pass) as loan_pass_rate").
+			ColumnExpr("SUM(new_apply_pass)/SUM(new_apply) as new_apply_pass_rate").
+			ColumnExpr("SUM(new_loan_pass)/SUM(new_apply) as new_lending_rate").
+			ColumnExpr("SUM(new_loan_pass)/SUM(new_apply_pass) as new_loan_pass_rate").
+			ColumnExpr("SUM(old_apply_pass)/SUM(old_apply) as old_apply_pass_rate").
+			ColumnExpr("SUM(old_loan_pass)/SUM(old_apply) as old_lending_rate").
+			ColumnExpr("SUM(old_loan_pass)/SUM(old_apply_pass) as old_loan_pass_rate").
+			ColumnExpr("SUM(apply)/SUM(apply_user) as avg_apply").
+			ColumnExpr("SUM(new_apply)/SUM(new_apply_user) as new_avg_apply").
+			ColumnExpr("SUM(old_apply) /SUM(old_apply_user)as old_avg_apply").
+			Where(where).Offset((page-1)*limit).
+			Relation("Product").Relation("Merchant").Relation("ReferrerConfig").Limit(limit).ScanAndCount(global.C.Ctx, &datas)
+	} else {
+		count, _ = global.C.DB.NewSelect().Model(&StatTraffic{}).
+			Column("id", "mch_id", "product_id", "time").
+			ColumnExpr("SUM( apply ) AS apply").
+			ColumnExpr("SUM( apply_pass ) AS apply_pass").
+			ColumnExpr("SUM( loan_pass ) AS loan_pass").
+			ColumnExpr("SUM( loan_amount ) AS loan_amount").
+			ColumnExpr("SUM( new_apply ) AS new_apply").
+			ColumnExpr("SUM( new_apply_pass ) AS new_apply_pass").
+			ColumnExpr("SUM( new_loan_pass ) AS new_loan_pass").
+			ColumnExpr("SUM( new_loan_amount ) AS new_loan_amount").
+			ColumnExpr("SUM( old_apply ) AS old_apply").
+			ColumnExpr("SUM( old_apply_pass ) AS old_apply_pass").
+			ColumnExpr("SUM( old_loan_pass ) AS old_loan_pass").
+			ColumnExpr("SUM( old_loan_amount ) AS old_loan_amount").
+			ColumnExpr("SUM(apply_pass)/SUM(apply) as apply_pass_rate").
+			ColumnExpr("SUM(loan_pass)/SUM(apply) as lending_rate").
+			ColumnExpr("SUM(loan_pass)/SUM(apply_pass) as loan_pass_rate").
+			ColumnExpr("SUM(new_apply_pass)/SUM(new_apply) as new_apply_pass_rate").
+			ColumnExpr("SUM(new_loan_pass)/SUM(new_apply) as new_lending_rate").
+			ColumnExpr("SUM(new_loan_pass)/SUM(new_apply_pass) as new_loan_pass_rate").
+			ColumnExpr("SUM(old_apply_pass)/SUM(old_apply) as old_apply_pass_rate").
+			ColumnExpr("SUM(old_loan_pass)/SUM(old_apply) as old_lending_rate").
+			ColumnExpr("SUM(old_loan_pass)/SUM(old_apply_pass) as old_loan_pass_rate").
+			ColumnExpr("SUM(apply)/SUM(apply_user) as avg_apply").
+			ColumnExpr("SUM(new_apply)/SUM(new_apply_user) as new_avg_apply").
+			ColumnExpr("SUM(old_apply) /SUM(old_apply_user)as old_avg_apply").
+			Where(where).GroupExpr(group).Offset((page-1)*limit).
+			Relation("Product").Relation("Merchant").Relation("ReferrerConfig").Limit(limit).ScanAndCount(global.C.Ctx, &datas)
+	}
 	return datas, count
 }
 
@@ -113,11 +157,11 @@ func GetStatTrafficValue() {
 		for _, id := range product {
 			var st StatTraffic
 
-			rows2, _ := global.C.DB.QueryContext(global.C.Ctx, fmt.Sprintf("SELECT\n\tCOUNT( id ) AS count,\n\t0 AS amount,\n\tIFNULL( product_id, 0 ) product_id,\n\tIFNULL( mch_id, 0 ) mch_id,\n\t1 AS type \nFROM\n\tborrow \nWHERE\n\tTO_DAYS(\n\tNOW())- TO_DAYS( create_time ) = 1 \n\tAND loan_type = 0 \n\tAND product_id = %d UNION ALL\nSELECT\n\tCOUNT( id ) AS count,\n\t0 AS amount,\n\tIFNULL( product_id, 0 ) product_id,\n\tIFNULL( mch_id, 0 ) mch_id,\n\t2 AS type \nFROM\n\tborrow \nWHERE\n\tTO_DAYS(\n\tNOW())- TO_DAYS( create_time ) = 1 \n\tAND `status` >= 4 \n\tAND loan_type = 0 \n\tAND product_id = %d UNION ALL\nSELECT\n\tCOUNT( id ) AS count,\n\tIFNULL( SUM( loan_amount ), 0 ) AS amount,\n\tIFNULL( product_id, 0 ) product_id,\n\tIFNULL( mch_id, 0 ) mch_id,\n\t3 AS type \nFROM\n\tborrow \nWHERE\n\tTO_DAYS(\n\tNOW())- TO_DAYS( create_time ) = 1 \n\tAND `status` >= 5 \n\tAND loan_type = 0 \n\tAND product_id = %d UNION ALL\nSELECT\n\tIFNULL( COUNT( id ), 0 ) AS count,\n\t0 AS amount,\n\tIFNULL( product_id, 0 ) product_id,\n\tIFNULL( mch_id, 0 ) mch_id,\n\t4 AS type \nFROM\n\tborrow \nWHERE\n\tTO_DAYS(\n\tNOW())- TO_DAYS( create_time ) = 1 \n\tAND loan_type = 0 \n\tAND product_id = %d \nGROUP BY\n\tuid UNION ALL\nSELECT\n\tCOUNT( id ) AS count,\n\t0 AS amount,\n\tIFNULL( product_id, 0 ) product_id,\n\tIFNULL( mch_id, 0 ) mch_id,\n\t11 AS type \nFROM\n\tborrow \nWHERE\n\tTO_DAYS(\n\tNOW())- TO_DAYS( create_time ) = 1 \n\tAND loan_type > 0 \n\tAND product_id = %d UNION ALL\nSELECT\n\tCOUNT( id ) AS count,\n\t0 AS amount,\n\tIFNULL( product_id, 0 ) product_id,\n\tIFNULL( mch_id, 0 ) mch_id,\n\t12 AS type \nFROM\n\tborrow \nWHERE\n\tTO_DAYS(\n\tNOW())- TO_DAYS( create_time ) = 1 \n\tAND `status` >= 4 \n\tAND loan_type > 0 \n\tAND product_id = %d UNION ALL\nSELECT\n\tCOUNT( id ) AS count,\n\tIFNULL( SUM( loan_amount ), 0 ) AS amount,\n\tIFNULL( product_id, 0 ) product_id,\n\tIFNULL( mch_id, 0 ) mch_id,\n\t13 AS type \nFROM\n\tborrow \nWHERE\n\tTO_DAYS(\n\tNOW())- TO_DAYS( create_time ) = 1 \n\tAND STATUS >= 5 \n\tAND loan_type > 0 \n\tAND product_id = %d UNION ALL\nSELECT\n\tIFNULL( COUNT( id ), 0 ) AS count,\n\t0 AS amount,\n\tIFNULL( product_id, 0 ) product_id,\n\tIFNULL( mch_id, 0 ) mch_id,\n\t14 AS type \nFROM\n\tborrow \nWHERE\n\tTO_DAYS(\n\tNOW())- TO_DAYS( create_time ) = 1 \n\tAND loan_type > 0 \n\tAND product_id = %d \nGROUP BY\n\tuid", id, id, id, id, id, id, id, id))
+			rows2, _ := global.C.DB.QueryContext(global.C.Ctx, fmt.Sprintf("SELECT\n\tCOUNT( id ) AS count,\n\t0 AS amount,\n\tIFNULL( product_id, 0 ) product_id,\n\tIFNULL( mch_id, 0 ) mch_id,\n\t1 AS type \nFROM\n\tborrow \nWHERE\n\tTO_DAYS(\n\tNOW())- TO_DAYS( create_time ) = 1 \n\tAND loan_type = 0 \n\tAND product_id = %d UNION ALL\nSELECT\n\tCOUNT( id ) AS count,\n\t0 AS amount,\n\tIFNULL( product_id, 0 ) product_id,\n\tIFNULL( mch_id, 0 ) mch_id,\n\t2 AS type \nFROM\n\tborrow \nWHERE\n\tTO_DAYS(\n\tNOW())- TO_DAYS( create_time ) = 1 \n\tAND `status` >= 4 \n\tAND loan_type = 0 \n\tAND product_id = %d UNION ALL\nSELECT\n\tCOUNT( id ) AS count,\n\tIFNULL( SUM( loan_amount ), 0 ) AS amount,\n\tIFNULL( product_id, 0 ) product_id,\n\tIFNULL( mch_id, 0 ) mch_id,\n\t3 AS type \nFROM\n\tborrow \nWHERE\n\tTO_DAYS(\n\tNOW())- TO_DAYS( create_time ) = 1 \n\tAND `status` >= 5 \n\tAND loan_type = 0 \n\tAND product_id = %d UNION ALL\nSELECT\n\tIFNULL( COUNT( id ), 0 ) AS count,\n\t0 AS amount,\n\tIFNULL( product_id, 0 ) product_id,\n\tIFNULL( mch_id, 0 ) mch_id,\n\t4 AS type \nFROM\n\tborrow \nWHERE\n\tTO_DAYS(\n\tNOW())- TO_DAYS( create_time ) = 1 \n\tAND loan_type = 0 \n\tAND product_id = %d \nGROUP BY\n\tuid UNION ALL\nSELECT\n\tCOUNT( id ) AS count,\n\t0 AS amount,\n\tIFNULL( product_id, 0 ) product_id,\n\tIFNULL( mch_id, 0 ) mch_id,\n\t11 AS type \nFROM\n\tborrow \nWHERE\n\tTO_DAYS(\n\tNOW())- TO_DAYS( create_time ) = 1 \n\tAND loan_type > 0 \n\tAND product_id = %d UNION ALL\nSELECT\n\tCOUNT( id ) AS count,\n\t0 AS amount,\n\tIFNULL( product_id, 0 ) product_id,\n\tIFNULL( mch_id, 0 ) mch_id,\n\t12 AS type \nFROM\n\tborrow \nWHERE\n\tTO_DAYS(\n\tNOW())- TO_DAYS( create_time ) = 1 \n\tAND `status` >= 4 \n\tAND loan_type > 0 \n\tAND product_id = %d UNION ALL\nSELECT\n\tCOUNT( id ) AS count,\n\tIFNULL( SUM( loan_amount ), 0 ) AS amount,\n\tIFNULL( product_id, 0 ) product_id,\n\tIFNULL( mch_id, 0 ) mch_id,\n\t13 AS type \nFROM\n\tborrow \nWHERE\n\tTO_DAYS(\n\tNOW())- TO_DAYS( create_time ) = 1 \n\tAND STATUS >= 5 \n\tAND loan_type > 0 \n\tAND product_id = %d UNION ALL\nSELECT\n\tIFNULL( COUNT( id ), 0 ) AS count,\n\t0 AS amount,\n\tIFNULL( product_id, 0 ) product_id,\n\tIFNULL( mch_id, 0 ) mch_id,\n\t14 AS type \nFROM\n\tborrow \nWHERE\n\tTO_DAYS(\n\tNOW())- TO_DAYS( create_time ) = 1 \n\tAND loan_type > 0 \n\tAND product_id = %d \nGROUP BY\n\tuid", id.ProductId, id.ProductId, id.ProductId, id.ProductId, id.ProductId, id.ProductId, id.ProductId, id.ProductId))
 			for rows2.Next() {
 				value := new(statTrafficValue)
 				err := global.C.DB.ScanRow(global.C.Ctx, rows2, value)
-				if err==nil {
+				if err == nil {
 					if value.Type == 1 {
 						st.NewApply = value.Count
 						st.ProductId = value.ProductId
@@ -155,6 +199,7 @@ func GetStatTrafficValue() {
 				}
 			}
 			st.Insert()
+			//fmt.Println(st)
 		}
 	}
 }
