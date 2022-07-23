@@ -7,6 +7,7 @@ import (
 	"loante/global"
 	v1 "loante/router/v1"
 	"loante/service/middleware"
+	"loante/service/model"
 )
 
 func Init() {
@@ -42,6 +43,7 @@ func Init() {
 	app.Static("/static", "./static")
 
 	app.Get("/", func(c *fiber.Ctx) error {
+		model.GetMerchantStatisticsValue()
 		return c.SendString("Hello, World!")
 	})
 
@@ -49,14 +51,14 @@ func Init() {
 	//登录
 	v.Post("/auth/login", authHandle.Login)
 	//给APP后端调用
-	v.Post("/pay_notify", payBackHandle.PayNotify)		//收款回调
-	v.Post("/out_notify", payBackHandle.OutNotify) 		//放款回调
-	v.Post("/sms/send", 	appHandle.SmsSend)				//发送短信
-	v.Post("/pay/in", 	payHandle.PayPartial) 			//代收
-	v.Post("/pay/out", 	payHandle.PayOut)				//代付
+	v.Post("/pay_notify", payBackHandle.PayNotify) //收款回调
+	v.Post("/out_notify", payBackHandle.OutNotify) //放款回调
+	v.Post("/sms/send", appHandle.SmsSend)         //发送短信
+	v.Post("/pay/in", payHandle.PayPartial)        //代收
+	v.Post("/pay/out", payHandle.PayOut)           //代付
 	//上传
-	v.Post("/upload", uploadHandle.Upload)				//普通上传
-	v.Post("/upload/base64", uploadHandle.UploadBase64)	//上传Base64
+	v.Post("/upload", uploadHandle.Upload)              //普通上传
+	v.Post("/upload/base64", uploadHandle.UploadBase64) //上传Base64
 
 	//中间件
 	v.Use(middleware.Auth)
@@ -84,6 +86,10 @@ func Init() {
 	v.Get("/after_report_unified", StatTrafficHandle.AfterReportUnifiedList)
 	v.Get("/report_pay_in", StatTrafficHandle.ReportPayIn)
 	v.Get("/report_pay_out", StatTrafficHandle.ReportPayOut)
+
+	//财务管理
+	v.Get("/expend_statistics", StatTrafficHandle.ExpendStatisticsList)
+	v.Get("/merchant_statistics", StatTrafficHandle.MerchantStatisticsList)
 
 	//渠道
 	v.Get("/utm/lists", utmHandle.Lists)
@@ -124,22 +130,34 @@ func Init() {
 	v.Get("/user/detail", userHandle.Details)
 	v.Post("/user/black/set", userHandle.SetBlack)
 	v.Get("/user/contact", userHandle.Contact) //获取用户的通讯录
-	v.Get("/user/sms", userHandle.Sms) //获取用户的短信
-	v.Get("/user/app", userHandle.App) //获取用户的APP
-	v.Get("/user/call", userHandle.Call) //获取用户的通话记录
+	v.Get("/user/sms", userHandle.Sms)         //获取用户的短信
+	v.Get("/user/app", userHandle.App)         //获取用户的APP
+	v.Get("/user/call", userHandle.Call)       //获取用户的通话记录
 
 	v.Get("/customer_feedback", userHandle.CustomerFeedBack)                            //客户反馈
 	v.Post("/customer_feedback/update_status", userHandle.CustomerFeedBackUpdateStatus) //客户反馈
 
-	v.Get("/visit/reminds", visitHandle.RemindBorrowAll)	//预提醒订单列表
-	v.Get("/visit/reminding", visitHandle.RemindBorrowing)	//预提醒中订单
-	v.Get("/visit/reminded", visitHandle.RemindBorrowed)	//预提醒完成的订单
+	v.Get("/visit/reminds", visitHandle.RemindBorrowAll)    //预提醒订单列表
+	v.Get("/visit/reminding", visitHandle.RemindBorrowing)  //预提醒中订单
+	v.Get("/visit/reminded", visitHandle.RemindBorrowed)    //预提醒完成的订单
 	v.Get("/visit/remind_detail", visitHandle.RemindDetail) //预提醒记录 一笔借贷可能会有多条记录
-	v.Get("/visit/urges", visitHandle.UrgeBorrowAll)	//催收订单列表
-	v.Get("/visit/urging", visitHandle.UrgeBorrowing)	//催收中订单
-	v.Get("/visit/urged", visitHandle.UrgeBorrowed)	//催收完成的订单
-	v.Get("/visit/urge_detail", visitHandle.UrgeDetail) //催收记录 一笔借贷可能会有多条记录
-	v.Get("/visit/urge_report", visitHandle.UrgeReport) //催收业绩
+	v.Get("/visit/urges", visitHandle.UrgeBorrowAll)        //催收订单列表
+	v.Get("/visit/urging", visitHandle.UrgeBorrowing)       //催收中订单
+	v.Get("/visit/urged", visitHandle.UrgeBorrowed)         //催收完成的订单
+	v.Get("/visit/urge_detail", visitHandle.UrgeDetail)     //催收记录 一笔借贷可能会有多条记录
+	v.Get("/visit/urge_report", visitHandle.UrgeReport)     //催收业绩
+	v.Post("/visit/urge/action", visitHandle.UrgeAction)    //新增催记
+
+	v.Get("/visit/reminds", visitHandle.RemindBorrowAll)    //预提醒订单列表
+	v.Get("/visit/reminding", visitHandle.RemindBorrowing)  //预提醒中订单
+	v.Get("/visit/reminded", visitHandle.RemindBorrowed)    //预提醒完成的订单
+	v.Get("/visit/remind_detail", visitHandle.RemindDetail) //预提醒记录 一笔借贷可能会有多条记录
+
+	v.Get("/visit/urges", visitHandle.UrgeBorrowAll)     //催收订单列表
+	v.Get("/visit/urging", visitHandle.UrgeBorrowing)    //催收中订单
+	v.Get("/visit/urged", visitHandle.UrgeBorrowed)      //催收完成的订单
+	v.Get("/visit/urge_detail", visitHandle.UrgeDetail)  //催收记录 一笔借贷可能会有多条记录
+	v.Get("/visit/urge_report", visitHandle.UrgeReport)  //催收业绩
 	v.Post("/visit/urge/action", visitHandle.UrgeAction) //新增催记
 
 	//借贷

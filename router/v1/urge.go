@@ -273,8 +273,11 @@ func (a *urge) UrgeRulesCreateOrUpdate(c *fiber.Ctx) error {
 	if err := tools.ParseBody(c, input); err != nil {
 		return resp.Err(c, 1, err.Error())
 	}
-	if tools.ToInt(input.MinDay) < 0 || tools.ToInt(input.MinDay) < 0 {
+	if tools.ToInt(input.MinDay) < 0 || tools.ToInt(input.MaxDay) < 0 {
 		return resp.Err(c, 1, "催收规则天数不能小于0")
+	}
+	if tools.ToInt(input.MinDay)>tools.ToInt(input.MaxDay){
+		return resp.Err(c, 1, "最小天数不能大于最大天数")
 	}
 	rules := new(model.UrgeRules)
 	rules.CompanyId = tools.ToInt(input.CompanyId)
