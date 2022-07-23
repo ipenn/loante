@@ -273,8 +273,11 @@ func (a *remind) RemindRulesCreateOrUpdate(c *fiber.Ctx) error {
 	if err := tools.ParseBody(c, input); err != nil {
 		return resp.Err(c, 1, err.Error())
 	}
-	if tools.ToInt(input.MinDay) > 0 || tools.ToInt(input.MinDay) > 0 {
+	if tools.ToInt(input.MinDay) > 0 || tools.ToInt(input.MaxDay) > 0 {
 		return resp.Err(c, 1, "预提醒规则天数不能大于0")
+	}
+	if tools.ToInt(input.MinDay)>tools.ToInt(input.MaxDay){
+		return resp.Err(c, 1, "最小天数不能大于最大天数")
 	}
 	rules := new(model.RemindRules)
 	rules.CompanyId = tools.ToInt(input.CompanyId)

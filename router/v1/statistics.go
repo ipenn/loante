@@ -184,3 +184,52 @@ func (a *statTraffic) ReportPayIn(c *fiber.Ctx) error {
 		"list": lists,
 	})
 }
+
+type StatisticsList struct {
+	StartCreateTime string `query:"StartCreateTime" json:"StartCreateTime"`
+	EndCreateTime   string `query:"EndCreateTime" json:"EndCreateTime"`
+	MchId           string `query:"mch_id" json:"mch_id"`
+	Page            int    `query:"page" json:"page"`
+	Size            int    `query:"size" json:"size"`
+}
+
+func (a *statTraffic) ExpendStatisticsList(c *fiber.Ctx) error {
+	input := new(StatisticsList)
+	if err := tools.ParseBody(c, input); err != nil {
+		return resp.Err(c, 1, err.Error())
+	}
+	where := " es.id>0 "
+	if input.MchId != "" {
+		where += fmt.Sprintf(" and es.mch_id=%d", tools.ToInt(input.MchId))
+	}
+	if input.StartCreateTime != "" {
+		where += fmt.Sprintf(" and es.create_time>'%s'", input.StartCreateTime)
+		where += fmt.Sprintf(" and es.create_time<'%s'", input.EndCreateTime)
+	}
+
+	lists, count := new(model.ExpendStatistics).Page(where, input.Page, input.Size)
+	return resp.OK(c, map[string]interface{}{
+		"list":  lists,
+		"count": count,
+	})
+}
+func (a *statTraffic) MerchantStatisticsList(c *fiber.Ctx) error {
+	input := new(StatisticsList)
+	if err := tools.ParseBody(c, input); err != nil {
+		return resp.Err(c, 1, err.Error())
+	}
+	where := " ms.id>0 "
+	if input.MchId != "" {
+		where += fmt.Sprintf(" and ms.mch_id=%d", tools.ToInt(input.MchId))
+	}
+	if input.StartCreateTime != "" {
+		where += fmt.Sprintf(" and ms.create_time>'%s'", input.StartCreateTime)
+		where += fmt.Sprintf(" and ms.create_time<'%s'", input.EndCreateTime)
+	}
+
+	lists, count := new(model.MerchantStatistics).Page(where, input.Page, input.Size)
+	return resp.OK(c, map[string]interface{}{
+		"list":  lists,
+		"count": count,
+	})
+}
