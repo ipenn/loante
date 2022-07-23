@@ -100,8 +100,8 @@ func Init() {
 	v.Get("/merchant/list", merchantHandle.Lists)
 	v.Post("/merchant/create", merchantHandle.Create)
 	v.Post("/merchant/modify", merchantHandle.Modify)
-	v.Get("/merchant/funds", merchantHandle.Funds)                              //商户资金列表 财务 -> 流水
-	v.Post("/merchant/fund/create", merchantHandle.FundCreate)                  //商户充值和退款
+	v.Get("/merchant/funds", merchantHandle.Funds) //商户资金列表 财务 -> 流水
+	v.Post("/merchant/fund/create", merchantHandle.FundCreate)	//商户充值和退款
 	v.Get("/merchant/service_rule", merchantHandle.ServiceRule)                 //进件计价规则
 	v.Post("/merchant/service_rule/create", merchantHandle.ServiceRuleCreate)   //进件计价规则创建
 	v.Post("/merchant/service_rule/del", merchantHandle.ServiceRuleDel)         //进件计价规则删除
@@ -163,7 +163,7 @@ func Init() {
 	v.Get("/borrow/export", borrowHandle.QueryExport)             //获取借贷信息导出的功能
 	v.Post("/borrow/reconciliation", borrowHandle.Reconciliation) //平账操作
 	v.Post("/borrow/deposit", borrowHandle.Deposit)               //入账操作
-	v.Post("/borrow/funds", borrowHandle.Funds)                   //费用变更
+	v.Post("/borrow/funds", borrowHandle.Funds)               	//费用变更
 	v.Post("/borrow/set_loan/fail", borrowHandle.SetLoanFail)     //设置放款失败
 
 	//还款
