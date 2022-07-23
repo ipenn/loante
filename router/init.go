@@ -177,7 +177,7 @@ func Init() {
 	v.Get("/pay_flow/utr", payHandle.Utrs)                      //UTR对账单
 	v.Get("/pay_flow/utr_dismissed", payHandle.UtrsDismissed)   //UTR对账单验证失败的
 	v.Post("/pay_flow/utr_verify", payHandle.UtrsVerify)
-	v.Post("/pay_flow/pay_partial", payHandle.PayPartial) //生成 部分还款链接
+	v.Post("/pay_flow/pay_partial", payHandle.PayPartial) 	 //生成 部分还款链接
 
 	//短信模板
 	v.Get("/sms_template", smsTemplateHandle.SmsTemplate)
