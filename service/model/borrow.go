@@ -9,27 +9,27 @@ import (
 )
 
 type BorrowLittle struct {
-	bun.BaseModel  `bun:"table:borrow,alias:b"`
-	Id             int    `json:"id" bun:",pk"`
-	Uid            int    `json:"uid"`
-	MchId          int    `json:"mch_id"`
-	ProductId      int    `json:"product_id"`
-	Status         int    `json:"status"`
-	Payment        int    `json:"payment"`
-	BeRepaidAmount int    `json:"be_repaid_amount"`
-	EndTime        string `json:"end_time"`
-	LoanAmount     int    `json:"loan_amount"`
-	PostponedPeriod    	int				`json:"postponed_period"` //展期期数
-	ExpireDay 			int             `json:"expire_day"` //到期剩余天数 或者 逾期天数
+	bun.BaseModel   `bun:"table:borrow,alias:b"`
+	Id              int    `json:"id" bun:",pk"`
+	Uid             int    `json:"uid"`
+	MchId           int    `json:"mch_id"`
+	ProductId       int    `json:"product_id"`
+	Status          int    `json:"status"`
+	Payment         int    `json:"payment"`
+	BeRepaidAmount  int    `json:"be_repaid_amount"`
+	EndTime         string `json:"end_time"`
+	LoanAmount      int    `json:"loan_amount"`
+	PostponedPeriod int    `json:"postponed_period"` //展期期数
+	ExpireDay       int    `json:"expire_day"`       //到期剩余天数 或者 逾期天数
 
 }
 type Borrow struct {
 	bun.BaseModel `bun:"table:borrow,alias:b"`
 	BorrowLittle
-	Postponed          	int				`json:"postponed"`
-	PostponeValuation 	int				`json:"postpone_valuation"`
-	LoanType         	int				`json:"loan_type"`
-	Score            	int				`json:"score"`
+	Postponed          int             `json:"postponed"`
+	PostponeValuation  int             `json:"postpone_valuation"`
+	LoanType           int             `json:"loan_type"`
+	Score              int             `json:"score"`
 	RiskModel          int             `json:"risk_model"`
 	ScoreTime          string          `json:"score_time"`
 	CreateTime         string          `json:"create_time"`
@@ -40,10 +40,10 @@ type Borrow struct {
 	CompleteTime       string          `json:"complete_time"`
 	ActualAmount       int             `json:"actual_amount"`
 	LatePaymentFee     int             `json:"late_payment_fee"`      //滞纳金
-	LatePaymentFeeRate float64          `json:"late_payment_fee_rate"` //滞纳金
+	LatePaymentFeeRate float64         `json:"late_payment_fee_rate"` //滞纳金
 	User               *UserLittle     `json:"user" bun:"rel:belongs-to,join:uid=id"`
 	Merchant           *MerchantLittle `json:"merchant" bun:"rel:belongs-to,join:mch_id=id"`
-	Product            *ProductLittle        `json:"product" bun:"rel:belongs-to,join:product_id=id"`
+	Product            *ProductLittle  `json:"product" bun:"rel:belongs-to,join:product_id=id"`
 }
 
 func (a *Borrow) Insert() {
@@ -88,39 +88,40 @@ func (a *Borrow) Del(where string) {
 
 type PPConfig struct {
 	Config string
-	Name string
-	Id int
+	Name   string
+	Id     int
 }
+
 func (a *Borrow) GetPaymentConfig(t string) (PPConfig, error) {
 	payDefault := new(ProductPaymentDefault)
 	payDefault.One(fmt.Sprintf("product_id = %d", a.ProductId))
 	ppc := PPConfig{}
-	if payDefault.Id == 0{
+	if payDefault.Id == 0 {
 		return ppc, errors.New("产品的支付没有默认配置！")
 	}
 	//获取支付通道的配置
 	pp := new(ProductPayment)
-	if t == "in"{
+	if t == "in" {
 		pp.One(fmt.Sprintf("payment_id = %d and product_id = %d", payDefault.InPaymentId, payDefault.ProductId))
-	}else{
+	} else {
 		pp.One(fmt.Sprintf("payment_id = %d and product_id = %d", payDefault.OutPaymentId, payDefault.ProductId))
 	}
-	if pp.Id == 0{
+	if pp.Id == 0 {
 		return ppc, errors.New("产品没有配置支付信息！")
 	}
-	if t == "in" && pp.IsOpenIn == 0{
+	if t == "in" && pp.IsOpenIn == 0 {
 		return ppc, errors.New("产品配置支付未开放代收！")
 	}
-	if t == "out" && pp.IsOpenOut == 0{
+	if t == "out" && pp.IsOpenOut == 0 {
 		return ppc, errors.New("产品配置支付未开放代付！")
 	}
 	//全局支付通道是否开放
 	p := new(Payment)
 	p.One(fmt.Sprintf("id = %d", pp.PaymentId))
-	if t == "in" && p.IsOpenIn == 0{
+	if t == "in" && p.IsOpenIn == 0 {
 		return ppc, errors.New("支付通道代收全局未开放！")
 	}
-	if t == "out" && p.IsOpenOut == 0{
+	if t == "out" && p.IsOpenOut == 0 {
 		return ppc, errors.New("支付通道代付全局未开放！")
 	}
 	ppc.Config = pp.Configuration
@@ -130,7 +131,7 @@ func (a *Borrow) GetPaymentConfig(t string) (PPConfig, error) {
 }
 
 //PayAfter 放款成功以后 需要发短信 和 扣费
-func (a *Borrow)PayAfter() {
+func (a *Borrow) PayAfter() {
 	//更新borrow
 	a.LoanTime = tools.GetFormatTime()
 	a.Status = 5
@@ -145,6 +146,7 @@ func (a *Borrow)PayAfter() {
 		mchData.AddService(1, 1) //扣费
 	}
 }
+
 type BorrowForStatistics struct {
 	Count      int    `json:"count"`
 	Payment    int    `json:"payment"`
@@ -153,7 +155,7 @@ type BorrowForStatistics struct {
 	Type       int    `json:"type"`
 }
 
-func (a *Borrow) ForStatistics(where string) []BorrowForStatistics {
+func (a *Borrow) ForStatistics(where string) []ForStatistics {
 	//var datas []Borrow
 	//count, _ := global.C.DB.NewSelect().Model(&Borrow{}).GroupExpr("HOUR(loan_time) desc").
 	//	GroupExpr("payment DESC").Where(where).Offset((page - 1) * limit).Limit(limit).ScanAndCount(global.C.Ctx)
@@ -162,32 +164,63 @@ func (a *Borrow) ForStatistics(where string) []BorrowForStatistics {
 	rows, _ := global.C.DB.QueryContext(global.C.Ctx, `SELECT
 	COUNT( b.id ) AS count,
 	b.payment,
-	b.create_time,
+	date_format(b.create_time,'%y-%m-%d %H') as create_time,
 	p.name,
 	0 AS type 
 FROM
 	borrow b
 	LEFT JOIN payment p ON b.payment = p.id 
 WHERE
-	b.STATUS IN ( 5, 0 ) and DATE_SUB(CURDATE(), INTERVAL 7 DAY) <= date(b.create_time) `+where+`
+	DATE_SUB(CURDATE(), INTERVAL 3 DAY) <= date(b.create_time) `+where+`
 GROUP BY
+	DAY(b.create_time),
 	HOUR ( b.create_time ) DESC,
 	b.payment DESC UNION ALL
 SELECT
 	COUNT( b.id ) AS count,
 	b.payment,
-	b.create_time,
+	date_format(b.create_time,'%y-%m-%d %H') as create_time,
 	p.name,
-	0 AS type 
+	1 AS type 
 FROM
 	borrow b
 	LEFT JOIN payment p ON b.payment = p.id 
 WHERE
-	b.STATUS =5 and DATE_SUB(CURDATE(), INTERVAL 7 DAY) <= date(b.create_time) `+where+`
+	b.STATUS >=5 and DATE_SUB(CURDATE(), INTERVAL 3 DAY) <= date(b.create_time) `+where+`
 GROUP BY
+	DAY(b.create_time),
 	HOUR ( b.create_time ) DESC,
 	b.payment DESC`)
-
 	global.C.DB.ScanRows(global.C.Ctx, rows, &borrowForStatistics)
-	return borrowForStatistics
+	var result []ForStatistics
+	for _, statistic := range borrowForStatistics {
+		flag := true
+		if statistic.Type == 1 {
+			break
+		}
+		for _, forStatistic := range borrowForStatistics {
+			if statistic.Payment == forStatistic.Payment && statistic.Type == 0 && forStatistic.Type == 1 && statistic.CreateTime == forStatistic.CreateTime {
+				var r ForStatistics
+				r.Payment = statistic.Payment
+				r.Count = statistic.Count
+				r.SuccessCount = forStatistic.Count
+				r.SuccessRate = tools.ToFloat64(forStatistic.Count) / tools.ToFloat64(statistic.Count)
+				r.CreateTime = statistic.CreateTime
+				r.Name = statistic.Name
+				result = append(result, r)
+				flag = false
+			}
+		}
+		if flag {
+			var r ForStatistics
+			r.Payment = statistic.Payment
+			r.Count = statistic.Count
+			r.SuccessCount = 0
+			r.SuccessRate = 0
+			r.CreateTime = statistic.CreateTime
+			r.Name = statistic.Name
+			result = append(result, r)
+		}
+	}
+	return result
 }
