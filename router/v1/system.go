@@ -440,3 +440,25 @@ func (a *system) PwdAdminReset(c *fiber.Ctx) error {
 	admin.Update(fmt.Sprintf("id = %d", admin.Id))
 	return resp.OK(c, "")
 }
+
+//Packages APP包
+func (a *system) Packages(c *fiber.Ctx) error {
+	input := new(req.PageReq)
+	if err := tools.ParseBody(c, input); err != nil {
+		return resp.Err(c, 1, err.Error())
+	}
+	lists, count := new(model.Package).Page("id > 0",input.Page, input.Size)
+	return resp.OK(c, map[string]interface{}{
+		"count": count,
+		"list":  lists,
+	})
+}
+
+//PackageLittle APP包
+func (a *system) PackageLittle(c *fiber.Ctx) error {
+	lists, count := new(model.Package).PageLittles("id > 0")
+	return resp.OK(c, map[string]interface{}{
+		"count": count,
+		"list":  lists,
+	})
+}

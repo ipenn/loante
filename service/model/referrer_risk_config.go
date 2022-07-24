@@ -9,7 +9,7 @@ import (
 //ReferrerRiskConfig referrer_risk_config
 type ReferrerRiskConfig struct {
 	bun.BaseModel       `bun:"table:referrer_risk_config,alias:rrc"`
-	Id                  int `json:"id"`
+	Id                  int `json:"id" bun:",pk"`
 	ReferrerId          int
 	StatCompay          int
 	RiskModel           int
@@ -21,6 +21,8 @@ type ReferrerRiskConfig struct {
 	PlatformOldMinScore int
 	PlatformOldMaxScore int
 	Remark              string
+	Referrer          ReferrerConfigLittle  `json:"referrer" bun:"rel:belongs-to,join:referrer_id=id"`
+
 }
 
 func (a *ReferrerRiskConfig) Insert() {
@@ -55,6 +57,6 @@ func (a *ReferrerRiskConfig) One(where string) {
 
 func (a *ReferrerRiskConfig) Page(where string, page, limit int) ([]ReferrerRiskConfig, int) {
 	var datas []ReferrerRiskConfig
-	count, _ := global.C.DB.NewSelect().Model(&datas).Where(where).Order(fmt.Sprintf("id desc")).Offset((page - 1) * limit).Limit(limit).ScanAndCount(global.C.Ctx)
+	count, _ := global.C.DB.NewSelect().Model(&datas).Relation("Referrer").Where(where).Order(fmt.Sprintf("rrc.id desc")).Offset((page - 1) * limit).Limit(limit).ScanAndCount(global.C.Ctx)
 	return datas, count
 }

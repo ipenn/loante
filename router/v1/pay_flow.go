@@ -117,11 +117,11 @@ func (a *payFlow) RepaymentsExport(c *fiber.Ctx) error {
 type reconciliationQueryReq struct {
 	req.PageReq
 	BorrowId	int	`json:"borrow_id" query:"borrow_id"`  //借款的订单编号
-	UserName    string `json:"user_name" query:"user_name"` //用户名
+	Name    string `json:"name" query:"name"` //用户名
 	Phone       string `json:"phone" query:"phone"`			//手机号
 	StartTime       string `json:"start_time" query:"start_time"`	//应还款时间
 	EndTime       string `json:"end_time" query:"end_time"`		//应还款时间
-	Status      int `json:"status" query:"status"` //借款的订单状态
+	//Status      int `json:"status" query:"status"` //借款的订单状态
 }
 //Reconciliation 平账记录
 func (a *payFlow)Reconciliation(c *fiber.Ctx) error {
@@ -131,24 +131,23 @@ func (a *payFlow)Reconciliation(c *fiber.Ctx) error {
 	}
 	where := "o.type = 3"
 	if input.BorrowId > 0{ //订单编号
-		where += fmt.Sprintf("borrow_id = %d", input.BorrowId)
+		where += fmt.Sprintf("o.bid = %d", input.BorrowId)
 	}
-	if len(input.UserName) > 0{
-		where += fmt.Sprintf("u.aadhaar_name = '%s'", input.UserName)
+	if len(input.Name) > 0{
+		where += fmt.Sprintf("user.aadhaar_name = '%s'", input.Name)
 	}
 	if len(input.Phone) > 0{
-		where += fmt.Sprintf("u.phone = '%s'", input.Phone)
+		where += fmt.Sprintf("user.phone = '%s'", input.Phone)
 	}
 	if len(input.StartTime) > 0{
-		where += fmt.Sprintf("b.end_time > '%s'", input.StartTime)
+		where += fmt.Sprintf("borrow.end_time > '%s'", input.StartTime)
 	}
 	if len(input.EndTime) > 0{
-		where += fmt.Sprintf("b.end_time < '%s'", input.EndTime)
+		where += fmt.Sprintf("borrow.end_time < '%s'", input.EndTime)
 	}
-	if input.Status > 0{
-		where += fmt.Sprintf("b.status = '%d'", input.Status)
-	}
-
+	//if input.Status > 0{
+	//	where += fmt.Sprintf("borrow.status = '%d'", input.Status)
+	//}
 	lists, count := new(model.Orders).Page(where, input.Page, input.Size)
 	return resp.OK(c, map[string]interface{}{
 		"count": count,
@@ -158,11 +157,11 @@ func (a *payFlow)Reconciliation(c *fiber.Ctx) error {
 
 type depositQueryReq struct {
 	req.PageReq
-	Id       int    `json:"id" query:"id"`
-	BorrowId string `json:"borrow_id" query:"borrow_id,omitempty"`
-	UserName string `json:"user_name" query:"user_name"`
-	Phone    string `json:"phone" query:"phone"`
-	Status   int    `json:"status" query:"status"`
+	BorrowId	int	`json:"borrow_id" query:"borrow_id"`  //借款的订单编号
+	Name    string `json:"name" query:"name"` //用户名
+	Phone       string `json:"phone" query:"phone"`			//手机号
+	StartTime       string `json:"start_time" query:"start_time"`	//应还款时间
+	EndTime       string `json:"end_time" query:"end_time"`		//应还款时间
 }
 
 //Deposits 入账
@@ -171,7 +170,24 @@ func (a *payFlow) Deposits(c *fiber.Ctx) error {
 	if err := tools.ParseBody(c, input); err != nil {
 		return resp.Err(c, 1, err.Error())
 	}
-	lists, count := new(model.Orders).Page("o.id > 0", input.Page, input.Size)
+	where := "o.type = 4"
+	if input.BorrowId > 0{ //订单编号
+		where += fmt.Sprintf("o.bid = %d", input.BorrowId)
+	}
+	if len(input.Name) > 0{
+		where += fmt.Sprintf("user.aadhaar_name = '%s'", input.Name)
+	}
+	if len(input.Phone) > 0{
+		where += fmt.Sprintf("user.phone = '%s'", input.Phone)
+	}
+	if len(input.StartTime) > 0{
+		where += fmt.Sprintf("borrow.end_time > '%s'", input.StartTime)
+	}
+	if len(input.EndTime) > 0{
+		where += fmt.Sprintf("borrow.end_time < '%s'", input.EndTime)
+	}
+
+	lists, count := new(model.Orders).Page(where, input.Page, input.Size)
 	return resp.OK(c, map[string]interface{}{
 		"count": count,
 		"list":  lists,
@@ -180,13 +196,16 @@ func (a *payFlow) Deposits(c *fiber.Ctx) error {
 
 type loansQueryReq struct {
 	req.PageReq
-	Id       int    `json:"id" query:"id"`
-	BorrowId string `json:"borrow_id" query:"borrow_id"`
-	UserName string `json:"user_name" query:"user_name"`
-	Phone    string `json:"phone" query:"phone"`
-	Status   int    `json:"status" query:"status"`
+	BorrowId 	int `json:"borrow_id" query:"borrow_id"`  //借款id
+	ProductId 	int `json:"product_id" query:"product_id"` //产品id
+	PaymentId 	int `json:"payment_id" query:"payment_id"` //支付Id
+	PaySuccess 	string `json:"pay_success" query:"pay_success"` //是否支付成功
+	RequestNo 	string `json:"request_no" query:"request_no"` //放款请求编号
+	StartTime 	string `json:"start_time" query:"start_time"` //创建时间
+	EndTime   	string `json:"end_time" query:"end_time"`		//创建时间
+	LoadStartTime 	string `json:"load_start_time" query:"load_start_time"` //放款时间
+	LoadEndTime   	string `json:"load_end_time" query:"load_end_time"` //放款时间
 }
-
 
 //Loans 放款记录 从borrow表获取
 func (a *payFlow) Loans(c *fiber.Ctx) error {
@@ -194,7 +213,35 @@ func (a *payFlow) Loans(c *fiber.Ctx) error {
 	if err := tools.ParseBody(c, input); err != nil {
 		return resp.Err(c, 1, err.Error())
 	}
-	lists, count := new(model.Borrow).Page("b.id > 0", input.Page, input.Size)
+	where := "b.id > 0"
+	if input.BorrowId > 0{
+		where += fmt.Sprintf(" and b.id = %d", input.BorrowId)
+	}
+	if input.ProductId > 0{
+		where += fmt.Sprintf(" and b.product_id = %d", input.ProductId)
+	}
+	if input.PaymentId > 0{
+		where += fmt.Sprintf(" and b.payment = %d", input.PaymentId)
+	}
+	if len(input.PaySuccess) > 0{
+		where += fmt.Sprintf(" and loan_time > '2000-01-01'")
+	}
+	if len(input.RequestNo) > 0{
+		where += fmt.Sprintf(" and payment_request_no = '%s'", input.RequestNo)
+	}
+	if len(input.StartTime) > 0{
+		where += fmt.Sprintf(" and create_time >= '%s'", input.StartTime)
+	}
+	if len(input.EndTime) > 0{
+		where += fmt.Sprintf(" and create_time < '%s'", input.EndTime)
+	}
+	if len(input.LoadStartTime) > 0{
+		where += fmt.Sprintf(" and loan_time >= '%s'", input.LoadStartTime)
+	}
+	if len(input.LoadEndTime) > 0{
+		where += fmt.Sprintf(" and loan_time < '%s'", input.LoadEndTime)
+	}
+	lists, count := new(model.Borrow).Page(where, input.Page, input.Size)
 	return resp.OK(c, map[string]interface{}{
 		"count": count,
 		"list":  lists,
@@ -216,7 +263,7 @@ func (a *payFlow) BatchLoans(c *fiber.Ctx) error {
 
 type utrPageReq struct {
 	req.PageReq
-	UserName string	`query:"user_name" json:"user_name"`
+	Name string	`query:"name" json:"name"`
 	Phone   string	`query:"phone" json:"phone"`
 	UtrCode    string	`query:"utr_code" json:"utr_code"`
 	MchId     int	`query:"mch_id" json:"mch_id"`
@@ -233,26 +280,26 @@ func (a *payFlow)Utrs(c *fiber.Ctx) error {
 		return resp.Err(c, 1, err.Error())
 	}
 	where := "bu.id > 0"
-	if len(input.UserName) > 0{
-		where += fmt.Sprintf("u.aadhaar_name = '%s'", input.UserName)
+	if len(input.Name) > 0{
+		where += fmt.Sprintf(" and user.aadhaar_name = '%s'", input.Name)
 	}
 	if len(input.Phone) > 0{
-		where += fmt.Sprintf("u.phone = '%s'", input.Phone)
+		where += fmt.Sprintf(" and user.phone = '%s'", input.Phone)
 	}
 	if len(input.UtrCode) > 0{
-		where += fmt.Sprintf("bu.utr_code = '%s'", input.UtrCode)
+		where += fmt.Sprintf(" and bu.utr_code = '%s'", input.UtrCode)
 	}
 	if input.MchId > 0{
-		where += fmt.Sprintf("bu.mch_id = '%d'", input.MchId)
+		where += fmt.Sprintf(" and bu.mch_id = '%d'", input.MchId)
 	}
 	if input.ProductId > 0{
-		where += fmt.Sprintf("bu.product_id = '%d'", input.ProductId)
+		where += fmt.Sprintf(" and bu.product_id = '%d'", input.ProductId)
 	}
 	if input.Status > 0{
-		where += fmt.Sprintf("bu.status = '%d'", input.Status)
+		where += fmt.Sprintf(" and bu.status = '%d'", input.Status)
 	}
 	if len(input.StartTime) > 0{
-		where += fmt.Sprintf("bu.create >= '%s'", input.StartTime)
+		where += fmt.Sprintf(" and bu.create >= '%s'", input.StartTime)
 	}
 	if len(input.EndTime) > 0{
 		where += fmt.Sprintf("bu.create < '%s'", input.EndTime)
@@ -266,7 +313,7 @@ func (a *payFlow)Utrs(c *fiber.Ctx) error {
 
 type utrDismissedReq struct {
 	req.PageReq
-	UserName string	`query:"user_name" json:"user_name"`
+	Name string	`query:"name" json:"name"`
 	Phone   string	`query:"phone" json:"phone"`
 	MchId     int	`query:"mch_id" json:"mch_id"`
 	ProductId int	`query:"product_id" json:"product_id"`
@@ -279,24 +326,24 @@ func (a *payFlow)UtrsDismissed(c *fiber.Ctx) error {
 	if err := tools.ParseBody(c, input); err != nil {
 		return resp.Err(c, 1, err.Error())
 	}
-	where := "bu.id > 0"
-	if len(input.UserName) > 0{
-		where += fmt.Sprintf("u.aadhaar_name = '%s'", input.UserName)
+	where := "bu.id > 0 and bu.status = 2"
+	if len(input.Name) > 0{
+		where += fmt.Sprintf(" and user.aadhaar_name = '%s'", input.Name)
 	}
 	if len(input.Phone) > 0{
-		where += fmt.Sprintf("u.phone = '%s'", input.Phone)
+		where += fmt.Sprintf(" and user.phone = '%s'", input.Phone)
 	}
 	if input.MchId > 0{
-		where += fmt.Sprintf("bu.mch_id = '%d'", input.MchId)
+		where += fmt.Sprintf(" and bu.mch_id = '%d'", input.MchId)
 	}
 	if input.ProductId > 0{
-		where += fmt.Sprintf("bu.product_id = '%d'", input.ProductId)
+		where += fmt.Sprintf(" and bu.product_id = '%d'", input.ProductId)
 	}
 	if len(input.StartTime) > 0{
-		where += fmt.Sprintf("bu.create >= '%s'", input.StartTime)
+		where += fmt.Sprintf(" and bu.create >= '%s'", input.StartTime)
 	}
 	if len(input.EndTime) > 0{
-		where += fmt.Sprintf("bu.create < '%s'", input.EndTime)
+		where += fmt.Sprintf(" and bu.create < '%s'", input.EndTime)
 	}
 	lists, count := new(model.BorrowUtr).Page(where, input.Page, input.Size)
 	return resp.OK(c, map[string]interface{}{

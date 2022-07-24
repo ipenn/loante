@@ -56,8 +56,10 @@ type utmSourceCreateReq struct {
 	Name     string `json:"name"`
 	AppToken string `json:"app_token"`
 	Remark   string `json:"remark"`
+	Status         int `json:"status"`
+	IsRejectApply int `json:"is_reject_apply"`
+	IsNeedReview  int `json:"is_need_review"`
 }
-
 func (a *utm_source) Create(c *fiber.Ctx) error {
 	input := new(utmSourceCreateReq)
 	if err := tools.ParseBody(c, input); err != nil {
@@ -77,6 +79,9 @@ func (a *utm_source) Create(c *fiber.Ctx) error {
 	data.Keyworks = input.KeyWords
 	data.Remark = input.Remark
 	data.AppToken = input.AppToken
+	data.Status = input.Status
+	data.IsRejectApply = input.IsRejectApply
+	data.IsNeedReview = input.IsNeedReview
 	if data.Id > 0 {
 		data.Update(fmt.Sprintf("id = %d", input.Id))
 	} else {
@@ -110,7 +115,8 @@ func (a *utm_source) Modify(c *fiber.Ctx) error {
 
 type utmRiskReq struct {
 	req.PageReq
-	RiskModel string `json:"risk_model" query:"risk_model"`
+	RiskModel int `json:"risk_model" query:"risk_model"`
+	ReferrerId string `json:"referrer_id" query:"referrer_id"`
 }
 
 func (a *utm_source) RiskConfig(c *fiber.Ctx) error {
@@ -118,9 +124,12 @@ func (a *utm_source) RiskConfig(c *fiber.Ctx) error {
 	if err := tools.ParseBody(c, input); err != nil {
 		return resp.Err(c, 1, err.Error())
 	}
-	where := fmt.Sprintf("id > 0")
-	if len(input.RiskModel) > 0 {
-		where += fmt.Sprintf(" and risk_model='%s'", input.RiskModel)
+	where := fmt.Sprintf("rrc.id > 0")
+	if input.RiskModel > 0 {
+		where += fmt.Sprintf(" and rrc.risk_model='%d'", input.RiskModel)
+	}
+	if len(input.ReferrerId) > 0 {
+		where += fmt.Sprintf(" and referrer.name like '%%%s%%'", input.ReferrerId)
 	}
 	lists, count := new(model.ReferrerRiskConfig).Page(where, input.Page, input.Size)
 	return resp.OK(c, map[string]interface{}{

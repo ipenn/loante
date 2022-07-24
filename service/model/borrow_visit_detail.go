@@ -25,7 +25,7 @@ type BorrowVisitDetail struct {
 	Wish        	string		`json:"wish"`
 	OverDueDays int		`json:"over_due_days"`
 	Remark                  string		`json:"remark"`
-	PromisedRepaymentAmount float64		`json:"promised_repayment_amount"`
+	PromisedRepaymentAmount string		`json:"promised_repayment_amount"`
 	PromisedRepaymentTime string		`json:"promised_repayment_time"`
 	NextVisitTime         string		`json:"next_visit_time"`
 

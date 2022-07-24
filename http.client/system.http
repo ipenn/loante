@@ -105,7 +105,7 @@ GET {{host}}/utm/risk_config
 token:{{token}}
 Content-Type: application/json
 
-{"page":1,"size":10}
+{"page":1,"size":10,"risk_model": 0,"referrer_id": 0}
 
 ### 渠道风险配置
 POST {{host}}/utm/risk_create

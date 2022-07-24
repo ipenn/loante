@@ -590,4 +590,45 @@ Content-Disposition: form-data; name="content"
 2022-07-19 14:38:59 [EROR] [C:/app/loante/loante/service/model/admin.go:55] &{{} 0     0 0     0 0 0 0 0 <nil> <nil> <nil> <nil> <nil>} err=sql: no rows in result set
 2022-07-19 14:39:15 [EROR] [C:/app/loante/loante/service/model/admin.go:55] &{{} 0     0 0     0 0 0 0 0 <nil> <nil> <nil> <nil> <nil>} err=sql: no rows in result set
 2022-07-20 10:55:01 [EROR] [C:/app/loante/loante/service/model/admin_right.go:34] &{{} 0        } err=invalid connection
+<<<<<<< HEAD
 2022-07-23 20:54:37 [EROR] [C:/app/loante/loante/service/model/admin.go:61] &{{} 0     0 0     0 0 0 0 0 <nil> <nil> <nil> <nil> <nil>} err=invalid connection
+=======
+2022-07-22 11:43:41 [INFO] [D:/works/ipenn/loante/service/sms/nxcloud.go:43] sms send content: {"result":"请求成功","code":"0","messageid":"685dfc063b864e96b5cb9ede173448d6"}
+2022-07-22 11:43:51 [INFO] [D:/works/ipenn/loante/service/sms/nxcloud.go:43] sms send content: {"result":"请求成功","code":"0","messageid":"b745580f590c4fb48d00469211eb230a"}
+2022-07-22 14:29:49 [INFO] [D:/works/ipenn/loante/service/sms/nxcloud.go:43] sms send content: {"result":"请求成功","code":"0","messageid":"4950984366d54592a73295d3e8a159f6"}
+2022-07-22 14:29:56 [INFO] [D:/works/ipenn/loante/service/sms/nxcloud.go:43] sms send content: {"result":"请求成功","code":"0","messageid":"0edd90191b5f43a2bbaf76f8f847cfe4"}
+2022-07-22 15:11:48 [INFO] [D:/works/ipenn/loante/service/payments/t_pay.go:146] {"code":200,"success":true,"data":{"merchant":"C1657530632421","orderId":"MvtvCk-1-1-1","platOrderId":"S20650472960","url":"https://www.tpays.in/paymentPage?mid=C1657530632421&oid=S20650472960&s=f9db4d66ea9bfc02d7c95b515007cdd2","sign":"9cfd77c1e1ac4d539d3c7604470949ab"}}
+2022-07-22 15:43:11 [EROR] [D:/works/ipenn/loante/service/model/product_payment.go:50] &{{} 0 0 0 0  0 0  <nil> <nil> <nil>} err=sql: no rows in result set
+2022-07-22 15:44:52 [INFO] [D:/works/ipenn/loante/service/payments/hxpay.go:127] {"platformOrderCode":"C20220722131454777480","paymentUrl":"https://payment.ammcinrpay.com/order?orderId=20220722131455256969&mchId=34615195387"}
+2022-07-22 15:58:47 [INFO] [D:/works/ipenn/loante/service/payments/whale_pay.go:129] {"code":0,"msg":"length must be between 1 and 512"}
+2022-07-22 15:59:40 [INFO] [D:/works/ipenn/loante/service/payments/whale_pay.go:129] {"code":0,"msg":"MERCHANT_NOT_EXIST"}
+2022-07-22 16:00:51 [INFO] [D:/works/ipenn/loante/service/payments/whale_pay.go:129] {"code":1,"msg":"ok","data":{"merchant":"WP1657618028333","orderId":"vVzhDZ-1-1-3","platOrderId":"955752251433967616","sign":"5D4D651915D827EC53A68019E972377C","url":"https://wp.hgcjbj.com/wp/html/pay/index.html#/upi/955752251433967616"}}
+2022-07-22 16:31:23 [INFO] [D:/works/ipenn/loante/service/cron/init.go:20] OrdersPayTimeOut 付款超时的订单状态标记为失败 order_id = 3
+2022-07-22 16:31:23 [INFO] [D:/works/ipenn/loante/service/cron/init.go:20] OrdersPayTimeOut 付款超时的订单状态标记为失败 order_id = 2
+2022-07-22 16:31:23 [INFO] [D:/works/ipenn/loante/service/cron/init.go:20] OrdersPayTimeOut 付款超时的订单状态标记为失败 order_id = 1
+2022-07-22 17:07:02 [INFO] [D:/works/ipenn/loante/service/cron/init.go:65] BorrowToRemind 预提醒分配 borrow_id = 1
+2022-07-22 17:09:14 [INFO] [D:/works/ipenn/loante/service/cron/init.go:65] BorrowToRemind 预提醒分配 borrow_id = 1
+2022-07-22 17:16:52 [INFO] [D:/works/ipenn/loante/service/cron/init.go:65] BorrowToRemind 预提醒分配 borrow_id = 1
+2022-07-22 17:58:19 [INFO] [D:/works/ipenn/loante/service/cron/init.go:105] BorrowToRemind 预提醒分配 borrow_id = 1
+2022-07-22 17:59:35 [INFO] [D:/works/ipenn/loante/service/cron/init.go:105] BorrowToRemind 预提醒分配 borrow_id = 1
+2022-07-22 17:59:51 [INFO] [D:/works/ipenn/loante/service/cron/init.go:105] BorrowToRemind 预提醒分配 borrow_id = 1
+2022-07-22 18:00:46 [INFO] [D:/works/ipenn/loante/service/cron/init.go:105] BorrowToRemind 预提醒分配 borrow_id = 1
+2022-07-22 18:04:32 [INFO] [D:/works/ipenn/loante/service/cron/init.go:126] BorrowRepaymentTimeout 订单进入预期中并生成一笔滞纳金 borrow_id = 1 fee=250
+2022-07-22 18:07:00 [INFO] [D:/works/ipenn/loante/service/cron/init.go:105] BorrowToRemind 预提醒分配 borrow_id = 1
+2022-07-22 18:08:25 [INFO] [D:/works/ipenn/loante/service/cron/init.go:105] BorrowToRemind 预提醒分配 borrow_id = 1
+2022-07-22 18:09:07 [INFO] [D:/works/ipenn/loante/service/cron/init.go:105] BorrowToRemind 预提醒分配 borrow_id = 1
+2022-07-22 18:11:15 [INFO] [D:/works/ipenn/loante/service/cron/init.go:105] BorrowToRemind 预提醒分配 borrow_id = 1
+2022-07-22 18:11:50 [INFO] [D:/works/ipenn/loante/service/cron/init.go:144] 每天计算一次滞纳金 影响=1 err=%!v(MISSING)
+2022-07-22 18:12:45 [INFO] [D:/works/ipenn/loante/service/cron/init.go:105] BorrowToRemind 预提醒分配 borrow_id = 1
+2022-07-22 18:12:50 [INFO] [D:/works/ipenn/loante/service/cron/init.go:144] 每天计算一次滞纳金 影响=1 err=%!v(MISSING)
+2022-07-22 18:13:17 [INFO] [D:/works/ipenn/loante/service/cron/init.go:105] BorrowToRemind 预提醒分配 borrow_id = 1
+2022-07-22 18:17:39 [INFO] [D:/works/ipenn/loante/service/cron/init.go:160] 更新逾期天数 影响=0 err=%!v(MISSING)
+2022-07-22 18:21:05 [INFO] [D:/works/ipenn/loante/service/cron/init.go:160] 更新逾期天数 影响=1 err=%!v(MISSING)
+2022-07-23 10:51:09 [INFO] [D:/works/ipenn/loante/service/model/user.go:297] 逾期重置额度 &{{} 7 1 1 4 2022-07-23 10:50:48 逾期重置额度}
+2022-07-23 10:54:12 [INFO] [D:/works/ipenn/loante/service/model/user.go:269] 插入提额数据 &{{} 8 1 1 8000 2022-07-23 10:54:12 逾期结清也提额 不满24小时也提额 count = 1}
+2022-07-23 10:54:12 [INFO] [D:/works/ipenn/loante/service/model/user.go:297] 逾期重置额度 &{{} 9 1 1 5000 2022-07-23 10:54:12 逾期重置额度}
+2022-07-23 11:26:32 [INFO] [D:/works/ipenn/loante/service/model/user.go:269] 插入提额数据 &{{} 10 1 1 8000 2022-07-23 11:26:32 逾期结清也提额 不满24小时也提额 count = 1}
+2022-07-23 11:26:32 [INFO] [D:/works/ipenn/loante/service/model/user.go:297] 逾期重置额度 &{{} 11 1 1 5000 2022-07-23 11:26:32 逾期重置额度}
+2022-07-23 21:38:08 [INFO] [D:/works/ipenn/loante/service/model/user.go:269] 插入提额数据 &{{} 12 1 1 8000 2022-07-23 21:38:08 逾期结清也提额 不满24小时也提额 count = 1}
+2022-07-23 22:56:13 [EROR] [D:/works/ipenn/loante/service/model/referrer_config.go:55] &{{} {{} 0  } 0     0 0 0} err=sql: no rows in result set
+>>>>>>> 756b9740a3c8daa76ec584b43a21a23c92f73aa9
