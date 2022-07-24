@@ -590,6 +590,9 @@ Content-Disposition: form-data; name="content"
 2022-07-19 14:38:59 [EROR] [C:/app/loante/loante/service/model/admin.go:55] &{{} 0     0 0     0 0 0 0 0 <nil> <nil> <nil> <nil> <nil>} err=sql: no rows in result set
 2022-07-19 14:39:15 [EROR] [C:/app/loante/loante/service/model/admin.go:55] &{{} 0     0 0     0 0 0 0 0 <nil> <nil> <nil> <nil> <nil>} err=sql: no rows in result set
 2022-07-20 10:55:01 [EROR] [C:/app/loante/loante/service/model/admin_right.go:34] &{{} 0        } err=invalid connection
+<<<<<<< HEAD
+2022-07-23 20:54:37 [EROR] [C:/app/loante/loante/service/model/admin.go:61] &{{} 0     0 0     0 0 0 0 0 <nil> <nil> <nil> <nil> <nil>} err=invalid connection
+=======
 2022-07-22 11:43:41 [INFO] [D:/works/ipenn/loante/service/sms/nxcloud.go:43] sms send content: {"result":"请求成功","code":"0","messageid":"685dfc063b864e96b5cb9ede173448d6"}
 2022-07-22 11:43:51 [INFO] [D:/works/ipenn/loante/service/sms/nxcloud.go:43] sms send content: {"result":"请求成功","code":"0","messageid":"b745580f590c4fb48d00469211eb230a"}
 2022-07-22 14:29:49 [INFO] [D:/works/ipenn/loante/service/sms/nxcloud.go:43] sms send content: {"result":"请求成功","code":"0","messageid":"4950984366d54592a73295d3e8a159f6"}
@@ -628,6 +631,7 @@ Content-Disposition: form-data; name="content"
 2022-07-23 11:26:32 [INFO] [D:/works/ipenn/loante/service/model/user.go:297] 逾期重置额度 &{{} 11 1 1 5000 2022-07-23 11:26:32 逾期重置额度}
 2022-07-23 21:38:08 [INFO] [D:/works/ipenn/loante/service/model/user.go:269] 插入提额数据 &{{} 12 1 1 8000 2022-07-23 21:38:08 逾期结清也提额 不满24小时也提额 count = 1}
 2022-07-23 22:56:13 [EROR] [D:/works/ipenn/loante/service/model/referrer_config.go:55] &{{} {{} 0  } 0     0 0 0} err=sql: no rows in result set
+<<<<<<< HEAD
 2022-07-23 23:20:19 [EROR] [D:/works/ipenn/loante/service/model/referrer_config.go:55] &{{} {{} 0  } 0     0 0 0} err=sql: no rows in result set
 2022-07-23 23:20:28 [EROR] [D:/works/ipenn/loante/service/model/referrer_config.go:55] &{{} {{} 0  } 0     0 0 0} err=sql: no rows in result set
 2022-07-23 23:34:52 [EROR] [D:/works/ipenn/loante/service/model/referrer_config.go:55] &{{} {{} 0  } 0     0 0 0} err=sql: no rows in result set
@@ -702,3 +706,6 @@ Content-Disposition: form-data; name="content"
 2022-07-24 14:58:51 [EROR] [D:/works/ipenn/loante/service/model/merchant.go:49] &{{} {{} 0 } 0 0 0 0 0      0} err=sql: no rows in result set
 2022-07-24 15:13:02 [INFO] [D:/works/ipenn/loante/service/sms/nxcloud.go:43] sms send content: {"result":"请求成功","code":"0","messageid":"e38d542a066b416594f53f8d942592ec"}
 2022-07-24 15:13:02 [EROR] [D:/works/ipenn/loante/service/model/merchant.go:49] &{{} {{} 0 } 0 0 0 0 0      0} err=sql: no rows in result set
+=======
+>>>>>>> 756b9740a3c8daa76ec584b43a21a23c92f73aa9
+>>>>>>> 42cc43f6e3b2a9b471ae29cb8b87a80605f88477

@@ -122,11 +122,10 @@ func (a *Orders) PayAfter(amount float64) {
 	a.Update(fmt.Sprintf("id = %d", a.Id))
 	borrowData.Update(fmt.Sprintf("id = %d", borrowData.Id))
 	//更新产品额度
-	if borrowData.Status == 8 || borrowData.Status == 9{
+	if borrowData.Status == 8 || borrowData.Status == 9 {
 		new(UserQuota).Increase(borrowData.ProductId, borrowData.Uid, borrowData.Status)
 	}
 }
-
 
 type OrdersForStatistics struct {
 	Count      int    `json:"count"`
@@ -136,7 +135,17 @@ type OrdersForStatistics struct {
 	Type       int    `json:"type"`
 }
 
-func (a *Orders) ForStatistics(where string) []OrdersForStatistics {
+type ForStatistics struct {
+	Count        int     `json:"count"`
+	SuccessCount int     `json:"success_count"`
+	SuccessRate  float64 `json:"success_rate"`
+	Payment      int     `json:"payment"`
+	CreateTime   string  `json:"create_time"`
+	Name         string  `json:"name"`
+	Type         int     `json:"type"`
+}
+
+func (a *Orders) ForStatistics(where string) []ForStatistics {
 	//var datas []Borrow
 	//count, _ := global.C.DB.NewSelect().Model(&Borrow{}).GroupExpr("HOUR(loan_time) desc").
 	//	GroupExpr("payment DESC").Where(where).Offset((page - 1) * limit).Limit(limit).ScanAndCount(global.C.Ctx)
@@ -145,32 +154,63 @@ func (a *Orders) ForStatistics(where string) []OrdersForStatistics {
 	rows, _ := global.C.DB.QueryContext(global.C.Ctx, `SELECT
 	COUNT( o.id ) AS count,
 	o.payment,
-	o.create_time,
+	date_format(o.create_time,'%y-%m-%d %H') as create_time,
 	p.name,
 	0 AS type 
 FROM
 	orders o
 	LEFT JOIN payment p ON o.payment = p.id 
 WHERE
-	o.repaid_status IN ( 0,1 ) and DATE_SUB(CURDATE(), INTERVAL 3 DAY) <= date(o.create_time) `+where+`
+	 DATE_SUB(CURDATE(), INTERVAL 3 DAY) <= date(o.create_time) `+where+`
 GROUP BY
+	DAY(o.create_time),
 	HOUR ( o.create_time ) DESC,
 	o.payment DESC UNION ALL
 SELECT
 	COUNT( o.id ) AS count,
 	o.payment,
-	o.create_time,
+	date_format(o.create_time,'%y-%m-%d %H') as create_time,
 	p.name,
-	0 AS type 
+	1 AS type 
 FROM
 	orders o
 	LEFT JOIN payment p ON o.payment = p.id 
 WHERE
-	o.repaid_status =2 and DATE_SUB(CURDATE(), INTERVAL 3 DAY) <= date(o.create_time) `+where+`
+	o.repaid_status =1 and DATE_SUB(CURDATE(), INTERVAL 3 DAY) <= date(o.create_time) `+where+`
 GROUP BY
+	DAY(o.create_time),
 	HOUR ( o.create_time ) DESC,
 	o.payment DESC`)
-
+	var result []ForStatistics
 	global.C.DB.ScanRows(global.C.Ctx, rows, &ordersForStatistics)
-	return ordersForStatistics
+	for _, statistic := range ordersForStatistics {
+		flag := true
+		if statistic.Type == 1 {
+			break
+		}
+		for _, forStatistic := range ordersForStatistics {
+			if statistic.Payment == forStatistic.Payment && statistic.Type == 0 && forStatistic.Type == 1 && statistic.CreateTime == forStatistic.CreateTime {
+				var r ForStatistics
+				r.Payment = statistic.Payment
+				r.Count = statistic.Count
+				r.SuccessCount = forStatistic.Count
+				r.SuccessRate = tools.ToFloat64(forStatistic.Count) / tools.ToFloat64(statistic.Count)
+				r.CreateTime = statistic.CreateTime
+				r.Name = statistic.Name
+				result = append(result, r)
+				flag = false
+			}
+		}
+		if flag {
+			var r ForStatistics
+			r.Payment = statistic.Payment
+			r.Count = statistic.Count
+			r.SuccessCount = 0
+			r.SuccessRate = 0
+			r.CreateTime = statistic.CreateTime
+			r.Name = statistic.Name
+			result = append(result, r)
+		}
+	}
+	return result
 }

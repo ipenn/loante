@@ -1,10 +1,8 @@
 package model
 
 import (
-	"fmt"
 	"github.com/uptrace/bun"
 	"loante/global"
-	"loante/tools"
 )
 
 type StatTraffic struct {
@@ -137,72 +135,6 @@ func (a *StatTraffic) Page(where, group string, page, limit int) ([]StatTrafficL
 	return datas, count
 }
 
-type statTrafficValue struct {
-	Count     int `json:"count"`
-	Amount    int `json:"amount"`
-	ProductId int `json:"product_id"`
-	MchId     int `json:"mch_id"`
-	Type      int `json:"type"`
-}
-
-type productId struct {
-	ProductId int `json:"product_id"`
-}
-
-// GetStatTrafficValue 定时任务,插入报表数据
-func GetStatTrafficValue() {
-	var product []productId
-	global.C.DB.NewSelect().Column("product_id").Model(&Borrow{}).Where("TO_DAYS(NOW())- TO_DAYS( create_time ) = 1").Group("product_id").Scan(global.C.Ctx, &product)
-	if len(product) != 0 {
-		for _, id := range product {
-			var st StatTraffic
-
-			rows2, _ := global.C.DB.QueryContext(global.C.Ctx, fmt.Sprintf("SELECT\n\tCOUNT( id ) AS count,\n\t0 AS amount,\n\tIFNULL( product_id, 0 ) product_id,\n\tIFNULL( mch_id, 0 ) mch_id,\n\t1 AS type \nFROM\n\tborrow \nWHERE\n\tTO_DAYS(\n\tNOW())- TO_DAYS( create_time ) = 1 \n\tAND loan_type = 0 \n\tAND product_id = %d UNION ALL\nSELECT\n\tCOUNT( id ) AS count,\n\t0 AS amount,\n\tIFNULL( product_id, 0 ) product_id,\n\tIFNULL( mch_id, 0 ) mch_id,\n\t2 AS type \nFROM\n\tborrow \nWHERE\n\tTO_DAYS(\n\tNOW())- TO_DAYS( create_time ) = 1 \n\tAND `status` >= 4 \n\tAND loan_type = 0 \n\tAND product_id = %d UNION ALL\nSELECT\n\tCOUNT( id ) AS count,\n\tIFNULL( SUM( loan_amount ), 0 ) AS amount,\n\tIFNULL( product_id, 0 ) product_id,\n\tIFNULL( mch_id, 0 ) mch_id,\n\t3 AS type \nFROM\n\tborrow \nWHERE\n\tTO_DAYS(\n\tNOW())- TO_DAYS( create_time ) = 1 \n\tAND `status` >= 5 \n\tAND loan_type = 0 \n\tAND product_id = %d UNION ALL\nSELECT\n\tIFNULL( COUNT( id ), 0 ) AS count,\n\t0 AS amount,\n\tIFNULL( product_id, 0 ) product_id,\n\tIFNULL( mch_id, 0 ) mch_id,\n\t4 AS type \nFROM\n\tborrow \nWHERE\n\tTO_DAYS(\n\tNOW())- TO_DAYS( create_time ) = 1 \n\tAND loan_type = 0 \n\tAND product_id = %d \nGROUP BY\n\tuid UNION ALL\nSELECT\n\tCOUNT( id ) AS count,\n\t0 AS amount,\n\tIFNULL( product_id, 0 ) product_id,\n\tIFNULL( mch_id, 0 ) mch_id,\n\t11 AS type \nFROM\n\tborrow \nWHERE\n\tTO_DAYS(\n\tNOW())- TO_DAYS( create_time ) = 1 \n\tAND loan_type > 0 \n\tAND product_id = %d UNION ALL\nSELECT\n\tCOUNT( id ) AS count,\n\t0 AS amount,\n\tIFNULL( product_id, 0 ) product_id,\n\tIFNULL( mch_id, 0 ) mch_id,\n\t12 AS type \nFROM\n\tborrow \nWHERE\n\tTO_DAYS(\n\tNOW())- TO_DAYS( create_time ) = 1 \n\tAND `status` >= 4 \n\tAND loan_type > 0 \n\tAND product_id = %d UNION ALL\nSELECT\n\tCOUNT( id ) AS count,\n\tIFNULL( SUM( loan_amount ), 0 ) AS amount,\n\tIFNULL( product_id, 0 ) product_id,\n\tIFNULL( mch_id, 0 ) mch_id,\n\t13 AS type \nFROM\n\tborrow \nWHERE\n\tTO_DAYS(\n\tNOW())- TO_DAYS( create_time ) = 1 \n\tAND STATUS >= 5 \n\tAND loan_type > 0 \n\tAND product_id = %d UNION ALL\nSELECT\n\tIFNULL( COUNT( id ), 0 ) AS count,\n\t0 AS amount,\n\tIFNULL( product_id, 0 ) product_id,\n\tIFNULL( mch_id, 0 ) mch_id,\n\t14 AS type \nFROM\n\tborrow \nWHERE\n\tTO_DAYS(\n\tNOW())- TO_DAYS( create_time ) = 1 \n\tAND loan_type > 0 \n\tAND product_id = %d \nGROUP BY\n\tuid", id.ProductId, id.ProductId, id.ProductId, id.ProductId, id.ProductId, id.ProductId, id.ProductId, id.ProductId))
-			for rows2.Next() {
-				value := new(statTrafficValue)
-				err := global.C.DB.ScanRow(global.C.Ctx, rows2, value)
-				if err == nil {
-					if value.Type == 1 {
-						st.NewApply = value.Count
-						st.ProductId = value.ProductId
-						st.MchId = value.MchId
-					}
-					if value.Type == 2 {
-						st.NewApplyPass = value.Count
-					}
-					if value.Type == 3 {
-						st.NewLoanPass = value.Count
-						st.NewLoanAmount = value.Amount
-					}
-					if value.Type == 4 {
-						st.NewApplyUser = value.Count
-					}
-					if value.Type == 11 {
-						st.OldApply = value.Count
-					}
-					if value.Type == 12 {
-						st.OldApplyPass = value.Count
-					}
-					if value.Type == 13 {
-						st.OldLoanPass = value.Count
-						st.OldLoanAmount = value.Amount
-					}
-					if value.Type == 14 {
-						st.OldApplyUser = value.Count
-					}
-					st.Apply = st.NewApply + st.OldApply
-					st.ApplyUser = st.NewApplyUser + st.OldApplyUser
-					st.ApplyPass = st.NewApplyPass + st.OldApplyPass
-					st.LoanPass = st.NewLoanPass + st.OldLoanPass
-					st.LoanAmount = st.NewLoanAmount + st.OldLoanAmount
-					st.Time = tools.GetFormatDay()
-				}
-			}
-			st.Insert()
-			//fmt.Println(st)
-		}
-	}
-}
 
 func (a *StatTraffic) Insert() {
 	_, err := global.C.DB.NewInsert().Model(a).Returning("*").Exec(global.C.Ctx)
