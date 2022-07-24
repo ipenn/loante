@@ -137,7 +137,7 @@ FROM
 	orders o
 	LEFT JOIN payment p ON o.payment = p.id 
 WHERE
-	o.repaid_status IN ( 0,1 ) and DATE_SUB(CURDATE(), INTERVAL 3 DAY) <= date(o.create_time) `+where+`
+	 DATE_SUB(CURDATE(), INTERVAL 3 DAY) <= date(o.create_time) `+where+`
 GROUP BY
 	HOUR ( o.create_time ) DESC,
 	o.payment DESC UNION ALL
@@ -146,12 +146,12 @@ SELECT
 	o.payment,
 	o.create_time,
 	p.name,
-	0 AS type 
+	1 AS type 
 FROM
 	orders o
 	LEFT JOIN payment p ON o.payment = p.id 
 WHERE
-	o.repaid_status =2 and DATE_SUB(CURDATE(), INTERVAL 3 DAY) <= date(o.create_time) `+where+`
+	o.repaid_status =1 and DATE_SUB(CURDATE(), INTERVAL 3 DAY) <= date(o.create_time) `+where+`
 GROUP BY
 	HOUR ( o.create_time ) DESC,
 	o.payment DESC`)
