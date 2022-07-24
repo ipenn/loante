@@ -227,6 +227,9 @@ func (a *UserQuota) Insert() {
 //uid 用户Id
 //overdue 是否逾期 9 逾期 8 正常
 func (a *UserQuota) Increase(pid, uid, overdue int)  {
+	//获取用户当前额度
+	uquote := new(UserQuota)
+	uquote.One(fmt.Sprintf("user_id = %d", uid))
 	//获取规则
 	config19 := new(SystemSetting)
 	config19.One("id = 19") //逾期结清不提额（0：否，1：是）
@@ -258,6 +261,7 @@ func (a *UserQuota) Increase(pid, uid, overdue int)  {
 		}
 	}
 	remark += fmt.Sprintf(" count = %d", count)
+	quotaAmount := 0
 	if amount > 0{
 		// 插入提额数据
 		uq := new(UserQuota)
@@ -266,24 +270,13 @@ func (a *UserQuota) Increase(pid, uid, overdue int)  {
 		uq.Quota = int(amount)
 		uq.Remark = remark
 		uq.Insert()
+		quotaAmount = int(amount)
 		global.Log.Info("插入提额数据 %v", uq)
 	}
 	//处理 逾期结清时重置提额度
 	config20 := new(SystemSetting)
 	config20.One("id = 20")
 	if config20.ParamValue == "1" && overdue == 9{
-		//最后一条数据是否逾期
-		//lists,_  := borrow.Page(fmt.Sprintf("product_id = %d and uid = %d", pid, uid), 1,2000)
-		//lastTime := ""
-		//status := 0
-		//for _, item := range lists{
-		//	if item.CompleteTime > lastTime{
-		//		status = item.Status
-		//	}
-		//}
-		//if status == 9{ //逾期重置额度
-		//
-		//}
 		//获取产品初始额度
 		product := new(Product)
 		product.One(fmt.Sprintf("id = %d", pid))
@@ -294,7 +287,17 @@ func (a *UserQuota) Increase(pid, uid, overdue int)  {
 			uq.Quota = product.StartAmount
 			uq.Remark = "逾期重置额度"
 			uq.Insert()
+			quotaAmount = product.StartAmount
 			global.Log.Info("逾期重置额度 %v", uq)
+		}
+	}
+	if uquote.Quota < quotaAmount { //提额发送短信通知
+		//查询号码
+		user := new(User)
+		user.One(fmt.Sprintf("id = %d", uid))
+		var ps []string
+		if new(SmsTemplate).Send(6, user.Phone, ps) {
+
 		}
 	}
 }

@@ -1,15 +1,86 @@
+POST http://localhost:80/api/item
+Content-Type: multipart/form-data; boundary=WebAppBoundary
+
+--WebAppBoundary
+Content-Disposition: form-data; name="field-name"; filename="file.txt"
+
+< ./relative/path/to/local_file.txt
+--WebAppBoundary--
 
 ###
+
+### 验证码
 POST {{host}}/sms/send
 token:{{token}}
 Content-Type: application/json
 
 {
-  "mch_id": 1,
+  "mch_id": 0,
   "type": 1,
   "params": ["62500"],
   "phone": "+919538189742"
 }
+
+### 放款成功
+POST {{host}}/sms/send
+token:{{token}}
+Content-Type: application/json
+
+{
+  "mch_id": 0,
+  "type": 2,
+  "params": ["3000"],
+  "phone": "+919538189742"
+}
+
+### 还款前一天
+POST {{host}}/sms/send
+token:{{token}}
+Content-Type: application/json
+
+{
+  "mch_id": 0,
+  "type": 3,
+  "params": ["3000","2022-07-25"],
+  "phone": "+919538189742"
+}
+
+### 还款当天通知
+POST {{host}}/sms/send
+token:{{token}}
+Content-Type: application/json
+
+{
+  "mch_id": 0,
+  "type": 4,
+  "params": [],
+  "phone": "+919538189742"
+}
+
+### 逾期提醒
+POST {{host}}/sms/send
+token:{{token}}
+Content-Type: application/json
+
+{
+  "mch_id": 0,
+  "type": 5,
+  "params": ["1"],
+  "phone": "+919538189742"
+}
+
+### 提额通知
+POST {{host}}/sms/send
+token:{{token}}
+Content-Type: application/json
+
+{
+  "mch_id": 0,
+  "type": 6,
+  "params": [],
+  "phone": "+919538189742"
+}
+
 
 ###
 POST {{host}}/sms/send
@@ -21,4 +92,31 @@ Content-Type: application/json
   "type": 2,
   "params": [],
   "phone": "+919538189742"
+}
+
+###
+POST {{host}}/pay_notify
+token:{{token}}
+Content-Type: application/json
+
+{"merchantLogin":"Loante01","orderCode":"C20220722131454777480","merchantCode":"QWCFlh-1-1-2","status":"SUCCESS","orderAmount":"420","paidAmount":"420","sign":"8ac00bde28c43c043c28950fe29b0533"}
+
+
+
+###
+POST {{host}}/pay_notify
+token:{{token}}
+Content-Type: application/x-www-form-urlencoded
+
+merchantLogin=Loante01&orderCode=C20220722131454777480&merchantCode=QWCFlh-1-1-2&status=SUCCESS&orderAmount=420&paidAmount=420&sign=8ac00bde28c43c043c28950fe29b0533
+
+
+
+### 放款 代付
+POST {{host}}/pay/out
+token:{{token}}
+Content-Type: application/json
+
+{
+  "borrow_id": 1
 }

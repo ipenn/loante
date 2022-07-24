@@ -10,6 +10,7 @@ import (
 type ProductPrecept struct {
 	bun.BaseModel `bun:"table:product_precept,alias:ppt" bun:",pk"`
 	Id            int    `json:"id"`
+	MchId     int    `json:"mch_id"`
 	ProductId     int    `json:"product_id"`
 	Status        int    `json:"status"`
 	Amount        float64    `json:"amount"`

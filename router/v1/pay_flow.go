@@ -379,24 +379,25 @@ func (a *payFlow)PayPartial(c *fiber.Ctx) error {
 		return resp.Err(c, 1, "还款方式不正确！")
 	}
 	if input.Type == 1 {
-		if borrow.BeRepaidAmount < input.Amount{
-			input.Amount = borrow.BeRepaidAmount
+		if borrow.BeRepaidAmount + borrow.LatePaymentFee < input.Amount{
+			input.Amount = borrow.BeRepaidAmount + borrow.LatePaymentFee
 			input.Type = 0
 		}
 	}
 	if input.Type == 2{ //展期
-		//获取产品展期费用
-		productConfig := new(model.ProductDelayConfig)
-		productConfig.One(fmt.Sprintf("product_id = %d", borrow.ProductId))
-		if productConfig.Id == 0{
-			return resp.Err(c, 1, "未找到产品展期配置！")
-		}
-		if productConfig.Status == 0{
-			return resp.Err(c, 1, "产品展期未开启！")
-		}
-		//borrow.PostponedPeriod += 1 展期还款成功以后才能 + 1
-		//展期需要先还滞纳金 和 展期费用
-		input.Amount = int(float32(borrow.LoanAmount) * float32(productConfig.DelayRate)) + borrow.LatePaymentFee
+		////获取产品展期费用
+		//productConfig := new(model.ProductDelayConfig)
+		//productConfig.One(fmt.Sprintf("product_id = %d", borrow.ProductId))
+		//if productConfig.Id == 0{
+		//	return resp.Err(c, 1, "未找到产品展期配置！")
+		//}
+		//if productConfig.Status == 0{
+		//	return resp.Err(c, 1, "产品展期未开启！")
+		//}
+		////borrow.PostponedPeriod += 1 展期还款成功以后才能 + 1
+		////展期需要先还滞纳金 和 展期费用
+		//input.Amount = int(float32(borrow.LoanAmount) * float32(productConfig.DelayRate)) + borrow.LatePaymentFee
+		input.Amount = borrow.PostponeValuation + borrow.LatePaymentFee
 	}
 	//获取产品的默认支付通道
 	if input.PaymentId == 0{

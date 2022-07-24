@@ -169,3 +169,32 @@ func BorrowExpireDay()  {
 	//ret,_ = res.RowsAffected()
 	//global.Log.Info("更新剩余天数 影响=%v err=%v", ret)
 }
+
+//RepaymentSMSNotify 还款提醒
+func RepaymentSMSNotify()  {
+	if time.Now().Hour() != 12 {
+		return
+	}
+	lists,_ := new(model.Borrow).Page("b.expire_day > -2 and b.expire_day < 3", 1, 1000)
+	global.Log.Info("发送短信开始")
+	for _, item := range lists{
+		t2 := 5
+		var ps []interface{}
+		if item.ExpireDay == -1{
+			t2 = 3
+		}else if item.ExpireDay == 0{
+			t2 = 4
+		}
+		//查询号码
+		user := new(model.User)
+		user.One(fmt.Sprintf("id = %d", item.Uid))
+		if new(model.SmsTemplate).Send(t2, user.Phone, ps) {
+			//判断商户是否存在
+			merchantData := new(model.Merchant)
+			merchantData.One(fmt.Sprintf("id = %d", item.MchId))
+			if merchantData.Id > 0 {
+				merchantData.AddService(1, 1) //扣费
+			}
+		}
+	}
+}

@@ -40,6 +40,7 @@ type HXPayErr struct {
 	Detail  string `json:"detail"`
 	Path    string `json:"path"`
 	Message string `json:"message"`
+	ErrorMessages string `json:"errorMessages"`
 }
 
 type HXPayNotify struct {
@@ -47,8 +48,8 @@ type HXPayNotify struct {
 	OrderCode    string `json:"orderCode"`
 	MerchantCode         string `json:"merchantCode"`
 	Status     string `json:"status"`
-	OrderAmount int `json:"orderAmount,omitempty"`
-	PaidAmount  float64 `json:"paidAmount,omitempty"`
+	OrderAmount string `json:"orderAmount"`
+	PaidAmount  string `json:"paidAmount"`
 	Sign      string `json:"sign"`
 }
 
@@ -81,25 +82,49 @@ func (hx *HXPays) sign(data req.Param, key string) string {
 	return strings.ToLower(signData)
 }
 
-func (hx *HXPays)Verify(config string, ctx *fiber.Ctx) (bool,float64, error) {
+func (hx *HXPays)Verify2(config string, data string) (bool,float64, error) {
 	hx.init(config)
 	pa := req.Param{}
 	body := HXPayNotify{}
-	ctx.BodyParser(body)
+	json.Unmarshal([]byte(data), &body)
 	m2, _ := tools.StructToMapReflect(&body,"json")
 	for index, item := range m2{
-		if index == "sign"{
+		if index != "sign"{
 			pa[index] = item
 		}
 	}
-	if hx.sign(pa, hx.KeyIn) == body.Sign ||  hx.sign(pa, hx.KeyOut) == body.Sign{
-		return true, body.PaidAmount, nil
-	}else{
-		if body.Status != "SUCCESS"{
-			return false, 0, errors.New(body.Status)
-		}else{
-			return false, 0, errors.New("sign fail")
+	if hx.sign(pa, hx.KeyIn) == body.Sign && body.Status == "SUCCESS"{
+		return true, tools.ToFloat64(body.PaidAmount), nil
+	}
+
+	if hx.sign(pa, hx.KeyOut) == body.Sign && body.Status == "SUCCESS"{
+		return true,  tools.ToFloat64(body.PaidAmount), nil
+	}
+	if body.Status != "SUCCESS"{
+		return false, 0, errors.New(body.Status)
+	}
+	return false, 0, errors.New("sign fail")
+}
+func (hx *HXPays)Verify(config string, ctx *fiber.Ctx) (bool,float64, error) {
+	hx.init(config)
+	pa := req.Param{}
+	body := new(HXPayNotify)
+	ctx.BodyParser(body)
+	//json.Unmarshal([]byte("{\"merchantLogin\":\"Loante01\",\"orderCode\":\"C20220722131454777480\",\"merchantCode\":\"QWCFlh-1-1-2\",\"status\":\"SUCCESS\",\"orderAmount\":\"420\",\"paidAmount\":\"420\",\"sign\":\"8ac00bde28c43c043c28950fe29b0533\"}"), &body)
+	m2, _ := tools.StructToMapReflect(body,"json")
+	for index, item := range m2{
+		if index != "sign"{
+			pa[index] = item
 		}
+	}
+	if hx.sign(pa, hx.KeyIn) == body.Sign && body.Status == "SUCCESS"{
+		return true, tools.ToFloat64(body.PaidAmount), nil
+	}
+	if hx.sign(pa, hx.KeyOut) == body.Sign && body.Status == "SUCCESS"{
+		return true, tools.ToFloat64(body.PaidAmount), nil
+	}
+	if body.Status != "SUCCESS"{
+		return false, 0, errors.New(body.Status)
 	}
 	return false, 0, errors.New("sign fail")
 }
@@ -148,15 +173,15 @@ func (hx *HXPays) PayOut(config string, pays *Pays) (bool, error) {
 		"merchantLogin": hx.Merchant,
 		"orderCode":     pays.OrderId,
 		"amount":        pays.Amount,
+		//"amount":        0,
 		"name":          pays.CustomName,
 		"account":       pays.BankAccount,
 		"ifsc":          pays.IfscCode,
 		"remark":        pays.Remark,
-		"notifyUrl":     pays.NotifyUrl,
 	}
-	data["sign"] = hx.sign(data, hx.KeyIn)
+	data["sign"] = hx.sign(data, hx.KeyOut)
 	bdata, err := json.Marshal(&data)
-	resp, err := req.Post(TPayUrl+TPayOutUrl, req.Header{
+	resp, err := req.Post(HXPayUrl+HXPayOutUrl, req.Header{
 		"Content-Type": "application/json",
 	}, bdata)
 	if err != nil {
@@ -170,7 +195,7 @@ func (hx *HXPays) PayOut(config string, pays *Pays) (bool, error) {
 	if res.PlatformOrderCode == "" {
 		res2 := HXPayErr{}
 		resp.ToJSON(&res2)
-		return false, errors.New(res2.Detail)
+		return false, errors.New(res2.ErrorMessages + res2.Detail)
 	}
 	pays.PlatOrderId = res.PlatformOrderCode
 	return true, nil

@@ -52,6 +52,7 @@ type Config struct {
 		UTRStatus map[string]string 	`json:"utr_status"`
 		GenderType map[string]string 	`json:"gender_type"`
 		MchFundType map[string]string 	`json:"mch_fund_type"`
+		BorrowOrderStatus map[string]string 	`json:"borrow_order_status"`
 	}  `json:"maps"`
 }
 

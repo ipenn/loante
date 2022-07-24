@@ -10,17 +10,17 @@ import (
 type ReferrerRiskConfig struct {
 	bun.BaseModel       `bun:"table:referrer_risk_config,alias:rrc"`
 	Id                  int `json:"id" bun:",pk"`
-	ReferrerId          int
-	StatCompay          int
-	RiskModel           int
-	NewMinScore         int
-	NewMaxScore         int
-	OldJumpRisk         int
-	OldMinScore         int
-	OldMaxScore         int
-	PlatformOldMinScore int
-	PlatformOldMaxScore int
-	Remark              string
+	ReferrerId          int	`json:"referrer_id"`
+	StatCompay          int	`json:"stat_compay"`
+	RiskModel           int	`json:"risk_model"`
+	NewMinScore         int	`json:"new_min_score"`
+	NewMaxScore         int	`json:"new_max_score"`
+	OldJumpRisk         int	`json:"old_jump_risk"`
+	OldMinScore         int	`json:"old_min_score"`
+	OldMaxScore         int	`json:"old_max_score"`
+	PlatformOldMinScore int	`json:"platform_old_min_score"`
+	PlatformOldMaxScore int	`json:"platform_old_max_score"`
+	Remark              string	`json:"remark"`
 	Referrer          ReferrerConfigLittle  `json:"referrer" bun:"rel:belongs-to,join:referrer_id=id"`
 
 }

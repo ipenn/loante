@@ -128,6 +128,9 @@ func Auth(c *fiber.Ctx) error {
 	if rights != "*" && strings.Index(rights, c.Path()) == -1 {
 		return resp.Err(c, 1, "insufficient permissions!")
 	}
+	if user.RoleId != "1"{
+		//非超级管理员
+	}
 	c.Locals("userType", user.AdminType)
 	c.Locals("userId", user.Id)
 	c.Locals("adminId", user.Id)

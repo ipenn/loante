@@ -57,7 +57,9 @@ func (s *upload)UploadBase64(c *fiber.Ctx) error {
 	if err != nil{
 		return resp.Err(c, 1, err.Error())
 	}
-	return resp.OK(c, fmt.Sprintf("%s/%s", global.C.Http.Host, filePath))
+	return resp.OK(c, map[string]interface{}{
+		"file_name":fmt.Sprintf("%s/%s", global.C.Http.Host, filePath),
+	})
 }
 
 func (s *upload)Upload(c *fiber.Ctx) error {
@@ -85,5 +87,7 @@ func (s *upload)Upload(c *fiber.Ctx) error {
 	if err != nil {
 		return resp.Err(c, 1, "上传失败")
 	}
-	return resp.OK(c, fmt.Sprintf("%s/%s", global.C.Http.Host, filePath))
+	return resp.OK(c, map[string]interface{}{
+		"file_name":fmt.Sprintf("%s/%s", global.C.Http.Host, filePath),
+	})
 }
