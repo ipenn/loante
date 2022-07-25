@@ -31,8 +31,9 @@ type Orders struct {
 	PaymentRequestNo string          `json:"payment_request_no"`
 	PaymentRespondNo string          `json:"payment_respond_no"`
 	LatePaymentFee   int             `json:"late_payment_fee"`
-	Remark           string          `json:"remark"`
-	User             *UserLittle     `json:"user" bun:"rel:belongs-to,join:uid=id"`
+	Remark        string      `json:"remark"`
+	PayNotifyTime string      `json:"pay_notify_time"`
+	User          *UserLittle `json:"user" bun:"rel:belongs-to,join:uid=id"`
 	Borrow           *BorrowLittle   `json:"borrow" bun:"rel:belongs-to,join:bid=id"`
 	Merchant         *MerchantLittle `json:"merchant" bun:"rel:belongs-to,join:mch_id=id"`
 	Product          *ProductLittle  `json:"product" bun:"rel:belongs-to,join:product_id=id"`
@@ -81,8 +82,10 @@ func (a *Orders) Del(where string) {
 //PayAfter 还款成功以后处理订单逻辑
 func (a *Orders) PayAfter(amount float64) {
 	//更新 orders 支付状态
+	_amount := int(amount)
 	a.RepaidStatus = 1
-	a.ActualAmount = int(amount)
+	a.ActualAmount = _amount
+	a.PayNotifyTime = tools.GetFormatTime()
 	borrowData := new(Borrow)
 	borrowData.One(fmt.Sprintf("id = %d", a.Bid))
 	if a.Type == 0 { //全额还款
@@ -92,9 +95,18 @@ func (a *Orders) PayAfter(amount float64) {
 		if borrowData.Status == 7 {
 			borrowData.Status = 9
 		}
+		a.LatePaymentFee = borrowData.LatePaymentFee
 		borrowData.BeRepaidAmount = 0
+		borrowData.LatePaymentFee = 0 //更新剩余滞纳金
+		borrowData.CompleteTime = tools.GetFormatTime()
 	} else if a.Type == 1 {
-		borrowData.BeRepaidAmount -= a.ActualAmount
+		if _amount >= borrowData.LatePaymentFee{
+			a.LatePaymentFee = borrowData.LatePaymentFee
+			borrowData.BeRepaidAmount -= _amount - borrowData.LatePaymentFee
+			borrowData.LatePaymentFee = 0
+		}else{
+			a.LatePaymentFee = borrowData.LatePaymentFee - _amount
+		}
 	} else if a.Type == 2 { //展期还款
 		//获取产品的展期天数
 		productData := new(ProductDelayConfig)
@@ -102,8 +114,11 @@ func (a *Orders) PayAfter(amount float64) {
 		borrowData.PostponedPeriod += 1
 		borrowData.Postponed = 1
 		borrowData.Status = 5
-		endTimeUnix := tools.StrToUnixTime(borrowData.EndTime) + int64(productData.DelayDay*24*3600)
+		borrowData.LatePaymentFee = 0 //更新剩余滞纳金
+		endTimeUnix := tools.StrToUnixTime(borrowData.EndTime) + int64(productData.DelayDay *24*3600)
 		borrowData.EndTime = tools.UnixTimeToStr(endTimeUnix)
+		borrowData.ExpireDay -= productData.DelayDay
+		a.LatePaymentFee = borrowData.LatePaymentFee
 	}
 	a.Update(fmt.Sprintf("id = %d", a.Id))
 	borrowData.Update(fmt.Sprintf("id = %d", borrowData.Id))

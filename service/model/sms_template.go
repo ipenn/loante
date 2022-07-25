@@ -5,7 +5,6 @@ import (
 	"github.com/uptrace/bun"
 	"loante/global"
 	"loante/service/sms"
-	"loante/tools"
 	"strings"
 )
 
@@ -41,16 +40,21 @@ func (a *SmsTemplate) Page(where string, page, limit int) ([]SmsTemplate, int) {
 	return datas, count
 }
 
-func (a *SmsTemplate)Send(Type int, phone string, ps ...interface{}) bool {
+func (a *SmsTemplate)Send(Type int, phone string, ps []string) bool {
 	lists, _ := a.Page(fmt.Sprintf("sms_type = %d", Type),1,1000)
+	var args []interface{}
+	for _, item := range ps{
+		args = append(args, item)
+	}
 	for _, item := range lists{
 		smsModel := sms.SelectSms(item.CompanyId)
 		content := item.Content
-		if len(ps)> 0{
-			if ps[0] != interface{}(nil){
-				content = tools.Sprintf(item.Content, ps)
-			}
-		}
+		//if len(ps)> 0{
+		//	if ps[0] != interface{}(nil){
+		//		content = tools.Sprintf(item.Content, ps)
+		//	}
+		//}
+		content = fmt.Sprintf(content,args...)
 		content = strings.ReplaceAll(content, "%!(EXTRA []interface {}=[])","")
 		ret, err := (*smsModel).Send(phone, content, Type)
 		if ret{

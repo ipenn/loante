@@ -631,4 +631,81 @@ Content-Disposition: form-data; name="content"
 2022-07-23 11:26:32 [INFO] [D:/works/ipenn/loante/service/model/user.go:297] 逾期重置额度 &{{} 11 1 1 5000 2022-07-23 11:26:32 逾期重置额度}
 2022-07-23 21:38:08 [INFO] [D:/works/ipenn/loante/service/model/user.go:269] 插入提额数据 &{{} 12 1 1 8000 2022-07-23 21:38:08 逾期结清也提额 不满24小时也提额 count = 1}
 2022-07-23 22:56:13 [EROR] [D:/works/ipenn/loante/service/model/referrer_config.go:55] &{{} {{} 0  } 0     0 0 0} err=sql: no rows in result set
+<<<<<<< HEAD
+2022-07-23 23:20:19 [EROR] [D:/works/ipenn/loante/service/model/referrer_config.go:55] &{{} {{} 0  } 0     0 0 0} err=sql: no rows in result set
+2022-07-23 23:20:28 [EROR] [D:/works/ipenn/loante/service/model/referrer_config.go:55] &{{} {{} 0  } 0     0 0 0} err=sql: no rows in result set
+2022-07-23 23:34:52 [EROR] [D:/works/ipenn/loante/service/model/referrer_config.go:55] &{{} {{} 0  } 0     0 0 0} err=sql: no rows in result set
+2022-07-23 23:35:47 [EROR] [D:/works/ipenn/loante/service/model/referrer_config.go:55] &{{} {{} 0  } 0     0 0 0} err=sql: no rows in result set
+2022-07-24 00:19:49 [INFO] [D:/works/ipenn/loante/router/v1/pay_back.go:21] PayNotify: {
+  "mch_id": 1,
+  "type": 2,
+  "params": [],
+  "phone": "+919538189742"
+}
+2022-07-24 00:19:49 [INFO] [D:/works/ipenn/loante/router/v1/pay_back.go:23] MchOrderId: 
+2022-07-24 00:19:49 [INFO] [D:/works/ipenn/loante/router/v1/pay_back.go:25] 未识别出商户订单编号
+2022-07-24 00:20:58 [INFO] [D:/works/ipenn/loante/router/v1/pay_back.go:21] PayNotify: {"merchantLogin":"Loante01","orderCode":"C20220722131454777480","merchantCode":"QWCFlh-1-1-2","status":"SUCCESS","orderAmount":"420","paidAmount":"420","sign":"8ac00bde28c43c043c28950fe29b0533"}
+2022-07-24 00:20:58 [INFO] [D:/works/ipenn/loante/router/v1/pay_back.go:23] MchOrderId: 
+2022-07-24 00:20:58 [INFO] [D:/works/ipenn/loante/router/v1/pay_back.go:25] 未识别出商户订单编号
+2022-07-24 00:49:59 [INFO] [D:/works/ipenn/loante/router/v1/pay_back.go:21] PayNotify: {"merchantLogin":"Loante01","orderCode":"C20220722131454777480","merchantCode":"QWCFlh-1-1-2","status":"SUCCESS","orderAmount":"420","paidAmount":"420","sign":"8ac00bde28c43c043c28950fe29b0533"}
+2022-07-24 00:51:03 [INFO] [D:/works/ipenn/loante/router/v1/pay_back.go:21] PayNotify: {"merchantLogin":"Loante01","orderCode":"C20220722131454777480","merchantCode":"QWCFlh-1-1-2","status":"SUCCESS","orderAmount":"420","paidAmount":"420","sign":"8ac00bde28c43c043c28950fe29b0533"}
+2022-07-24 00:51:17 [INFO] [D:/works/ipenn/loante/router/v1/pay_back.go:23] MchOrderId: QWCFlh-1-1-2
+2022-07-24 00:51:17 [INFO] [D:/works/ipenn/loante/router/v1/pay_back.go:40] 参数：HXPay  {"merchant":"Loante01","key_in":"oaDO6tAZdfeExRnlGjrJ","key_out":"AN1lByrZ3p9x8wUReq6I","remark":"qwe"}
+2022-07-24 00:51:19 [INFO] [D:/works/ipenn/loante/router/v1/pay_back.go:43] 结果：true 420
+2022-07-24 00:51:19 [INFO] [D:/works/ipenn/loante/router/v1/pay_back.go:49] 处理收款以后的订单逻辑
+2022-07-24 00:53:31 [INFO] [D:/works/ipenn/loante/router/v1/pay_back.go:21] PayNotify: {"merchantLogin":"Loante01","orderCode":"C20220722131454777480","merchantCode":"QWCFlh-1-1-2","status":"SUCCESS","orderAmount":"420","paidAmount":"420","sign":"8ac00bde28c43c043c28950fe29b0533"}
+2022-07-24 00:53:31 [INFO] [D:/works/ipenn/loante/router/v1/pay_back.go:23] MchOrderId: QWCFlh-1-1-2
+2022-07-24 00:53:31 [INFO] [D:/works/ipenn/loante/router/v1/pay_back.go:40] 参数：HXPay  {"merchant":"Loante01","key_in":"oaDO6tAZdfeExRnlGjrJ","key_out":"AN1lByrZ3p9x8wUReq6I","remark":"qwe"}
+2022-07-24 00:53:31 [INFO] [D:/works/ipenn/loante/router/v1/pay_back.go:43] 结果：true 420
+2022-07-24 10:35:22 [INFO] [D:/works/ipenn/loante/router/v1/pay_back.go:21] PayNotify: {"merchantLogin":"Loante01","orderCode":"C20220722131454777480","merchantCode":"QWCFlh-1-1-2","status":"SUCCESS","orderAmount":"420","paidAmount":"420","sign":"8ac00bde28c43c043c28950fe29b0533"}
+2022-07-24 10:35:22 [INFO] [D:/works/ipenn/loante/router/v1/pay_back.go:23] MchOrderId: QWCFlh-1-1-2
+2022-07-24 10:35:22 [INFO] [D:/works/ipenn/loante/router/v1/pay_back.go:40] 参数：HXPay  {"merchant":"Loante01","key_in":"oaDO6tAZdfeExRnlGjrJ","key_out":"AN1lByrZ3p9x8wUReq6I","remark":"qwe"}
+2022-07-24 10:36:59 [INFO] [D:/works/ipenn/loante/router/v1/pay_back.go:21] PayNotify: {"merchantLogin":"Loante01","orderCode":"C20220722131454777480","merchantCode":"QWCFlh-1-1-2","status":"SUCCESS","orderAmount":"420","paidAmount":"420","sign":"8ac00bde28c43c043c28950fe29b0533"}
+2022-07-24 10:36:59 [INFO] [D:/works/ipenn/loante/router/v1/pay_back.go:23] MchOrderId: QWCFlh-1-1-2
+2022-07-24 10:36:59 [INFO] [D:/works/ipenn/loante/router/v1/pay_back.go:40] 参数：HXPay  {"merchant":"Loante01","key_in":"oaDO6tAZdfeExRnlGjrJ","key_out":"AN1lByrZ3p9x8wUReq6I","remark":"qwe"}
+2022-07-24 10:37:50 [INFO] [D:/works/ipenn/loante/router/v1/pay_back.go:21] PayNotify: {"merchantLogin":"Loante01","orderCode":"C20220722131454777480","merchantCode":"QWCFlh-1-1-2","status":"SUCCESS","orderAmount":"420","paidAmount":"420","sign":"8ac00bde28c43c043c28950fe29b0533"}
+2022-07-24 10:37:50 [INFO] [D:/works/ipenn/loante/router/v1/pay_back.go:23] MchOrderId: QWCFlh-1-1-2
+2022-07-24 10:37:50 [INFO] [D:/works/ipenn/loante/router/v1/pay_back.go:40] 参数：HXPay  {"merchant":"Loante01","key_in":"oaDO6tAZdfeExRnlGjrJ","key_out":"AN1lByrZ3p9x8wUReq6I","remark":"qwe"}
+2022-07-24 10:40:26 [INFO] [D:/works/ipenn/loante/router/v1/pay_back.go:21] PayNotify: merchantLogin=Loante01&orderCode=C20220722131454777480&merchantCode=QWCFlh-1-1-2&status=SUCCESS&orderAmount=420&paidAmount=420&sign=8ac00bde28c43c043c28950fe29b0533
+2022-07-24 10:40:26 [INFO] [D:/works/ipenn/loante/router/v1/pay_back.go:23] MchOrderId: QWCFlh-1-1-2
+2022-07-24 10:40:26 [INFO] [D:/works/ipenn/loante/router/v1/pay_back.go:40] 参数：HXPay  {"merchant":"Loante01","key_in":"oaDO6tAZdfeExRnlGjrJ","key_out":"AN1lByrZ3p9x8wUReq6I","remark":"qwe"}
+2022-07-24 10:40:26 [INFO] [D:/works/ipenn/loante/router/v1/pay_back.go:43] 结果：true 420
+2022-07-24 10:41:29 [INFO] [D:/works/ipenn/loante/router/v1/pay_back.go:21] PayNotify: merchantLogin=Loante01&orderCode=C20220722131454777480&merchantCode=QWCFlh-1-1-2&status=SUCCESS&orderAmount=420&paidAmount=420&sign=8ac00bde28c43c043c28950fe29b0533
+2022-07-24 10:41:29 [INFO] [D:/works/ipenn/loante/router/v1/pay_back.go:23] MchOrderId: QWCFlh-1-1-2
+2022-07-24 10:41:29 [INFO] [D:/works/ipenn/loante/router/v1/pay_back.go:40] 参数：HXPay  {"merchant":"Loante01","key_in":"oaDO6tAZdfeExRnlGjrJ","key_out":"AN1lByrZ3p9x8wUReq6I","remark":"qwe"}
+2022-07-24 10:42:38 [INFO] [D:/works/ipenn/loante/router/v1/pay_back.go:43] 结果：true 420
+2022-07-24 10:52:35 [INFO] [D:/works/ipenn/loante/router/v1/pay_back.go:21] PayNotify: merchantLogin=Loante01&orderCode=C20220722131454777480&merchantCode=QWCFlh-1-1-2&status=SUCCESS&orderAmount=420&paidAmount=420&sign=8ac00bde28c43c043c28950fe29b0533
+2022-07-24 10:52:35 [INFO] [D:/works/ipenn/loante/router/v1/pay_back.go:23] MchOrderId: QWCFlh-1-1-2
+2022-07-24 10:52:35 [INFO] [D:/works/ipenn/loante/router/v1/pay_back.go:45] 参数：HXPay  {"merchant":"Loante01","key_in":"oaDO6tAZdfeExRnlGjrJ","key_out":"AN1lByrZ3p9x8wUReq6I","remark":"qwe"}
+2022-07-24 10:52:38 [INFO] [D:/works/ipenn/loante/router/v1/pay_back.go:48] 结果：true 420
+2022-07-24 10:52:47 [INFO] [D:/works/ipenn/loante/router/v1/pay_back.go:53] 处理收款以后的订单逻辑
+2022-07-24 11:02:49 [INFO] [D:/works/ipenn/loante/router/v1/pay_back.go:21] PayNotify: {"merchantLogin":"Loante01","orderCode":"C20220722131454777480","merchantCode":"QWCFlh-1-1-2","status":"SUCCESS","orderAmount":"420","paidAmount":"420","sign":"8ac00bde28c43c043c28950fe29b0533"}
+2022-07-24 11:02:49 [INFO] [D:/works/ipenn/loante/router/v1/pay_back.go:23] MchOrderId: QWCFlh-1-1-2
+2022-07-24 11:02:49 [INFO] [D:/works/ipenn/loante/router/v1/pay_back.go:37] 重复回调
+2022-07-24 14:03:18 [INFO] [D:/works/ipenn/loante/service/payments/hxpay.go:189] {"code":300,"success":false,"errorMessages":"param amount is not string type"}
+2022-07-24 14:06:12 [INFO] [D:/works/ipenn/loante/service/payments/hxpay.go:190] {"code":300,"success":false,"errorMessages":"param amount is not string type"}
+2022-07-24 14:12:35 [INFO] [D:/works/ipenn/loante/service/payments/hxpay.go:190] {"code":300,"success":false,"errorMessages":"param merchant not exist"}
+2022-07-24 14:16:33 [INFO] [D:/works/ipenn/loante/service/payments/hxpay.go:189] {"code":300,"success":false,"errorMessages":"param merchant not exist"}
+2022-07-24 14:17:55 [INFO] [D:/works/ipenn/loante/service/payments/hxpay.go:189] {"type":"https://www.jhipster.tech/problem/problem-with-message","title":"Internal Server Error","status":500,"detail":"Insufficient Balance 账户余额不足","path":"/payment/payout","message":"error.http.500"}
+2022-07-24 14:20:52 [INFO] [D:/works/ipenn/loante/service/payments/hxpay.go:189] {"type":"https://www.jhipster.tech/problem/problem-with-message","title":"Internal Server Error","status":500,"detail":"Insufficient Balance 账户余额不足","path":"/payment/payout","message":"error.http.500"}
+2022-07-24 14:21:43 [INFO] [D:/works/ipenn/loante/service/payments/hxpay.go:190] {"type":"https://www.jhipster.tech/problem/constraint-violation","title":"Method argument not valid","status":400,"path":"/payment/payout","message":"error.validation","fieldErrors":[{"objectName":"payoutRequestVM","field":"amount","message":"must be greater than or equal to 100"}]}
+2022-07-24 14:22:50 [INFO] [D:/works/ipenn/loante/service/payments/hxpay.go:190] {"type":"https://www.jhipster.tech/problem/problem-with-message","title":"Internal Server Error","status":500,"detail":"Insufficient Balance 账户余额不足","path":"/payment/payout","message":"error.http.500"}
+2022-07-24 14:40:52 [INFO] [D:/works/ipenn/loante/service/payments/t_pay.go:185] {"code":701,"success":false,"errorMessages":"IP not allow"}
+2022-07-24 14:42:46 [INFO] [D:/works/ipenn/loante/service/payments/whale_pay.go:165] {"code":0,"msg":"NOT_IP_WHITELIST"}
+2022-07-24 14:57:22 [INFO] [D:/works/ipenn/loante/service/sms/nxcloud.go:43] sms send content: {"result":"请求成功","code":"0","messageid":"140a0bbbeb5b4ce3af94fb7e21974c33"}
+2022-07-24 14:57:22 [EROR] [D:/works/ipenn/loante/service/model/merchant.go:49] &{{} {{} 0 } 0 0 0 0 0      0} err=sql: no rows in result set
+2022-07-24 14:57:28 [INFO] [D:/works/ipenn/loante/service/sms/nxcloud.go:43] sms send content: {"result":"请求成功","code":"0","messageid":"d149a3b738404557b95197c2dcaf4320"}
+2022-07-24 14:57:28 [EROR] [D:/works/ipenn/loante/service/model/merchant.go:49] &{{} {{} 0 } 0 0 0 0 0      0} err=sql: no rows in result set
+2022-07-24 14:57:52 [INFO] [D:/works/ipenn/loante/service/sms/nxcloud.go:43] sms send content: {"result":"请求成功","code":"0","messageid":"23746fef16c2463b8af16515c4105845"}
+2022-07-24 14:57:52 [EROR] [D:/works/ipenn/loante/service/model/merchant.go:49] &{{} {{} 0 } 0 0 0 0 0      0} err=sql: no rows in result set
+2022-07-24 14:58:24 [INFO] [D:/works/ipenn/loante/service/sms/nxcloud.go:43] sms send content: {"result":"请求成功","code":"0","messageid":"62cea724c6154883ac77cde9dadfa43c"}
+2022-07-24 14:58:24 [EROR] [D:/works/ipenn/loante/service/model/merchant.go:49] &{{} {{} 0 } 0 0 0 0 0      0} err=sql: no rows in result set
+2022-07-24 14:58:36 [INFO] [D:/works/ipenn/loante/service/sms/nxcloud.go:43] sms send content: {"result":"请求成功","code":"0","messageid":"9b2fb23dad894b2ca1dbbd2aaedff33a"}
+2022-07-24 14:58:36 [EROR] [D:/works/ipenn/loante/service/model/merchant.go:49] &{{} {{} 0 } 0 0 0 0 0      0} err=sql: no rows in result set
+2022-07-24 14:58:51 [INFO] [D:/works/ipenn/loante/service/sms/nxcloud.go:43] sms send content: {"result":"请求成功","code":"0","messageid":"a13e4a7bfa024b5f82ad4581ef75383e"}
+2022-07-24 14:58:51 [EROR] [D:/works/ipenn/loante/service/model/merchant.go:49] &{{} {{} 0 } 0 0 0 0 0      0} err=sql: no rows in result set
+2022-07-24 15:13:02 [INFO] [D:/works/ipenn/loante/service/sms/nxcloud.go:43] sms send content: {"result":"请求成功","code":"0","messageid":"e38d542a066b416594f53f8d942592ec"}
+2022-07-24 15:13:02 [EROR] [D:/works/ipenn/loante/service/model/merchant.go:49] &{{} {{} 0 } 0 0 0 0 0      0} err=sql: no rows in result set
+=======
 >>>>>>> 756b9740a3c8daa76ec584b43a21a23c92f73aa9
+>>>>>>> 42cc43f6e3b2a9b471ae29cb8b87a80605f88477

@@ -37,6 +37,11 @@ func main()  {
 	//6 每天零点更新剩余天数
 	c.AddFunc("@every 1m", c2.BorrowExpireDay)
 
+	//7 发送还款的通知短信
+	c.AddFunc("@every 1h", c2.RepaymentSMSNotify)
+
+
+
 	c.Start()
 
 	quit := make(chan os.Signal)

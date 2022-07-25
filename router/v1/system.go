@@ -176,6 +176,10 @@ func (a *system) AdminCreate(c *fiber.Ctx) error {
 	if admin.Id > 0 && admin.Id != input.Id {
 		return resp.Err(c, 1, "管理员已经存在")
 	}
+	//if input.RoleId < 100 && input.RoleId > 1{
+	//	//催收 商户 预提醒角色
+	//	return resp.Err(c, 1, "该角色需从对应的地方添加")
+	//}
 	admin.AdminName = input.AdminName
 	admin.Password = input.Password
 	admin.RoleId = input.RoleId

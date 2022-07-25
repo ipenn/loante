@@ -43,14 +43,19 @@ func SelectPay(name string) *Payments {
 
 func MchOrderId(ctx *fiber.Ctx) string {
 	body := TPayNotify{}
-	ctx.BodyParser(body)
+	ctx.BodyParser(&body)
 	if len(body.OrderId) > 0{
 		return body.OrderId
 	}
 	body2 := HXPayNotify{}
-	ctx.BodyParser(body2)
+	ctx.BodyParser(&body2)
 	if len(body2.MerchantCode) > 0{
 		return body2.MerchantCode
+	}
+	body3 := WhalePayNotify{}
+	ctx.BodyParser(&body3)
+	if len(body3.OrderId) > 0{
+		return body3.OrderId
 	}
 	return ""
 }

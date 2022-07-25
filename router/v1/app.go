@@ -29,20 +29,18 @@ func (a *app) SmsSend(c *fiber.Ctx) error {
 	if err := tools.ParseBody(c, input); err != nil {
 		return resp.Err(c, 1, err.Error())
 	}
-	var ps []interface{}
+	var ps []string
 	for _, item := range input.Params {
 		ps = append(ps, item)
 	}
-	//判断商户是否存在
-	merchant := new(model.Merchant)
-	merchant.One(fmt.Sprintf("id = %d", input.MchId))
-	if merchant.Id == 0 {
-		return resp.Err(c, 1, "没有找到商户")
-	}
 	//根据type查找短信模板
-	tpl := new(model.SmsTemplate)
-	if tpl.Send(input.Type, input.Phone, ps) {
-		merchant.AddService(1, 1) //扣费
+	if new(model.SmsTemplate).Send(input.Type, input.Phone, ps) {
+		//判断商户是否存在
+		merchantData := new(model.Merchant)
+		merchantData.One(fmt.Sprintf("id = %d", input.MchId))
+		if merchantData.Id > 0 {
+			merchantData.AddService(1, 1) //扣费
+		}
 	}
 	return resp.OK(c, "")
 }

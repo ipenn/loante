@@ -8,9 +8,9 @@ dbName="loante_db"
 [http]
 port=51111
 debug=true
-host="http://192.168.1.5:51111"
-payInNotify="http://192.168.1.5:51111/v1/pay_notify" #代收回调
-payOutNotify="http://192.168.1.5:51111/v1/out_notify" #代付回调
+host="http://192.168.1.4:51111"
+payInNotify="http://192.168.1.4:51111/v1/pay_notify" #代收回调
+payOutNotify="http://192.168.1.4:51111/v1/out_notify" #代付回调
 
 [safety]
 secret="theconditionofbeingprotectedfromorunlikely"
@@ -32,3 +32,4 @@ VisitTag={ 1="有人接听", 2="WhatsApp可联", 3="whatsAPP未回复", 4="无�
 RepaymentRelationship={ 1="本人", 2="配偶", 3="父母", 4="子女", 5="亲人", 6="同事", 7="朋友", 8="其他"}
 UTRStatus={ 1="待处理", 2="审核驳回", 3="已到账", 4="等待到账"}
 GenderType={ 10="男", 20="女", 30="未知"}
+BorrowOrderStatus={6="借贷中", 8="到期已还款"}

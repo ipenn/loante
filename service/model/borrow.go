@@ -139,8 +139,7 @@ func (a *Borrow) PayAfter() {
 	//发短信？
 	userData := new(User)
 	userData.One(fmt.Sprintf("id = %d", a.Uid))
-	tpl := new(SmsTemplate)
-	if tpl.Send(2, userData.Phone, []interface{}{}) {
+	if new(SmsTemplate).Send(2, userData.Phone, []string{}) { //2 放款成功通知
 		mchData := new(Merchant)
 		mchData.Id = a.MchId
 		mchData.AddService(1, 1) //扣费
