@@ -151,11 +151,10 @@ type BorrowForStatistics struct {
 	Count      int    `json:"count"`
 	Payment    int    `json:"payment"`
 	CreateTime string `json:"create_time"`
-	Name       string `json:"name"`
 	Type       int    `json:"type"`
 }
 
-func (a *Borrow) ForStatistics(where string) []ForStatistics {
+func (a *Borrow) ForStatistics(where string) []statistics {
 	//var datas []Borrow
 	//count, _ := global.C.DB.NewSelect().Model(&Borrow{}).GroupExpr("HOUR(loan_time) desc").
 	//	GroupExpr("payment DESC").Where(where).Offset((page - 1) * limit).Limit(limit).ScanAndCount(global.C.Ctx)
@@ -164,7 +163,7 @@ func (a *Borrow) ForStatistics(where string) []ForStatistics {
 	rows, _ := global.C.DB.QueryContext(global.C.Ctx, `SELECT
 	COUNT( b.id ) AS count,
 	b.payment,
-	date_format(b.create_time,'%y-%m-%d %H') as create_time,
+	date_format(b.create_time,'%Y-%m-%d %H') as create_time,
 	p.name,
 	0 AS type 
 FROM
@@ -179,7 +178,7 @@ GROUP BY
 SELECT
 	COUNT( b.id ) AS count,
 	b.payment,
-	date_format(b.create_time,'%y-%m-%d %H') as create_time,
+	date_format(b.create_time,'%Y-%m-%d %H') as create_time,
 	p.name,
 	1 AS type 
 FROM
@@ -206,7 +205,7 @@ GROUP BY
 				r.SuccessCount = forStatistic.Count
 				r.SuccessRate = tools.ToFloat64(forStatistic.Count) / tools.ToFloat64(statistic.Count)
 				r.CreateTime = statistic.CreateTime
-				r.Name = statistic.Name
+
 				result = append(result, r)
 				flag = false
 			}
@@ -218,9 +217,9 @@ GROUP BY
 			r.SuccessCount = 0
 			r.SuccessRate = 0
 			r.CreateTime = statistic.CreateTime
-			r.Name = statistic.Name
+
 			result = append(result, r)
 		}
 	}
-	return result
+	return AppendForStatistics(result)
 }
