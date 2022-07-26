@@ -144,6 +144,32 @@ func Auth(c *fiber.Ctx) error {
 	c.Locals("urgeId", user.UrgeId)
 	c.Locals("urgeGroupId", user.UrgeGroupId)
 
+	mchWhere := ""
+	if user.MchId > 0{
+		mchWhere = fmt.Sprintf(" and mch_id = %d", user.MchId)
+	}
+	c.Locals("mchWhere",  mchWhere)
+	remindCompanyWhere := ""
+	if user.RemindId > 0{
+		remindCompanyWhere = fmt.Sprintf(" and remind_company_id = %d", user.RemindId)
+	}
+	c.Locals("remindCompanyWhere", remindCompanyWhere)
+	remindGroupWhere := ""
+	if user.RemindGroupId > 0{
+		remindGroupWhere = fmt.Sprintf(" and remind_group_id = %d", user.RemindGroupId)
+	}
+	c.Locals("remindGroupWhere", remindGroupWhere)
+	urgeCompanyWhere := ""
+	if user.UrgeId > 0{
+		urgeCompanyWhere = fmt.Sprintf(" and urge_company_id = %d", user.UrgeId)
+	}
+	c.Locals("urgeCompanyWhere", urgeCompanyWhere)
+	urgeGroupWhere := ""
+	if user.UrgeGroupId > 0{
+		urgeGroupWhere = fmt.Sprintf(" and urge_group_id = %d", user.UrgeGroupId)
+	}
+	c.Locals("urgeGroupWhere", urgeGroupWhere)
+
 	c.Next()
 	return nil
 }

@@ -8,20 +8,24 @@ import (
 	"loante/tools"
 )
 
-type BorrowLittle struct {
+type BorrowMini struct {
 	bun.BaseModel   `bun:"table:borrow,alias:b"`
 	Id              int    `json:"id" bun:",pk"`
+	ExpireDay       int    `json:"expire_day"`       //到期剩余天数 或者 逾期天数
+	BeRepaidAmount  int    `json:"be_repaid_amount"`
+	EndTime         string `json:"end_time"`
+	Status          int    `json:"status"`
+}
+type BorrowLittle struct {
+	bun.BaseModel   `bun:"table:borrow,alias:b"`
+	BorrowMini
 	Uid             int    `json:"uid"`
 	MchId           int    `json:"mch_id"`
 	ProductId       int    `json:"product_id"`
-	Status          int    `json:"status"`
 	Payment         int    `json:"payment"`
-	BeRepaidAmount  int    `json:"be_repaid_amount"`
-	EndTime         string `json:"end_time"`
 	LoanAmount      int    `json:"loan_amount"`
+	CompleteTime      string    `json:"complete_time"` //应还款时间
 	PostponedPeriod int    `json:"postponed_period"` //展期期数
-	ExpireDay       int    `json:"expire_day"`       //到期剩余天数 或者 逾期天数
-
 }
 type Borrow struct {
 	bun.BaseModel `bun:"table:borrow,alias:b"`
@@ -39,6 +43,7 @@ type Borrow struct {
 	Remark             string          `json:"remark"`
 	CompleteTime       string          `json:"complete_time"`
 	ActualAmount       int             `json:"actual_amount"`
+	Closed     int             `json:"closed"`      //关闭订单（放款失败）
 	LatePaymentFee     int             `json:"late_payment_fee"`      //滞纳金
 	LatePaymentFeeRate float64         `json:"late_payment_fee_rate"` //滞纳金
 	User               *UserLittle     `json:"user" bun:"rel:belongs-to,join:uid=id"`

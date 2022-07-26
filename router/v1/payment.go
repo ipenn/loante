@@ -196,7 +196,14 @@ func (a *payment) DefaultLists(c *fiber.Ctx) error {
 	if err := tools.ParseBody(c, input); err != nil {
 		return resp.Err(c, 1, err.Error())
 	}
-	lists, count := new(model.ProductPaymentDefault).Page("ppd.id > 0", input.Page, input.Size)
+	where := "ppd.id > 0"
+	if input.MchId > 0{
+		where += fmt.Sprintf(" and merchant.id = %d", input.MchId)
+	}
+	if input.ProductId > 0{
+		where += fmt.Sprintf(" and product.id = %d", input.ProductId)
+	}
+	lists, count := new(model.ProductPaymentDefault).Page(where, input.Page, input.Size)
 	return resp.OK(c, map[string]interface{}{
 		"count": count,
 		"list":  lists,

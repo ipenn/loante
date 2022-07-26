@@ -122,7 +122,7 @@ func (a *urge) UrgeCompanyUpdate(c *fiber.Ctx) error {
 		admin.Update(fmt.Sprintf("id=%d", oldAdmin.Id))
 	}
 
-	company.Id = tools.ToInt(input.Id)
+	//company.Id = tools.ToInt(input.Id)
 	company.AdminId = tools.ToInt(input.AdminId)
 	company.MchId = tools.ToInt(input.MchId)
 	company.UserName = admin.AdminName
@@ -296,11 +296,11 @@ func (a *urge) UrgeRulesCreateOrUpdate(c *fiber.Ctx) error {
 }
 
 type urgeRules struct {
-	CompanyId   string `json:"company_id"`
-	GroupId     string `json:"group_id"`
-	IsAutoApply string `json:"is_auto_apply"`
-	Page        int    `json:"page"`
-	Size        int    `json:"size"`
+	CompanyId   string `json:"company_id" query:"company_id"`
+	GroupId     string `json:"group_id" query:"group_id"`
+	IsAutoApply string `json:"is_auto_apply" query:"is_auto_apply"`
+	Page        int    `json:"page" query:"page"`
+	Size        int    `json:"size" query:"size"`
 }
 
 // UrgeRules 催收规则列表
@@ -324,4 +324,56 @@ func (a *urge) UrgeRules(c *fiber.Ctx) error {
 		"count": count,
 		"list":  lists,
 	})
+}
+
+type urgeCreateReq struct {
+	Id   int `json:"id"`
+	CompanyId   int `json:"company_id"`
+	GroupId     int `json:"group_id"`
+	AdminName string `json:"admin_name"`
+	Phone string `json:"phone"`
+	Email string `json:"email"`
+	Password string `json:"password"`
+	Remark string `json:"remark"`
+}
+//UrgeCreate 添加催收员
+func  (a *urge) UrgeCreate(c *fiber.Ctx) error {
+	input := new(urgeCreateReq)
+	if err := tools.ParseBody(c, input); err != nil {
+		return resp.Err(c, 1, err.Error())
+	}
+	//检测用户名是否重复
+	admin := new(model.Admin)
+	admin.One(fmt.Sprintf("admin_name = '%s'", input.AdminName))
+	if admin.Id > 0 && admin.Id != input.Id {
+		return resp.Err(c, 1, "登录名已经存在")
+	}
+	//查询催收公司
+	com := new(model.UrgeCompany)
+	com.One(fmt.Sprintf("id = %d", input.CompanyId))
+	if com.Id == 0{
+		return resp.Err(c, 1, "催收公司不存在")
+	}
+	gr := new(model.UrgeGroup)
+	gr.One(fmt.Sprintf("id = %d", input.GroupId))
+	if gr.Id == 0{
+		return resp.Err(c, 1, "催收组不存在")
+	}
+	if gr.CompanyId != input.CompanyId{
+		return resp.Err(c, 1, "催收公司和催收组不匹配")
+	}
+	//准备数据
+	admin.AdminName = input.AdminName
+	admin.RoleId = 3
+	admin.MchId = com.MchId
+	admin.UrgeId =  input.CompanyId
+	admin.UrgeGroupId =  input.GroupId
+	admin.Mobile = input.Phone
+	admin.Email = input.Email
+	if input.Id > 0{
+		admin.Update(fmt.Sprintf("id = %d", input.Id))
+	}else{
+		admin.Insert()
+	}
+	return resp.OK(c, "")
 }

@@ -64,8 +64,12 @@ func (a *auth) Login(c *fiber.Ctx) error {
 		"admin_name": admin.AdminName,
 		"token":      t,
 		"exp":        exp,
-		"admin_type": right.RoleName,
-		"role_id":    admin.RoleId,
-		"mch_id":     admin.MchId,
+		"admin_type": right.RoleName, //权限类型
+		"role_id":    admin.RoleId,   //权限id
+		"mch_id":     admin.MchId,	  //商户id
+		"remind_company_id":     admin.RemindId,	  //预提醒公司id
+		"remind_group_id":     	admin.RemindGroupId,	  //预提醒组id
+		"urge_company_id":     admin.UrgeId,	  //催收公司id
+		"urge_group_id":     admin.UrgeGroupId,	  //催收组id
 	})
 }

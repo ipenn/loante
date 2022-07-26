@@ -49,11 +49,13 @@ func Init() {
 	//登录
 	v.Post("/auth/login", authHandle.Login)
 	//给APP后端调用
-	v.Post("/pay_notify", payBackHandle.PayNotify) //收款回调
-	v.Post("/out_notify", payBackHandle.OutNotify) //放款回调
-	v.Post("/sms/send", appHandle.SmsSend)         //发送短信
-	v.Post("/pay/in", payHandle.PayPartial)        //代收
-	v.Post("/pay/out", payHandle.PayOut)           //代付
+	vv := app.Group("/v1")
+	vv.Use(middleware.Secret)
+	vv.Post("/pay_notify", payBackHandle.PayNotify) //收款回调
+	vv.Post("/out_notify", payBackHandle.OutNotify) //放款回调
+	vv.Post("/sms/send", appHandle.SmsSend)         //发送短信
+	vv.Post("/pay/in", payHandle.PayPartial)        //代收
+	vv.Post("/pay/out", payHandle.PayOut)           //代付
 	//上传
 	v.Post("/upload", uploadHandle.Upload)              //普通上传
 	v.Post("/upload/base64", uploadHandle.UploadBase64) //上传Base64
@@ -66,7 +68,8 @@ func Init() {
 	v.Get("/side_menu", systemHandle.SideMenu)
 	v.Get("/admins", systemHandle.AdminsList)
 	v.Post("/admin/create", systemHandle.AdminCreate)
-	v.Post("/admin/pwd_reset", systemHandle.PwdMchReset)
+	v.Post("/admin/pwd_reset", systemHandle.PwdAdminReset) //修改管理员密码
+	v.Post("/admin/disable", systemHandle.Disable)  //禁用商户
 	v.Get("/rights", systemHandle.RightsList)
 	v.Get("/roles", systemHandle.RolesList)
 	v.Post("/roles/create", systemHandle.RoleCreate)
@@ -79,6 +82,7 @@ func Init() {
 	v.Post("/increase_rule/create_or_update", systemHandle.IncreaseRuleCreateOrUpdate)
 	v.Post("/increase_rule/del", systemHandle.IncreaseRuleDel)
 	v.Get("/packages", systemHandle.Packages)
+	v.Post("/package/create", systemHandle.PackageCreate)
 	v.Get("/package/little", systemHandle.PackageLittle)
 
 	//统计报表
@@ -133,6 +137,7 @@ func Init() {
 	v.Get("/user/sms", userHandle.Sms)         //获取用户的短信
 	v.Get("/user/app", userHandle.App)         //获取用户的APP
 	v.Get("/user/call", userHandle.Call)       //获取用户的通话记录
+	v.Post("/user/bank_modify", userHandle.BankModify)       //修改用户收款账号信息
 
 	v.Get("/customer_feedback", userHandle.CustomerFeedBack)                            //客户反馈
 	v.Post("/customer_feedback/update_status", userHandle.CustomerFeedBackUpdateStatus) //客户反馈
@@ -143,6 +148,7 @@ func Init() {
 	v.Get("/visit/remind_detail", visitHandle.RemindDetail) //预提醒记录 一笔借贷可能会有多条记录
 	v.Post("/visit/remind/action", visitHandle.RemindAction) 	  //新增预提醒
 	v.Post("/visit/remind/assign", visitHandle.RemindAssign) 	  //预提醒分配
+	v.Post("/visit/details", visitHandle.Details) 	  	//催记记录
 
 	v.Get("/visit/urges", visitHandle.UrgeBorrowAll)        //催收订单列表
 	v.Get("/visit/urging", visitHandle.UrgeBorrowing)       //催收中订单
@@ -153,6 +159,7 @@ func Init() {
 	v.Post("/visit/remind/action", visitHandle.RemindAction) 	  //新增预提醒
 	v.Post("/visit/utr/create", visitHandle.UtrCreate) 	  //utr新增记录
 	v.Post("/visit/utr/examine", visitHandle.UtrExamine) 	  //utr对账单审核
+	v.Get("/visit/urge/stat", visitHandle.StatUrge) 	  //催收业绩
 
 	//借贷
 	v.Get("/borrow/list", borrowHandle.Query)                     //获取借贷信息列表
@@ -161,15 +168,18 @@ func Init() {
 	v.Post("/borrow/deposit", borrowHandle.Deposit)               //入账操作
 	v.Post("/borrow/funds", borrowHandle.Funds)               	//费用变更
 	v.Post("/borrow/set_loan/fail", borrowHandle.SetLoanFail)     //设置放款失败/进入重放款
+	v.Post("/borrow/close", borrowHandle.Close)     				//关闭订单
+	v.Get("/borrow/reloan", borrowHandle.ReLoan)     				//批量重放款
+	v.Get("/borrow/loaning", borrowHandle.Loaning)     			//放款 单指正在放款中的订单
+	v.Post("/borrow/loan_action", payHandle.PayOut)     		//放款动作 => 从支付通道支付
 
 	//还款
 	v.Get("/pay_flow/repayments", payHandle.Repayments)              //还款记录
 	v.Get("/pay_flow/repayments/export", payHandle.RepaymentsExport) //导出还款记录
-
 	v.Get("/pay_flow/reconciliation", payHandle.Reconciliation) //平账
 	v.Get("/pay_flow/deposit", payHandle.Deposits)              //入账
-	v.Get("/pay_flow/loan", payHandle.Loans)                    //放款
-	v.Get("/pay_flow/batch_loan", payHandle.BatchLoans)         //批量重放款
+	//v.Get("/pay_flow/loan", payHandle.Loans)                    //放款记录
+	//v.Get("/pay_flow/batch_loan", payHandle.BatchLoans)         //批量重放款
 	v.Get("/pay_flow/utr", payHandle.Utrs)                      //UTR对账单
 	v.Get("/pay_flow/utr_dismissed", payHandle.UtrsDismissed)   //UTR驳回列表 UTR对账单验证失败的
 	v.Post("/pay_flow/utr_verify", payHandle.UtrsVerify)		  //UTR对账单验证
@@ -201,6 +211,10 @@ func Init() {
 	v.Get("/remind_admin", remindHandle.RemindAdmin)
 	v.Get("/remind_rules", remindHandle.RemindRules)
 	v.Post("/remind_rules/create_or_update", remindHandle.RemindRulesCreateOrUpdate)
+	v.Post("/remind/create", remindHandle.RemindCreate) //新增催收员
+	v.Post("/remind/pwd_reset", systemHandle.PwdAdminReset) //修改催收员密码
+	v.Post("/remind/del", systemHandle.Del) //删除催收员
+
 	//催收管理
 	v.Get("/urge_company", urgeHandle.UrgeCompany)
 	v.Post("/urge_company/create", urgeHandle.UrgeCompanyCreate)
@@ -211,6 +225,10 @@ func Init() {
 	v.Get("/urge_admin", urgeHandle.UrgeAdmin)
 	v.Get("/urge_rules", urgeHandle.UrgeRules)
 	v.Post("/urge_rules/create_or_update", urgeHandle.UrgeRulesCreateOrUpdate)
+	v.Post("/urge/create", urgeHandle.UrgeCreate) //新增催收员
+	v.Post("/urge/pwd_reset", systemHandle.PwdAdminReset) //修改催收员密码
+	v.Post("/urge/del", systemHandle.Del) //删除催收员
+
 	//黑名单管理
 	v.Post("/user_black/create", BlackHandle.UserBlackCreate)
 	v.Post("/user_black/del", BlackHandle.UserBlackDel)

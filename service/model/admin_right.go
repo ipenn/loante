@@ -8,15 +8,19 @@ import (
 
 type AdminRight struct {
 	bun.BaseModel `bun:"table:admin_right,alias:ar"`
-	Id            int    `json:"id"`
-	RoleName      string `json:"role_name"`
+	AdminRightLittle
 	Rights        string `json:"-"`
 	IsDelete      string `json:"is_delete"`
 	CreateTime    string `json:"create_time"`
 	UpdateTime    string `json:"update_time"`
-	IsOpenContact string `json:"is_open_contact"`
-	IsOpenSms     string `json:"is_open_sms"`
-	IsOpenApp     string `json:"is_open_app"`
+	IsOpenContact int `json:"is_open_contact"`
+	IsOpenSms     int `json:"is_open_sms"`
+	IsOpenApp     int `json:"is_open_app"`
+}
+type AdminRightLittle struct {
+	bun.BaseModel `bun:"table:admin_right,alias:ar"`
+	Id            int    `json:"id" bun:",pk"`
+	RoleName      string `json:"role_name"`
 }
 
 func (a *AdminRight) Insert() {

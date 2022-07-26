@@ -28,7 +28,7 @@ type ordersQueryReq struct {
 	MchId            int    `json:"mch_id" query:"mch_id"`
 	ProductId        int    `json:"product_id" query:"product_id"`
 	UserName         string `json:"user_name" query:"user_name"`   //用户名
-	IdCardNo         string `json:"id_card_no" query:"id_card_no"` //身份证号
+	IdNo         	string `json:"id_no" query:"id_no"` //身份证号
 	UrgeId           int    `json:"urge_id" query:"urge_id"`
 	UrgeAdminId      int    `json:"urge_admin_id" query:"urge_admin_id"`
 	Phone            string `json:"phone" query:"phone"`
@@ -50,37 +50,37 @@ func (a *payFlow) Repayments(c *fiber.Ctx) error {
 	}
 	where := "o.type < 3"
 	if input.MchId > 0 {
-		where += fmt.Sprintf("o.mch_id = %d", input.MchId)
+		where += fmt.Sprintf(" and o.mch_id = %d", input.MchId)
 	}
 	if input.BorrowId > 0 {
-		where += fmt.Sprintf("o.bid = %d", input.BorrowId)
+		where += fmt.Sprintf(" and o.bid = %d", input.BorrowId)
 	}
 	if input.ProductId > 0 {
-		where += fmt.Sprintf("o.product_id = %d", input.ProductId)
+		where += fmt.Sprintf(" and o.product_id = %d", input.ProductId)
 	}
 	if len(input.UserName) > 0 {
-		where += fmt.Sprintf("u.aadhaar_name = '%s'", input.UserName)
+		where += fmt.Sprintf(" and users.aadhaar_name = '%s'", input.UserName)
+	}
+	if len(input.IdNo) > 0 {
+		where += fmt.Sprintf(" and users.id_no = '%s'", input.UserName)
 	}
 	if len(input.Phone) > 0 {
-		where += fmt.Sprintf("u.phone = '%s'", input.Phone)
+		where += fmt.Sprintf(" and users.phone = '%s'", input.Phone)
 	}
 	if input.PaymentId > 0 {
-		where += fmt.Sprintf("o.payment = '%d'", input.PaymentId)
+		where += fmt.Sprintf(" and o.payment = '%d'", input.PaymentId)
 	}
 	if input.Status > 0 {
-		where += fmt.Sprintf("o.status = '%d'", input.Status)
-	}
-	if input.PayChannel > 0 {
-		//where += fmt.Sprintf("o.status = '%d'", input.PayChannel)
+		where += fmt.Sprintf(" and o.status = '%d'", input.Status)
 	}
 	if len(input.StartTime) > 0 {
-		where += fmt.Sprintf("o.create_time >= '%s'", input.StartTime)
+		where += fmt.Sprintf(" and o.create_time >= '%s'", input.StartTime)
 	}
 	if len(input.EndTime) > 0 {
-		where += fmt.Sprintf("o.create_time < '%s'", input.EndTime)
+		where += fmt.Sprintf(" and o.create_time < '%s'", input.EndTime)
 	}
 	if len(input.PaymentRequestNo) > 0 {
-		where += fmt.Sprintf("o.payment_request_no < '%s'", input.PaymentRequestNo)
+		where += fmt.Sprintf(" and o.payment_request_no < '%s'", input.PaymentRequestNo)
 	}
 
 	lists, count := new(model.Orders).Page(where, input.Page, input.Size)
@@ -131,19 +131,19 @@ func (a *payFlow)Reconciliation(c *fiber.Ctx) error {
 	}
 	where := "o.type = 3"
 	if input.BorrowId > 0{ //订单编号
-		where += fmt.Sprintf("o.bid = %d", input.BorrowId)
+		where += fmt.Sprintf(" and o.bid = %d", input.BorrowId)
 	}
 	if len(input.Name) > 0{
-		where += fmt.Sprintf("user.aadhaar_name = '%s'", input.Name)
+		where += fmt.Sprintf(" and user.aadhaar_name = '%s'", input.Name)
 	}
 	if len(input.Phone) > 0{
-		where += fmt.Sprintf("user.phone = '%s'", input.Phone)
+		where += fmt.Sprintf(" and user.phone = '%s'", input.Phone)
 	}
 	if len(input.StartTime) > 0{
-		where += fmt.Sprintf("borrow.end_time > '%s'", input.StartTime)
+		where += fmt.Sprintf(" and borrow.end_time > '%s'", input.StartTime)
 	}
 	if len(input.EndTime) > 0{
-		where += fmt.Sprintf("borrow.end_time < '%s'", input.EndTime)
+		where += fmt.Sprintf(" and borrow.end_time < '%s'", input.EndTime)
 	}
 	//if input.Status > 0{
 	//	where += fmt.Sprintf("borrow.status = '%d'", input.Status)
@@ -172,19 +172,19 @@ func (a *payFlow) Deposits(c *fiber.Ctx) error {
 	}
 	where := "o.type = 4"
 	if input.BorrowId > 0{ //订单编号
-		where += fmt.Sprintf("o.bid = %d", input.BorrowId)
+		where += fmt.Sprintf(" and o.bid = %d", input.BorrowId)
 	}
 	if len(input.Name) > 0{
-		where += fmt.Sprintf("user.aadhaar_name = '%s'", input.Name)
+		where += fmt.Sprintf(" and user.aadhaar_name = '%s'", input.Name)
 	}
 	if len(input.Phone) > 0{
-		where += fmt.Sprintf("user.phone = '%s'", input.Phone)
+		where += fmt.Sprintf(" and user.phone = '%s'", input.Phone)
 	}
 	if len(input.StartTime) > 0{
-		where += fmt.Sprintf("borrow.end_time > '%s'", input.StartTime)
+		where += fmt.Sprintf(" and borrow.end_time > '%s'", input.StartTime)
 	}
 	if len(input.EndTime) > 0{
-		where += fmt.Sprintf("borrow.end_time < '%s'", input.EndTime)
+		where += fmt.Sprintf(" and borrow.end_time < '%s'", input.EndTime)
 	}
 
 	lists, count := new(model.Orders).Page(where, input.Page, input.Size)
@@ -242,19 +242,6 @@ func (a *payFlow) Loans(c *fiber.Ctx) error {
 		where += fmt.Sprintf(" and loan_time < '%s'", input.LoadEndTime)
 	}
 	lists, count := new(model.Borrow).Page(where, input.Page, input.Size)
-	return resp.OK(c, map[string]interface{}{
-		"count": count,
-		"list":  lists,
-	})
-}
-
-//BatchLoans 批量重放款
-func (a *payFlow) BatchLoans(c *fiber.Ctx) error {
-	input := new(depositQueryReq)
-	if err := tools.ParseBody(c, input); err != nil {
-		return resp.Err(c, 1, err.Error())
-	}
-	lists, count := new(model.Orders).Page("o.id > 0", input.Page, input.Size)
 	return resp.OK(c, map[string]interface{}{
 		"count": count,
 		"list":  lists,

@@ -21,8 +21,8 @@ type BorrowVisit struct {
 	RemindAssignTime string 	`json:"remind_assign_time"`
 	RemindLastTime   string		`json:"remind_last_time"`
 	UrgeAssignTime   string		`json:"urge_assign_time"`
-	Wish      		string		`json:"wish"`
-	Tag      		string		`json:"tag"`
+	Wish      		int		`json:"wish"`
+	Tag      		int		`json:"tag"`
 	UrgeLastTime     string		`json:"urge_last_time"`
 	Borrow  		*BorrowLittle `json:"borrow" bun:"rel:belongs-to,join:borrow_id=id"`
 	RemindCompany 	*RemindCompanyLittle `json:"remind_company" bun:"rel:belongs-to,join:remind_company_id=id"`

@@ -31,7 +31,7 @@ func (a *product) Product(c *fiber.Ctx) error {
 	}
 	where := "p.id>0"
 	if input.MchId != "" {
-		where += " and m.id=" + input.MchId
+		where += " and merchant.id=" + input.MchId
 	}
 	if input.ProductName != "" {
 		where += " and p.product_name like '%" + input.ProductName + "%'"
@@ -45,6 +45,8 @@ func (a *product) Product(c *fiber.Ctx) error {
 	if input.Status != "" {
 		where += " and p.status =" + input.Status
 	}
+	//权限
+	where = fmt.Sprintf("%s %v", where, c.Locals("mchWhere"))
 	lists, count := new(model.Product).Page(where, input.Page, input.Size)
 	return resp.OK(c, map[string]interface{}{
 		"count": count,
@@ -130,7 +132,7 @@ func (a *product) ProductCreateOrUpdate(c *fiber.Ctx) error {
 type productPreceptReq struct {
 	req.PageReq
 	ProductId int `json:"product_id" query:"product_id"`
-	Status int `json:"status" query:"status"`
+	Status string `json:"status" query:"status"`
 }
 //ProductPrecept 提额列表
 func (a *product) ProductPrecept(c *fiber.Ctx) error  {
@@ -142,8 +144,8 @@ func (a *product) ProductPrecept(c *fiber.Ctx) error  {
 	if input.ProductId > 0 {
 		where += fmt.Sprintf(" and ppt.product_id= %d", input.ProductId)
 	}
-	if input.Status > 0 {
-		where += fmt.Sprintf(" and ppt.status = %d", input.Status)
+	if len(input.Status) >  0 {
+		where += fmt.Sprintf(" and ppt.status = %s", input.Status)
 	}
 	lists, count := new(model.ProductPrecept).Page(where, input.Page, input.Size)
 	return resp.OK(c, map[string]interface{}{
@@ -165,8 +167,15 @@ func (a *product) ProductPreceptCreate(c *fiber.Ctx) error  {
 	if err := tools.ParseBody(c, input); err != nil {
 		return resp.Err(c, 1, err.Error())
 	}
+
+	productData := new(model.Product)
+	productData.One(fmt.Sprintf("id = %d", input.ProductId))
+	if productData.Id == 0{
+		return resp.Err(c, 1, "没有找到产品")
+	}
 	ppt := new(model.ProductPrecept)
 	ppt.One(fmt.Sprintf("id = %d", input.Id))
+	ppt.MchId = productData.MchId
 	ppt.ProductId = input.ProductId
 	ppt.Amount = input.Amount
 	ppt.MinCount = input.MinCount

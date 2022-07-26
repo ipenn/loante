@@ -3,7 +3,7 @@
 POST {{host}}/auth/login
 Content-Type: application/json
 
-{"admin_name": "sadmin","password": "123456"}
+{"admin_name": "yidiandian","password": "123456"}
 ###
 GET {{host}}/side_menu
 token:{{token}}
@@ -19,7 +19,15 @@ Content-Type: application/json
 #  "size": 10
 #}
 
-{"page":1,"size":10,"mchId":1089,"adminName":"11","roleId":1,"startTime":"2022-07-01 00:00:00","endTime":"2022-07-30 23:59:59"}
+{
+  "page":1,
+  "size":10,
+  "mch_id":0,
+  "admin_name":"",
+  "role_id":0,
+  "start_time":"2022-07-01 00:00:00",
+  "end_time":"2022-07-30 23:59:59"
+}
 
 ###
 POST {{host}}/admin/create
@@ -50,7 +58,7 @@ token:{{token}}
 Content-Type: application/json
 
 {
-  "id": 0
+  "id": 2
 }
 ###
 POST {{host}}/roles/create
@@ -125,4 +133,15 @@ Content-Type: application/json
   "platform_old_min_score":120,
   "platform_old_max_score": 120,
   "remark": "dadada"
+}
+
+###
+GET {{host}}/packages
+token:{{token}}
+Content-Type: application/json
+
+{
+  "page": 1,
+  "size": 10,
+  "name": ""
 }

@@ -325,3 +325,45 @@ func (a *remind) RemindRules(c *fiber.Ctx) error {
 		"list":  lists,
 	})
 }
+
+//RemindCreate 添加预提醒专员
+func  (a *remind) RemindCreate(c *fiber.Ctx) error {
+	input := new(urgeCreateReq)
+	if err := tools.ParseBody(c, input); err != nil {
+		return resp.Err(c, 1, err.Error())
+	}
+	//检测用户名是否重复
+	admin := new(model.Admin)
+	admin.One(fmt.Sprintf("admin_name = '%s'", input.AdminName))
+	if admin.Id > 0 && admin.Id != input.Id {
+		return resp.Err(c, 1, "登录名已经存在")
+	}
+	//查询催收公司
+	com := new(model.RemindCompany)
+	com.One(fmt.Sprintf("id = %d", input.CompanyId))
+	if com.Id == 0{
+		return resp.Err(c, 1, "预提醒公司不存在")
+	}
+	gr := new(model.RemindGroup)
+	gr.One(fmt.Sprintf("id = %d", input.GroupId))
+	if gr.Id == 0{
+		return resp.Err(c, 1, "预提醒组不存在")
+	}
+	if gr.CompanyId != input.CompanyId{
+		return resp.Err(c, 1, "预提醒公司和预提醒组不匹配")
+	}
+	//准备数据
+	admin.AdminName = input.AdminName
+	admin.RoleId = 3
+	admin.MchId = com.MchId
+	admin.RemindId =  input.CompanyId
+	admin.RemindGroupId =  input.GroupId
+	admin.Mobile = input.Phone
+	admin.Email = input.Email
+	if input.Id > 0{
+		admin.Update(fmt.Sprintf("id = %d", input.Id))
+	}else{
+		admin.Insert()
+	}
+	return resp.OK(c, "")
+}

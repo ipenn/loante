@@ -57,10 +57,12 @@ type User struct {
 	KycVerifyUpdateTime           string `json:"kyc_verify_update_time"`
 	Bankcard                      string `json:"bankcard"`
 	Ifsc                          string `json:"ifsc"`
-	BankName                      string `json:"bank_name"`
-	BankDidTransferred            int    `json:"bank_did_transferred"`
+	BankName           string `json:"bank_name"`
+	FatherName         string `json:"father_name"`
+	BankDidTransferred int    `json:"bank_did_transferred"`
 	SocialAccounts 				  string `json:"social_accounts"`
 	IdNo                          string `json:"id_no"`
+	BankStatus                          int `json:"bank_status"`
 }
 
 type UserList struct {

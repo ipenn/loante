@@ -11,6 +11,7 @@ type BorrowUtr struct {
 	Id       int	`json:"id"`
 	BorrowId   int	`json:"borrow_id"`
 	MchId     int	`json:"mch_id"`
+	Type     int	`json:"type"` //来源 0 用户提交 1 催收员提交
 	ProductId int	`json:"product_id"`
 	Status   int	`json:"status"`
 	UtrCode string	`json:"utr_code"`
@@ -22,7 +23,8 @@ type BorrowUtr struct {
 	RejectRemark string	`json:"reject_remark"`
 	Remark        string	`json:"remark"`
 	Merchant 	*MerchantLittle `json:"merchant" bun:"rel:belongs-to,join:mch_id=id"`
-	Borrow 		*BorrowLittle 	`json:"borrow" bun:"rel:belongs-to,join:borrow_id=id"`
+	Product 	*ProductLittle `json:"product" bun:"rel:belongs-to,join:product_id=id"`
+	Borrow 		*BorrowMini 	`json:"borrow" bun:"rel:belongs-to,join:borrow_id=id"`
 	User 		*UserLittle 	`json:"user" bun:"rel:belongs-to,join:user_id=id"`
 	Urge 		*AdminLittle 	`json:"admin" bun:"rel:belongs-to,join:urge_id=id"`
 }

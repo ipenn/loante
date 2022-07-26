@@ -26,16 +26,19 @@ type Admin struct {
 	LoginIp       string          `json:"login_ip"`
 	Email         string          `json:"email"`
 	Mobile        string          `json:"mobile"`
-	MchId         int             `json:"-" bun:"mch_id"`
-	RemindId      int             `json:"-"`
-	UrgeId        int             `json:"-"`
-	RemindGroupId int             `json:"-"`
-	UrgeGroupId   int             `json:"-"`
-	Merchant      *MerchantLittle `json:"merchant" bun:"rel:belongs-to,join:mch_id=id"`
-	RemindGroup   *RemindGroup    `json:"remind_group" bun:"rel:belongs-to,join:remind_group_id=id"`
-	RemindCompany *RemindCompany  `json:"remind_company" bun:"rel:belongs-to,join:remind_id=id"`
-	UrgeGroup     *UrgeGroup      `json:"urge_group" bun:"rel:belongs-to,join:urge_group_id=id"`
-	UrgeCompany   *UrgeCompany    `json:"urge_company" bun:"rel:belongs-to,join:urge_id=id"`
+	MchId         int             `json:"mch_id" bun:"mch_id"`
+	RemindId      int             `json:"remind_id"`
+	UrgeId        int             `json:"urge_id"`
+	RemindGroupId int             `json:"remind_group_id"`
+	UrgeGroupId   int             `json:"urge_group_id"`
+	Deleted   		int             `json:"deleted"`
+
+	Role   		  *AdminRightLittle            `json:"role" bun:"rel:belongs-to,join:role_id=id"`
+	Merchant      *MerchantLittle 		`json:"merchant" bun:"rel:belongs-to,join:mch_id=id"`
+	RemindGroup   *RemindGroupLittle    `json:"remind_group" bun:"rel:belongs-to,join:remind_group_id=id"`
+	RemindCompany *RemindCompanyLittle  `json:"remind_company" bun:"rel:belongs-to,join:remind_id=id"`
+	UrgeGroup     *UrgeGroupLittle     `json:"urge_group" bun:"rel:belongs-to,join:urge_group_id=id"`
+	UrgeCompany   *UrgeCompanyLittle    `json:"urge_company" bun:"rel:belongs-to,join:urge_id=id"`
 }
 
 func (a *Admin) Insert() {
@@ -64,6 +67,10 @@ func (a *Admin) One(where string) {
 
 func (a *Admin) Page(where string, page, limit int) ([]Admin, int) {
 	var datas []Admin
-	count, _ := global.C.DB.NewSelect().Model(&datas).Relation("Merchant").Relation("RemindGroup").Relation("RemindCompany").Relation("UrgeGroup").Relation("UrgeCompany").Where(where).Order(fmt.Sprintf("a.id desc")).Offset((page - 1) * limit).Limit(limit).ScanAndCount(global.C.Ctx)
+	count, _ := global.C.DB.NewSelect().Model(&datas).
+		Relation("Role").Relation("Merchant").
+		Relation("RemindGroup").Relation("RemindCompany").
+		Relation("UrgeGroup").Relation("UrgeCompany").
+		Where(where + " and deleted = 0").Order(fmt.Sprintf("a.id desc")).Offset((page - 1) * limit).Limit(limit).ScanAndCount(global.C.Ctx)
 	return datas, count
 }

@@ -25,7 +25,7 @@ type smsSendReq struct {
 
 func (a *app) SmsSend(c *fiber.Ctx) error {
 	input := new(smsSendReq)
-	fmt.Println(string(c.Body()))
+	//fmt.Println(string(c.Body()))
 	if err := tools.ParseBody(c, input); err != nil {
 		return resp.Err(c, 1, err.Error())
 	}
@@ -36,11 +36,14 @@ func (a *app) SmsSend(c *fiber.Ctx) error {
 	//根据type查找短信模板
 	if new(model.SmsTemplate).Send(input.Type, input.Phone, ps) {
 		//判断商户是否存在
-		merchantData := new(model.Merchant)
-		merchantData.One(fmt.Sprintf("id = %d", input.MchId))
-		if merchantData.Id > 0 {
-			merchantData.AddService(1, 1) //扣费
+		if input.MchId > 0{
+			merchantData := new(model.Merchant)
+			merchantData.One(fmt.Sprintf("id = %d", input.MchId))
+			if merchantData.Id > 0 {
+				merchantData.AddService(1, 1) //扣费
+			}
 		}
+		return resp.OK(c, "")
 	}
-	return resp.OK(c, "")
+	return resp.Err(c, 1, "发送失败")
 }

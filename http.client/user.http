@@ -91,3 +91,15 @@ Content-Type: application/json
 {
   "id": 1
 }
+###
+POST {{host}}/user/bank_modify
+token:{{token}}
+Content-Type: application/json
+
+{
+  "user_id": 1,
+  "bankcard":"21321111132",
+  "ifsc": "DDDD",
+  "bank_name":"cdscds",
+  "bank_status": 1
+}

@@ -1,0 +1,43 @@
+### 新增/修改 催收员
+POST {{host}}/urge/create
+token:{{token}}
+Content-Type: application/json
+
+{
+  "id": 0,
+  "company_id":1,
+  "group_id": 1,
+  "admin_name":"123qq",
+  "phone": "1858585858",
+  "email":"qq@qq.com",
+  "password": "123456",
+  "remark":""
+}
+
+### 修改 催收员 密码
+POST {{host}}/urge/pwd_reset
+token:{{token}}
+Content-Type: application/json
+
+{
+  "id": 26,
+  "password":"1858585858",
+  "re_password": "1858585858"
+}
+### 删除催收员
+POST {{host}}/urge/del
+token:{{token}}
+Content-Type: application/json
+
+{
+  "id": 25
+}
+### 获取催收员
+GET {{host}}/urge_admin
+token:{{token}}
+Content-Type: application/json
+
+{
+  "page": 1,
+  "size": 10
+}

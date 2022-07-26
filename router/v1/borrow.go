@@ -285,3 +285,114 @@ func (a *borrow)SetLoanFail(c *fiber.Ctx) error {
 	borrowData.Update(fmt.Sprintf("id = %d", input.Id))
 	return resp.OK(c, "")
 }
+
+func (a *borrow)Close(c *fiber.Ctx) error {
+	input := new(req.IdReq)
+	if err := tools.ParseBody(c, input); err != nil {
+		return resp.Err(c, 1, err.Error())
+	}
+	borrowData := new(model.Borrow)
+	borrowData.One(fmt.Sprintf("id = %d", input.Id))
+	if borrowData.Id == 0{
+		return resp.Err(c, 1, "未找到记录")
+	}
+	borrowData.Closed = 0
+	borrowData.Update(fmt.Sprintf("id = %d", input.Id))
+	return resp.OK(c, "")
+}
+
+
+type reLoadReq struct {
+	req.PageReq
+	UserId    int    `query:"user_id" json:"user_id"`       //客户编号
+	Name      string `query:"name" json:"name"`             //客户名
+	Phone     string `query:"phone" json:"phone"`           //手机号
+	IdNo      string `query:"id_no" json:"id_no"`           //身份证号
+	ProductId int    `query:"product_id" json:"product_id"` //产品id
+	BorrowId  int    `query:"borrow_id" json:"borrow_id"`   //订单编号
+	//Status    int    `query:"status" json:"status"`         //订单状态
+	LoanType  int    `query:"loan_type" json:"loan_type"`   //贷款类型
+	RiskModel int    `query:"risk_model" json:"risk_model"` //模型类型
+	StartTime string `query:"start_time" json:"start_time"` //开始时间
+	EndTime   string `query:"end_time" json:"end_time"`     //开始时间
+}
+
+func (input *reLoadReq) query() string {
+	where := ""
+	if input.UserId > 0{
+		where += fmt.Sprintf(" and b.uid = %d", input.UserId)
+	}
+	if len(input.Name) > 0{
+		where += fmt.Sprintf(" and user.aadhaar_name = '%s'", input.Name)
+	}
+	if len(input.Phone) > 0{
+		where += fmt.Sprintf(" and user.phone = '%s'", input.Phone)
+	}
+	if len(input.IdNo) > 0{
+		where += fmt.Sprintf(" and user.id_no = '%s'", input.IdNo)
+	}
+	if input.ProductId > 0{
+		where += fmt.Sprintf(" and b.product_id = '%d'", input.ProductId)
+	}
+	if input.BorrowId > 0{
+		where += fmt.Sprintf(" and b.product_id = '%d'", input.BorrowId)
+	}
+	//if input.Status > 0{
+	//	where += fmt.Sprintf(" and b.status = '%d'", input.Status)
+	//}
+	if input.LoanType > 0{
+		where += fmt.Sprintf(" and b.loan_type = '%d'", input.LoanType)
+	}
+	if input.RiskModel > 0{
+		where += fmt.Sprintf(" and b.risk_model = '%d'", input.RiskModel)
+	}
+	if len(input.StartTime) > 0{
+		where += fmt.Sprintf(" and b.create_time >= '%s'", input.StartTime)
+	}
+	if len(input.EndTime) > 0{
+		where += fmt.Sprintf(" and b.create_time < '%s'", input.EndTime)
+	}
+	return where
+}
+
+//ReLoan 批量重放款
+func (a *borrow)ReLoan(c *fiber.Ctx) error {
+	input := new(reLoadReq)
+	if err := tools.ParseBody(c, input); err != nil {
+		return resp.Err(c, 1, err.Error())
+	}
+	where := "b.status = 0 " + input.query()
+	lists, count := new(model.Borrow).Page(where, input.Page, input.Size)
+	return resp.OK(c, map[string]interface{}{
+		"count": count,
+		"list":  lists,
+	})
+}
+
+//Loaning 批量放款 只是指正在放款中的借贷订单
+func (a *borrow)Loaning(c *fiber.Ctx) error {
+	input := new(reLoadReq)
+	if err := tools.ParseBody(c, input); err != nil {
+		return resp.Err(c, 1, err.Error())
+	}
+	where := "b.status = 4 " + input.query()
+	lists, count := new(model.Borrow).Page(where, input.Page, input.Size)
+	return resp.OK(c, map[string]interface{}{
+		"count": count,
+		"list":  lists,
+	})
+}
+
+//LoanAction 向用户放款
+func (a *borrow)LoanAction(c *fiber.Ctx) error {
+	input := new(reLoadReq)
+	if err := tools.ParseBody(c, input); err != nil {
+		return resp.Err(c, 1, err.Error())
+	}
+	where := "b.status = 4 " + input.query()
+	lists, count := new(model.Borrow).Page(where, input.Page, input.Size)
+	return resp.OK(c, map[string]interface{}{
+		"count": count,
+		"list":  lists,
+	})
+}

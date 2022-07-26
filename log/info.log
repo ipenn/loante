@@ -709,3 +709,94 @@ Content-Disposition: form-data; name="content"
 =======
 >>>>>>> 756b9740a3c8daa76ec584b43a21a23c92f73aa9
 >>>>>>> 42cc43f6e3b2a9b471ae29cb8b87a80605f88477
+2022-07-25 10:23:30 [INFO] [D:/works/ipenn/loante/service/cron/init.go:204] 催收业绩统计开始
+2022-07-25 10:23:32 [EROR] [D:/works/ipenn/loante/service/model/stat_urge.go:35] &{{} 0 0  0 0 0 0 0 0 0 0 0 0 0 <nil> <nil> <nil> <nil>} err=dial tcp 192.168.1.4:3306: connectex: An established connection was aborted by the software in your host machine.
+2022-07-25 10:23:53 [INFO] [D:/works/ipenn/loante/service/cron/init.go:204] 催收业绩统计开始
+2022-07-25 10:24:52 [INFO] [D:/works/ipenn/loante/service/cron/init.go:204] 催收业绩统计开始
+2022-07-25 11:13:19 [INFO] [D:/works/ipenn/loante/service/cron/init.go:204] 催收业绩统计开始
+2022-07-25 11:13:19 [INFO] [D:/works/ipenn/loante/service/cron/init.go:329] 催收业绩统计结束
+2022-07-25 11:13:52 [INFO] [D:/works/ipenn/loante/service/cron/init.go:204] 催收业绩统计开始
+2022-07-25 11:29:51 [INFO] [D:/works/ipenn/loante/service/cron/init.go:204] 催收业绩统计开始
+2022-07-25 11:30:42 [INFO] [D:/works/ipenn/loante/service/cron/init.go:329] 催收业绩统计结束
+2022-07-25 11:42:51 [INFO] [D:/works/ipenn/loante/service/cron/init.go:204] 催收业绩统计开始
+2022-07-25 11:48:47 [INFO] [D:/works/ipenn/loante/service/cron/init.go:204] 催收业绩统计开始
+2022-07-25 11:49:29 [INFO] [D:/works/ipenn/loante/service/cron/init.go:204] 催收业绩统计开始
+2022-07-25 11:51:34 [INFO] [D:/works/ipenn/loante/service/cron/init.go:204] 催收业绩统计开始
+2022-07-25 11:51:37 [INFO] [D:/works/ipenn/loante/service/cron/init.go:331] 催收业绩统计结束
+2022-07-25 11:52:20 [INFO] [D:/works/ipenn/loante/service/cron/init.go:204] 催收业绩统计开始
+2022-07-25 11:52:20 [INFO] [D:/works/ipenn/loante/service/cron/init.go:331] 催收业绩统计结束
+2022-07-25 12:30:05 [INFO] [D:/works/ipenn/loante/service/cron/init.go:207] 催收业绩统计开始
+2022-07-25 12:33:00 [INFO] [D:/works/ipenn/loante/service/cron/init.go:207] 催收业绩统计开始
+2022-07-25 13:29:47 [INFO] [D:/works/ipenn/loante/service/sms/nxcloud.go:43] sms send content: {"result":"请求成功","code":"0","messageid":"8653be26be5e462b9c8cbbd31d77f4a1"}
+2022-07-25 13:29:47 [EROR] [D:/works/ipenn/loante/service/model/merchant.go:49] &{{} {{} 0 } 0 0 0 0 0      0} err=sql: no rows in result set
+2022-07-25 13:30:13 [INFO] [D:/works/ipenn/loante/service/sms/nxcloud.go:43] sms send content: {"result":"请求成功","code":"0","messageid":"95eb006b445c41119c93ef84e09a529d"}
+2022-07-25 13:30:13 [EROR] [D:/works/ipenn/loante/service/model/merchant.go:49] &{{} {{} 0 } 0 0 0 0 0      0} err=sql: no rows in result set
+2022-07-25 13:30:22 [INFO] [D:/works/ipenn/loante/service/sms/nxcloud.go:43] sms send content: {"result":"请求成功","code":"0","messageid":"cde000a2dfe440739d7435f3b7455f19"}
+2022-07-25 13:30:22 [EROR] [D:/works/ipenn/loante/service/model/merchant.go:49] &{{} {{} 0 } 0 0 0 0 0      0} err=sql: no rows in result set
+2022-07-25 13:30:27 [INFO] [D:/works/ipenn/loante/service/sms/nxcloud.go:43] sms send content: {"result":"请求成功","code":"0","messageid":"0a705a4cf252457d9bf5e1f19d7290ef"}
+2022-07-25 13:30:27 [EROR] [D:/works/ipenn/loante/service/model/merchant.go:49] &{{} {{} 0 } 0 0 0 0 0      0} err=sql: no rows in result set
+2022-07-25 13:30:38 [INFO] [D:/works/ipenn/loante/service/sms/nxcloud.go:43] sms send content: {"result":"请求成功","code":"0","messageid":"cca88fa4c40e4cc7bcef19d01a84ad2b"}
+2022-07-25 13:30:38 [EROR] [D:/works/ipenn/loante/service/model/merchant.go:49] &{{} {{} 0 } 0 0 0 0 0      0} err=sql: no rows in result set
+2022-07-25 13:30:43 [INFO] [D:/works/ipenn/loante/service/sms/nxcloud.go:43] sms send content: {"result":"请求成功","code":"0","messageid":"ecc48e090d3844fba3654bfd73ce6171"}
+2022-07-25 13:30:43 [EROR] [D:/works/ipenn/loante/service/model/merchant.go:49] &{{} {{} 0 } 0 0 0 0 0      0} err=sql: no rows in result set
+2022-07-25 13:54:16 [INFO] [D:/works/ipenn/loante/service/cron/init.go:207] 催收业绩统计开始
+2022-07-25 13:55:58 [INFO] [D:/works/ipenn/loante/service/cron/init.go:207] 催收业绩统计开始
+2022-07-25 14:44:10 [EROR] [D:/works/ipenn/loante/service/model/admin_right.go:42] &{{} 0        } err=sql: no rows in result set
+2022-07-25 16:42:07 [INFO] [D:/works/ipenn/loante/service/sms/nxcloud.go:43] sms send content: {"result":"请求成功","code":"0","messageid":"37896a10bbba4759bccc3d62415d1874"}
+2022-07-25 16:42:07 [EROR] [D:/works/ipenn/loante/service/model/merchant.go:49] &{{} {{} 0 } 0 0 0 0 0      0} err=sql: no rows in result set
+2022-07-25 16:42:12 [INFO] [D:/works/ipenn/loante/service/sms/nxcloud.go:43] sms send content: {"result":"请求成功","code":"0","messageid":"be0fdc5bddf944f4afc7599b1fd0d41c"}
+2022-07-25 16:42:12 [EROR] [D:/works/ipenn/loante/service/model/merchant.go:49] &{{} {{} 0 } 0 0 0 0 0      0} err=sql: no rows in result set
+2022-07-25 16:42:16 [INFO] [D:/works/ipenn/loante/service/sms/nxcloud.go:43] sms send content: {"result":"请求成功","code":"0","messageid":"33b660def9834f7c98e90b39f8ac89b5"}
+2022-07-25 16:42:16 [EROR] [D:/works/ipenn/loante/service/model/merchant.go:49] &{{} {{} 0 } 0 0 0 0 0      0} err=sql: no rows in result set
+2022-07-25 16:42:19 [INFO] [D:/works/ipenn/loante/service/sms/nxcloud.go:43] sms send content: {"result":"请求成功","code":"0","messageid":"d42d84898b61436dba0daa573512883f"}
+2022-07-25 16:42:19 [EROR] [D:/works/ipenn/loante/service/model/merchant.go:49] &{{} {{} 0 } 0 0 0 0 0      0} err=sql: no rows in result set
+2022-07-25 16:42:23 [INFO] [D:/works/ipenn/loante/service/sms/nxcloud.go:43] sms send content: {"result":"请求成功","code":"0","messageid":"6649a5cd098e448eb346a60622e0cfa2"}
+2022-07-25 16:42:23 [EROR] [D:/works/ipenn/loante/service/model/merchant.go:49] &{{} {{} 0 } 0 0 0 0 0      0} err=sql: no rows in result set
+2022-07-25 16:42:26 [INFO] [D:/works/ipenn/loante/service/sms/nxcloud.go:43] sms send content: {"result":"请求成功","code":"0","messageid":"92823f76ba744df69a1db023602a5a1f"}
+2022-07-25 16:42:26 [EROR] [D:/works/ipenn/loante/service/model/merchant.go:49] &{{} {{} 0 } 0 0 0 0 0      0} err=sql: no rows in result set
+2022-07-25 21:34:32 [EROR] [D:/works/ipenn/loante/service/model/admin.go:63] &{{} 0     0 0     0 0 0 0 0 <nil> <nil> <nil> <nil> <nil> <nil>} err=sql: no rows in result set
+2022-07-25 21:44:46 [EROR] [D:/works/ipenn/loante/service/model/admin.go:63] &{{} 0     0 0     0 0 0 0 0 <nil> <nil> <nil> <nil> <nil> <nil>} err=sql: no rows in result set
+2022-07-25 21:45:16 [EROR] [D:/works/ipenn/loante/service/model/admin.go:63] &{{} 0     0 0     0 0 0 0 0 <nil> <nil> <nil> <nil> <nil> <nil>} err=sql: no rows in result set
+2022-07-25 21:46:20 [EROR] [D:/works/ipenn/loante/service/model/admin.go:63] &{{} 0     0 0     0 0 0 0 0 <nil> <nil> <nil> <nil> <nil> <nil>} err=sql: no rows in result set
+2022-07-25 21:49:43 [EROR] [D:/works/ipenn/loante/service/model/admin.go:63] &{{} 0     0 0     0 0 0 0 0 <nil> <nil> <nil> <nil> <nil> <nil>} err=sql: no rows in result set
+2022-07-25 21:53:34 [INFO] [D:/works/ipenn/loante/service/sms/nxcloud.go:43] sms send content: {"result":"请求成功","code":"0","messageid":"c1cad425452442d28ba45cd3a0bba169"}
+2022-07-25 21:54:48 [INFO] [D:/works/ipenn/loante/service/sms/nxcloud.go:43] sms send content: {"result":"请求成功","code":"0","messageid":"e569bec525ac47a68d23464640ffde45"}
+2022-07-25 22:08:04 [EROR] [D:/works/ipenn/loante/service/model/admin.go:63] &{{} 0     0 0     0 0 0 0 0 <nil> <nil> <nil> <nil> <nil> <nil>} err=sql: no rows in result set
+2022-07-25 22:09:59 [EROR] [D:/works/ipenn/loante/service/model/admin.go:63] &{{} 0     0 0     0 0 0 0 0 <nil> <nil> <nil> <nil> <nil> <nil>} err=sql: no rows in result set
+2022-07-25 22:10:03 [EROR] [D:/works/ipenn/loante/service/model/admin.go:63] &{{} 0     0 0     0 0 0 0 0 <nil> <nil> <nil> <nil> <nil> <nil>} err=sql: no rows in result set
+2022-07-25 22:10:14 [EROR] [D:/works/ipenn/loante/service/model/admin.go:63] &{{} 0     0 0     0 0 0 0 0 <nil> <nil> <nil> <nil> <nil> <nil>} err=sql: no rows in result set
+2022-07-25 23:32:02 [INFO] [D:/works/ipenn/loante/service/sms/nxcloud.go:43] sms send content: {"result":"请求成功","code":"0","messageid":"5e4ab2d83b59460a8cc5d4d9671e73b8"}
+2022-07-26 01:09:04 [EROR] [D:/works/ipenn/loante/service/model/admin_right.go:46] &{{} {{} 0 }     0 0 0} err=sql: no rows in result set
+2022-07-26 01:15:16 [EROR] [D:/works/ipenn/loante/service/model/admin_right.go:46] &{{} {{} 0 }     0 0 0} err=sql: no rows in result set
+2022-07-26 01:15:42 [EROR] [D:/works/ipenn/loante/service/model/admin_right.go:46] &{{} {{} 0 }     0 0 0} err=sql: no rows in result set
+2022-07-26 01:33:36 [EROR] [D:/works/ipenn/loante/service/model/admin_right.go:46] &{{} {{} 0 }     0 0 0} err=sql: no rows in result set
+2022-07-26 01:45:29 [EROR] [D:/works/ipenn/loante/service/model/admin_right.go:46] &{{} {{} 0 }     0 0 0} err=sql: no rows in result set
+2022-07-26 01:45:57 [EROR] [D:/works/ipenn/loante/service/model/admin_right.go:46] &{{} {{} 0 }     0 0 0} err=sql: no rows in result set
+2022-07-26 01:46:37 [EROR] [D:/works/ipenn/loante/service/model/admin_right.go:46] &{{} {{} 0 }     0 0 0} err=sql: no rows in result set
+2022-07-26 01:46:41 [EROR] [D:/works/ipenn/loante/service/model/admin_right.go:46] &{{} {{} 0 }     0 0 0} err=sql: no rows in result set
+2022-07-26 01:46:53 [EROR] [D:/works/ipenn/loante/service/model/admin_right.go:46] &{{} {{} 0 }     0 0 0} err=sql: no rows in result set
+2022-07-26 01:47:06 [EROR] [D:/works/ipenn/loante/service/model/admin_right.go:46] &{{} {{} 0 }     0 0 0} err=sql: no rows in result set
+2022-07-26 01:48:00 [EROR] [D:/works/ipenn/loante/service/model/admin_right.go:46] &{{} {{} 0 }     0 0 0} err=sql: no rows in result set
+2022-07-26 01:49:00 [EROR] [D:/works/ipenn/loante/service/model/admin_right.go:46] &{{} {{} 0 }     0 0 0} err=sql: no rows in result set
+2022-07-26 01:49:02 [EROR] [D:/works/ipenn/loante/service/model/admin_right.go:46] &{{} {{} 0 }     0 0 0} err=sql: no rows in result set
+2022-07-26 01:49:11 [EROR] [D:/works/ipenn/loante/service/model/admin_right.go:46] &{{} {{} 0 }     0 0 0} err=sql: no rows in result set
+2022-07-26 01:49:33 [EROR] [D:/works/ipenn/loante/service/model/admin_right.go:46] &{{} {{} 0 }     0 0 0} err=sql: no rows in result set
+2022-07-26 01:50:50 [EROR] [D:/works/ipenn/loante/service/model/admin_right.go:46] &{{} {{} 0 }     0 0 0} err=sql: no rows in result set
+2022-07-26 01:57:43 [EROR] [D:/works/ipenn/loante/service/model/admin.go:63] &{{} 0     0 0     0 0 0 0 0 <nil> <nil> <nil> <nil> <nil> <nil>} err=sql: no rows in result set
+2022-07-26 01:57:43 [EROR] [D:/works/ipenn/loante/service/model/admin.go:63] &{{} 0     0 0     0 0 0 0 0 <nil> <nil> <nil> <nil> <nil> <nil>} err=sql: no rows in result set
+2022-07-26 01:57:44 [EROR] [D:/works/ipenn/loante/service/model/admin_right.go:46] &{{} {{} 0 }     0 0 0} err=sql: no rows in result set
+2022-07-26 01:57:55 [EROR] [D:/works/ipenn/loante/service/model/admin.go:63] &{{} 0     0 0     0 0 0 0 0 <nil> <nil> <nil> <nil> <nil> <nil>} err=sql: no rows in result set
+2022-07-26 01:57:55 [EROR] [D:/works/ipenn/loante/service/model/admin.go:63] &{{} 0     0 0     0 0 0 0 0 <nil> <nil> <nil> <nil> <nil> <nil>} err=sql: no rows in result set
+2022-07-26 02:03:17 [EROR] [D:/works/ipenn/loante/service/model/admin_right.go:46] &{{} {{} 0 }     0 0 0} err=sql: no rows in result set
+2022-07-26 02:03:54 [EROR] [D:/works/ipenn/loante/service/model/admin_right.go:46] &{{} {{} 0 }     0 0 0} err=sql: no rows in result set
+2022-07-26 02:04:40 [EROR] [D:/works/ipenn/loante/service/model/admin_right.go:46] &{{} {{} 0 }     0 0 0} err=sql: no rows in result set
+2022-07-26 02:04:42 [EROR] [D:/works/ipenn/loante/service/model/admin_right.go:46] &{{} {{} 0 }     0 0 0} err=sql: no rows in result set
+2022-07-26 02:07:21 [EROR] [D:/works/ipenn/loante/service/model/admin_right.go:46] &{{} {{} 0 123}     0 0 0} err=sql: no rows in result set
+2022-07-26 02:12:33 [EROR] [D:/works/ipenn/loante/service/model/admin_right.go:46] &{{} {{} 0 }     0 0 0} err=sql: no rows in result set
+2022-07-26 02:12:44 [EROR] [D:/works/ipenn/loante/service/model/admin_right.go:46] &{{} {{} 0 }     0 0 0} err=sql: no rows in result set
+2022-07-26 02:12:51 [EROR] [D:/works/ipenn/loante/service/model/admin_right.go:46] &{{} {{} 0 1232222}     0 0 0} err=sql: no rows in result set
+2022-07-26 02:21:08 [EROR] [D:/works/ipenn/loante/service/model/admin.go:63] &{{} 0     0 0     0 0 0 0 0 <nil> <nil> <nil> <nil> <nil> <nil>} err=sql: no rows in result set
+2022-07-26 02:21:14 [EROR] [D:/works/ipenn/loante/service/model/admin.go:63] &{{} 0     0 0     0 0 0 0 0 <nil> <nil> <nil> <nil> <nil> <nil>} err=sql: no rows in result set
+2022-07-26 09:59:18 [EROR] [D:/works/ipenn/loante/service/model/admin.go:63] &{{} 0     0 0     0 0 0 0 0 <nil> <nil> <nil> <nil> <nil> <nil>} err=sql: no rows in result set
+2022-07-26 09:59:45 [EROR] [D:/works/ipenn/loante/service/model/admin.go:63] &{{} 0     0 0     0 0 0 0 0 <nil> <nil> <nil> <nil> <nil> <nil>} err=sql: no rows in result set
+2022-07-26 10:00:29 [EROR] [D:/works/ipenn/loante/service/model/admin.go:63] &{{} 0     0 0     0 0 0 0 0 <nil> <nil> <nil> <nil> <nil> <nil>} err=sql: no rows in result set

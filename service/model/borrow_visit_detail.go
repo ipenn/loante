@@ -19,20 +19,27 @@ type BorrowVisitDetail struct {
 	UrgeGroupId   int		`json:"urge_group_id"`
 	ContactName  string		`json:"contact_name"`
 	ContactPhone string		`json:"contact_phone"`
-	Relationship string		`json:"relationship"`
+	Relationship int		`json:"relationship"`
 	CreateTime   string		`json:"create_time"`
-	Tag          string		`json:"tag"`
-	Wish        	string		`json:"wish"`
-	OverDueDays int		`json:"over_due_days"`
+	Tag          int		`json:"tag"`
+	Wish         int		`json:"wish"`
 	Remark                  string		`json:"remark"`
 	PromisedRepaymentAmount string		`json:"promised_repayment_amount"`
 	PromisedRepaymentTime string		`json:"promised_repayment_time"`
 	NextVisitTime         string		`json:"next_visit_time"`
 
+	Product  		*ProductLittle 	`json:"product" bun:"rel:belongs-to,join:product_id=id"`
+	Merchant  		*MerchantLittle 	`json:"merchant" bun:"rel:belongs-to,join:mch_id=id"`
 	User  			*UserLittle 	`json:"user" bun:"rel:belongs-to,join:user_id=id"`
-	Borrow  		*BorrowLittle 	`json:"borrow" bun:"rel:belongs-to,join:borrow_id=id"`
-	UrgeCompany 	*UrgeCompany 	`json:"urge_company" bun:"rel:belongs-to,join:urge_company_id=id"`
+	Borrow  		*BorrowMini 	`json:"borrow" bun:"rel:belongs-to,join:borrow_id=id"`
+
+	UrgeCompany 	*UrgeCompanyLittle 	`json:"urge_company" bun:"rel:belongs-to,join:urge_company_id=id"`
+	UrgeGroup 		*UrgeGroupLittle 	`json:"urge_group" bun:"rel:belongs-to,join:urge_group_id=id"`
 	UrgeUser 		*AdminLittle 	`json:"urge_user" bun:"rel:belongs-to,join:urge_id=id"`
+
+	RemindCompany 	*RemindCompanyLittle 	`json:"remind_company" bun:"rel:belongs-to,join:urge_company_id=id"`
+	RemindGroup 	*RemindGroupLittle 		`json:"remind_group" bun:"rel:belongs-to,join:urge_group_id=id"`
+	RemindUser 		*AdminLittle 			`json:"remind_user" bun:"rel:belongs-to,join:urge_id=id"`
 }
 
 func (a *BorrowVisitDetail)Insert()  {
@@ -56,9 +63,15 @@ func (a *BorrowVisitDetail)Update(where string)  {
 	}
 }
 
-func (a *BorrowVisitDetail)Page(where string, page, limit int) ([]BorrowVisitDetail, int) {
+func (a *BorrowVisitDetail)UrgePage(where string, page, limit int) ([]BorrowVisitDetail, int) {
 	var datas []BorrowVisitDetail
-	count, _ := global.C.DB.NewSelect().Model(&datas).Relation("User").Relation("Borrow").Relation("UrgeCompany").Relation("UrgeUser").
+	count, _ := global.C.DB.NewSelect().Model(&datas).Relation("Merchant").Relation("Product").Relation("User").Relation("Borrow").Relation("UrgeCompany").Relation("UrgeGroup").Relation("UrgeUser").
+		Where(where).Order(fmt.Sprintf("bvd.id desc")).Offset((page-1)*limit).Limit(limit).ScanAndCount(global.C.Ctx)
+	return datas, count
+}
+func (a *BorrowVisitDetail)RemindPage(where string, page, limit int) ([]BorrowVisitDetail, int) {
+	var datas []BorrowVisitDetail
+	count, _ := global.C.DB.NewSelect().Model(&datas).Relation("Merchant").Relation("Product").Relation("User").Relation("Borrow").Relation("RemindCompany").Relation("RemindGroup").Relation("RemindUser").
 		Where(where).Order(fmt.Sprintf("bvd.id desc")).Offset((page-1)*limit).Limit(limit).ScanAndCount(global.C.Ctx)
 	return datas, count
 }

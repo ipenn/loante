@@ -98,6 +98,12 @@ func (a *system) AdminsList(c *fiber.Ctx) error {
 	if len(input.AdminName) > 0 {
 		where = fmt.Sprintf("%s and a.admin_name = '%s'", where, input.AdminName)
 	}
+	if input.RoleId > 0 {
+		where = fmt.Sprintf("%s and a.role_id = '%s'", where, input.AdminName)
+	}
+	if input.RoleId > 0 {
+		where = fmt.Sprintf("%s and a.role_id = '%s'", where, input.AdminName)
+	}
 	lists, count := new(model.Admin).Page(where, input.Page, input.Size)
 	return resp.OK(c, map[string]interface{}{
 		"count": count,
@@ -150,6 +156,9 @@ func (a *system) RightsList(c *fiber.Ctx) error {
 		if len(item.Path) > 0 && strings.Index(right.Rights, item.Path) > -1 {
 			rr.Right = true
 		}
+		if  input.Id > 0&& item.Id > 500 {
+			rr.Right = true
+		}
 		data = append(data, rr)
 	}
 	return resp.OK(c, data)
@@ -157,12 +166,12 @@ func (a *system) RightsList(c *fiber.Ctx) error {
 
 type adminCreateReq struct {
 	AdminName string `json:"admin_name" validate:"required,min=3,max=32"`
-	Password  string `json:"password" validate:"required,min=3,max=32"`
+	Password  string `json:"password"`
 	MchId     int    `json:"mch_id"`
 	Mobile    string `json:"mobile"`
 	Email     string `json:"email"`
 	RoleId    int    `json:"role_id"`
-	Id        int    `json:"roleId"`
+	Id        int    `json:"id"`
 }
 
 func (a *system) AdminCreate(c *fiber.Ctx) error {
@@ -181,12 +190,16 @@ func (a *system) AdminCreate(c *fiber.Ctx) error {
 	//	return resp.Err(c, 1, "该角色需从对应的地方添加")
 	//}
 	admin.AdminName = input.AdminName
-	admin.Password = input.Password
 	admin.RoleId = input.RoleId
 	admin.MchId = input.MchId
 	admin.Mobile = input.Mobile
 	admin.Email = input.Email
-	admin.Insert()
+	if input.Id > 0{
+		admin.Update(fmt.Sprintf("id = %d", input.Id))
+	}else{
+		admin.Insert()
+	}
+
 	return resp.OK(c, "")
 }
 
@@ -300,13 +313,13 @@ func (a *system) SystemSettingUpdateValue(c *fiber.Ctx) error {
 }
 
 type adminLogList struct {
-	AdminName       string `json:"admin_name"`
-	Method          string `json:"method"`
-	Path            string `json:"path"`
-	StartCreateTime string `json:"StartCreateTime"`
-	EndCreateTime   string `json:"EndCreateTime"`
-	Page            int    `json:"page"`
-	Size            int    `json:"size"`
+	AdminName       string `query:"admin_name" json:"admin_name"`
+	Method          string `query:"method" json:"method"`
+	Path            string `query:"path" json:"path"`
+	StartCreateTime string `query:"StartCreateTime" json:"StartCreateTime"`
+	EndCreateTime   string `query:"EndCreateTime" json:"EndCreateTime"`
+	Page            int    `query:"page" json:"page"`
+	Size            int    `query:"size" json:"size"`
 }
 
 // AdminLogList 管理员操作日志
@@ -422,6 +435,30 @@ func (a *system) PwdMchReset(c *fiber.Ctx) error {
 	return resp.OK(c, "")
 }
 
+type adminDisableReq struct {
+	req.IdReq
+}
+//Disable 管理员禁用
+func (a *system) Disable(c *fiber.Ctx) error {
+	input := new(adminDisableReq)
+	if err := tools.ParseBody(c, input); err != nil {
+		return resp.Err(c, 1, err.Error())
+	}
+	admin := new(model.Admin)
+	admin.One(fmt.Sprintf("id = %d", input.Id))
+	if admin.Id == 0{
+		return resp.Err(c, 1, "找到管理员")
+	}
+	if admin.Status == 0{
+		admin.Status = 1
+	}else{
+		admin.Status = 0
+	}
+	admin.Update(fmt.Sprintf("id = %d", admin.Id))
+	return resp.OK(c, "")
+}
+
+
 //PwdAdminReset 重置管理员密码
 func (a *system) PwdAdminReset(c *fiber.Ctx) error {
 	input := new(pwdResetReq)
@@ -445,17 +482,104 @@ func (a *system) PwdAdminReset(c *fiber.Ctx) error {
 	return resp.OK(c, "")
 }
 
-//Packages APP包
-func (a *system) Packages(c *fiber.Ctx) error {
-	input := new(req.PageReq)
+//Del 删除管理员
+func (a *system) Del(c *fiber.Ctx) error {
+	input := new(req.IdReq)
 	if err := tools.ParseBody(c, input); err != nil {
 		return resp.Err(c, 1, err.Error())
 	}
-	lists, count := new(model.Package).Page("id > 0",input.Page, input.Size)
+	where := fmt.Sprintf("id = %d", input.Id)
+	admin := new(model.Admin)
+	admin.One(where)
+	if admin.Id == 0{
+		return resp.Err(c, 1, "没有找到商户管理员")
+	}
+	admin.Deleted = 1
+	admin.Update(fmt.Sprintf("id = %d", admin.Id))
+	return resp.OK(c, "")
+}
+
+type packageReq struct {
+	req.PageReq
+	Name string	`json:"name"`
+}
+//Packages APP包
+func (a *system) Packages(c *fiber.Ctx) error {
+	input := new(packageReq)
+	if err := tools.ParseBody(c, input); err != nil {
+		return resp.Err(c, 1, err.Error())
+	}
+	where := "id > 0"
+	if len(input.Name)>0{
+		where += fmt.Sprintf(" and name= '%s'", input.Name)
+	}
+	lists, count := new(model.Package).Page(where, input.Page, input.Size)
 	return resp.OK(c, map[string]interface{}{
 		"count": count,
 		"list":  lists,
 	})
+}
+
+type packageCreateReq struct {
+	Id                   int    `json:"id"`
+	Name                 string	`json:"name"`
+	AppNo                string	`json:"app_no"`
+	AppType              string	`json:"app_type"`
+	Status               string	`json:"status"`
+	PayReturnUrl         string	`json:"pay_return_url"`
+	UpdateH5Url          string	`json:"update_h5_url"`
+	RepaymentInfoUrl     string	`json:"repayment_info_url"`
+	VersionCode          string	`json:"version_code"`
+	Version              string	`json:"version"`
+	IsMandatoryUpdate    string	`json:"is_mandatory_update"`
+	IsNeedUpdate         string	`json:"is_need_update"`
+	Whatsapp             string	`json:"whatsapp"`
+	AppGpUrl             string	`json:"app_gp_url"`
+	CurrentUrl           string	`json:"current_url"`
+	UpdateInfo           string	`json:"update_info"`
+	Firebase             string	`json:"firebase"`
+	RegisterAgreementUrl string	`json:"register_agreement_url"`
+	PrivacyAgreementUrl  string	`json:"privacy_agreement_url"`
+	FacebookId           string	`json:"facebook_id"`
+	FacebookKey          string	`json:"facebook_key"`
+	Remark               string	`json:"remark"`
+}
+//PackageCreate 更新创建包
+func (a *system)PackageCreate(c *fiber.Ctx) error {
+	input := new(packageCreateReq)
+	if err := tools.ParseBody(c, input); err != nil {
+		return resp.Err(c, 1, err.Error())
+	}
+	page := new(model.Package)
+	page.Name = input.Name
+	page.AppNo = input.AppNo
+	page.AppType = input.AppType
+	page.Status = input.Status
+	page.PayReturnUrl = input.PayReturnUrl
+	page.UpdateH5Url = input.UpdateH5Url
+	page.RepaymentInfoUrl = input.RepaymentInfoUrl
+	page.VersionCode = input.VersionCode
+	page.Version = input.Version
+	page.IsMandatoryUpdate = input.IsMandatoryUpdate
+	page.IsNeedUpdate = input.IsNeedUpdate
+	page.Whatsapp = input.Whatsapp
+	page.AppGpUrl = input.AppGpUrl
+	page.CurrentUrl = input.CurrentUrl
+	page.UpdateInfo = input.UpdateInfo
+	page.Firebase = input.Firebase
+	page.RegisterAgreementUrl = input.RegisterAgreementUrl
+	page.PrivacyAgreementUrl = input.PrivacyAgreementUrl
+	page.FacebookId = input.FacebookId
+	page.FacebookKey = input.FacebookKey
+	page.Remark = input.Remark
+	page.UpdateTime = tools.GetFormatTime()
+	if input.Id == 0{
+		page.CreateTime = page.UpdateTime
+		page.Insert()
+	}else{
+		page.Update(fmt.Sprintf("id = %d", page.Id))
+	}
+	return resp.OK(c, "")
 }
 
 //PackageLittle APP包

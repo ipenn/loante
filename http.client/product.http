@@ -42,3 +42,14 @@ Content-Type: application/json
   "id": 1
 }
 
+
+### 产品
+GET {{host}}/product
+token:{{token}}
+Content-Type: application/json
+
+{
+  "page": 1,
+  "size": 10
+}
+

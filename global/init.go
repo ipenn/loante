@@ -53,6 +53,8 @@ type Config struct {
 		GenderType map[string]string 	`json:"gender_type"`
 		MchFundType map[string]string 	`json:"mch_fund_type"`
 		BorrowOrderStatus map[string]string 	`json:"borrow_order_status"`
+		BorrowStatusAll map[string]string 	`json:"borrow_status_all"`
+		BankStatus map[string]string 	`json:"bank_status"`
 	}  `json:"maps"`
 }
 

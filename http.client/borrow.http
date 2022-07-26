@@ -10,7 +10,25 @@ Content-Type: application/json
 {
   "page": 1,
   "size": 10,
-  "product_id": 10
+  "product_id":0,          //产品编号
+  "user_id":0,         //客户编号
+  "name":"",            //客户名称
+  "no_applying":"",         //去除申请中的
+  "processing_in_pay":"",           //支付公司放款处理中
+  "start_time":"",          //创建开始时间
+  "end_time":"",            //创建结束时间
+  "phone":"",           //手机号码
+  "id_no":"",           //身份证号
+  "id":0,          //订单编号
+  "status":0,          //订单状态
+  "postponed":0,           //是否展期
+  "loan_type":0,           //贷款类型   平台首贷 平台复贷产品首贷 平台复贷产品复贷  -1
+  "risk_model":0,          //模型类型
+  "payment":0,         //支付公司
+  "be_repaid_amount":"",            //待还金额(小于)
+  "payment_request_no":"",          //放款请求单号
+  "loan_start_time":"",         //放款时间
+  "loan_end_time":""           //放款时间
 }
 
 
@@ -46,4 +64,24 @@ Content-Type: application/json
   "id": 1,
   "page": 1,
   "size": 10
+}
+
+### 费用变更
+POST {{host}}/borrow/reloan
+token:{{token}}
+Content-Type: application/json
+
+{
+  "page": 1,
+  "size": 10,
+  "user_id": 0,
+  "name":"",
+  "phone": "",
+  "id_no":"",
+  "product_id": 0,
+  "borrow_id":0,
+  "loan_type":"",
+  "risk_model": 0,
+  "start_time":"",
+  "end_time": ""
 }

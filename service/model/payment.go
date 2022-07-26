@@ -6,10 +6,14 @@ import (
 	"loante/global"
 )
 
-type PaymentLittle struct {
+type PaymentMini struct {
 	bun.BaseModel `bun:"table:payment,alias:p"`
 	Id          int	`json:"id" bun:",pk"`
 	Name        string	`json:"name"`
+}
+type PaymentLittle struct {
+	bun.BaseModel `bun:"table:payment,alias:p"`
+	PaymentMini
 	IsOpenOut   int	`json:"is_open_out"`
 	IsOpenIn    int	`json:"is_open_in"`
 	LendingStartTime string	`json:"lending_start_time"`

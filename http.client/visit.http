@@ -20,7 +20,7 @@ Content-Type: application/json
   "phone":"",
   "borrow_id": 0,
   "tag":"",
-  "over_due_days": 0,
+  "expire_day": 0,
   "wish":"",
   "status": "",
   "mch_id":0,
@@ -57,7 +57,7 @@ Content-Type: application/json
   "name": "",
   "phone":"",
   "borrow_id": 0,
-  "over_due_days":0,
+  "expire_day":0,
   "contact_phone": "",
   "wish":"",
   "relationship": "",
@@ -165,4 +165,20 @@ Content-Type: application/json
   "id": 2,
   "status":2,
   "reject_reason": "A0000002"
+}
+### 催收业绩统计
+GET {{host}}/visit/urge/stat
+token:{{token}}
+Content-Type: application/json
+
+{
+  "page": 1,
+  "size":10,
+  "start_time": "",
+  "end_time":"",
+  "mch_id": 0,
+  "type":"",
+  "urge_company_id": 0,
+  "urge_group_id":0,
+  "urge_id": 0
 }

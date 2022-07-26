@@ -18,6 +18,7 @@ func main()  {
 	//c2.BorrowRepaymentTimeout()
 	//c2.BorrowLatePaymentFee()
 	//c2.BorrowExpireDay()
+	c2.StatUrgeTask()
 
 	//1 每分钟 查找支付超时的订单
 	c.AddFunc("@every 1m", c2.OrdersPayTimeOut)
@@ -39,6 +40,9 @@ func main()  {
 
 	//7 发送还款的通知短信
 	c.AddFunc("@every 1h", c2.RepaymentSMSNotify)
+
+	//8 催收业绩统计
+	c.AddFunc("@every 1h", c2.StatUrgeTask)
 
 
 

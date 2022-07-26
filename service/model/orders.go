@@ -33,10 +33,10 @@ type Orders struct {
 	Remark        string      `json:"remark"`
 	PayNotifyTime string      `json:"pay_notify_time"`
 	User          *UserLittle `json:"user" bun:"rel:belongs-to,join:uid=id"`
-	Borrow           *BorrowLittle   `json:"borrow" bun:"rel:belongs-to,join:bid=id"`
+	Borrow           *BorrowMini   `json:"borrow" bun:"rel:belongs-to,join:bid=id"`
 	Merchant         *MerchantLittle `json:"merchant" bun:"rel:belongs-to,join:mch_id=id"`
 	Product          *ProductLittle  `json:"product" bun:"rel:belongs-to,join:product_id=id"`
-	PaymentCom       *PaymentLittle  `json:"payment_com" bun:"rel:belongs-to,join:payment=id"`
+	PaymentCom       *PaymentMini  `json:"payment_com" bun:"rel:belongs-to,join:payment=id"`
 }
 
 func (a *Orders) Insert() {

@@ -19,9 +19,9 @@ Content-Type: application/json
 {
   "page": 1,
   "size":10,
-  "borrow_id":1,
-  "product_id":1,
-  "payment_id":10,
+  "borrow_id":0,
+  "product_id":0,
+  "payment_id":0,
   "pay_success":"",
   "request_no":"",
   "start_time":"",
@@ -44,6 +44,8 @@ Content-Type: application/json
   "start_time":"",
   "end_time":""
 }
+
+
 ### 入账记录
 GET {{host}}/pay_flow/deposit
 token:{{token}}
@@ -57,4 +59,48 @@ Content-Type: application/json
   "phone":"",
   "start_time":"",
   "end_time":""
+}
+### 还款记录
+GET {{host}}/pay_flow/deposit
+token:{{token}}
+Content-Type: application/json
+
+//订单编号:
+//商户名称:
+//产品名称:
+//用户名:
+//身份证号:
+//催收公司:
+//催收组:
+//人员:
+//手机号:
+//还款状态:
+//还款通道:
+//支付公司:
+//发起时间:
+//还款请求编号:
+//回调时间:
+//结束日期
+
+{
+  "page": 1,
+  "size":10,
+  "id": 0,
+  "borrow_id":0,
+  "mch_id": 0,
+  "product_id":0,
+  "user_name": "",
+  "id_card_no":"",
+  "urge_company_id":0,
+  "urge_group_id":0,
+  "urge_id": 0,
+  "phone": "",
+  "payment_id":0,
+  "status": "",
+  "pay_channel":"",
+  "start_time": "",
+  "end_time":"",
+  "payment_request_no": "",
+  "res_start_time":"",
+  "res_end_time": ""
 }

@@ -165,6 +165,36 @@ func (a *user) Call(c *fiber.Ctx) error {
 		"list":  lists,
 	})
 }
+
+type bankModifyReq struct {
+	UserId int	`json:"user_id"`
+	Bankcard string	`json:"bankcard"`
+	Ifsc        string	`json:"ifsc"`
+	BankName   string	`json:"bank_name"`
+	BankStatus int	`json:"bank_status"`
+}
+func (a *user) BankModify(c *fiber.Ctx) error {
+	input := new(bankModifyReq)
+	if err := tools.ParseBody(c, input); err != nil {
+		return resp.Err(c, 1, err.Error())
+	}
+	userData := new(model.User)
+	userData.One(fmt.Sprintf("id = %d", input.UserId))
+	if userData.Id == 0{
+		return resp.Err(c, 1, "未找到数据")
+	}
+	if userData.BankStatus == 1{
+		return resp.Err(c, 1, "已认证不能修改")
+	}
+	userData.Bankcard = input.Bankcard
+	userData.Ifsc = input.Ifsc
+	userData.BankName = input.BankName
+	userData.BankStatus = input.BankStatus
+	userData.Update(fmt.Sprintf("id = %d", input.UserId))
+	return resp.OK(c, "")
+}
+
+
 //
 //type setUserInfoReq struct {
 //	TrueName string `json:"true_name"`

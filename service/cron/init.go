@@ -179,7 +179,7 @@ func RepaymentSMSNotify()  {
 	global.Log.Info("发送短信开始")
 	for _, item := range lists{
 		t2 := 5
-		var ps []interface{}
+		var ps []string
 		if item.ExpireDay == -1{
 			t2 = 3
 		}else if item.ExpireDay == 0{
@@ -197,4 +197,182 @@ func RepaymentSMSNotify()  {
 			}
 		}
 	}
+}
+
+//StatUrgeTask 催收业绩统计
+func StatUrgeTask() {
+	//if time.Now().Hour() != 1 {
+	//	return
+	//}
+	global.Log.Info("催收业绩统计开始")
+	t0 := tools.ToAddDay(-1)[0:10]
+	t := tools.GetFormatTime()[0:10]
+	//更新历史的在库案件数
+	new(model.StatUrge).Set("borrow_count", 0, "id > 0")
+	//获取所有的催收员
+	admins := []model.Admin{}
+	global.C.DB.NewSelect().Model((*model.Admin)(nil)).
+		Where("role_id = 3 or role_id = 7").Scan(global.C.Ctx, &admins)
+	var stats []model.StatUrge
+	for _, admin := range admins{
+		gType := 0
+		gUrgeId := admin.RemindId
+		gUrgeGroupId := admin.RemindGroupId
+		if admin.RoleId == 7{
+			gType = 1
+			gUrgeId = admin.UrgeId
+			gUrgeGroupId = admin.UrgeGroupId
+		}
+		stats = append(stats, model.StatUrge{
+			Type: gType,
+			MchId: admin.MchId,
+			UrgeId: admin.Id,
+			UrgeCompanyId: gUrgeId,
+			UrgeGroupId: gUrgeGroupId,
+			StatTime: t,
+		})
+	}
+	var ts []model.StatUrge
+	//获取在库的催收业绩
+	//全部催收
+	global.C.DB.NewSelect().Model((*model.BorrowVisit)(nil)).
+		ColumnExpr("count(*) as borrow_count").
+		ColumnExpr("bv.mch_id").
+		ColumnExpr("bv.urge_company_id").
+		ColumnExpr("bv.urge_group_id").
+		ColumnExpr("bv.urge_id").
+		Join("LEFT JOIN borrow").JoinOn("bv.borrow_id = borrow.id").
+		Where("urge_id > 0 and status = 7").GroupExpr("urge_id").Scan(global.C.Ctx, &ts)
+	for _, item := range ts{
+		for k, it := range stats{
+			if item.UrgeId == it.UrgeId{
+				stats[k].BorrowCount = item.BorrowCount
+			}
+		}
+	}
+
+	var ts2 []model.StatUrge
+	global.C.DB.NewSelect().Model((*model.BorrowVisit)(nil)).ColumnExpr("count(*) as borrow_count").
+		ColumnExpr("bv.mch_id").
+		ColumnExpr("bv.remind_company_id as urge_company_id").
+		ColumnExpr("bv.remind_group_id as urge_group_id").
+		ColumnExpr("bv.remind_id as urge_id").
+		Join("LEFT JOIN borrow").JoinOn("bv.borrow_id = borrow.id").
+		Where("bv.urge_id = 0 and borrow.status = 5").GroupExpr("remind_id").Scan(global.C.Ctx, &ts2)
+
+	for _, item := range ts2{
+		for k, it := range stats{
+			if item.UrgeId == it.UrgeId{
+				stats[k].BorrowCount = item.BorrowCount
+			}
+		}
+	}
+
+	//新增案件数
+	var ts3 []model.StatUrge
+	global.C.DB.NewSelect().Model((*model.BorrowVisit)(nil)).
+		ColumnExpr("count(*) as borrow_new").
+		ColumnExpr("urge_id").
+		Join("LEFT JOIN borrow").JoinOn("bv.borrow_id = borrow.id").
+		Where(fmt.Sprintf("urge_id > 0 and borrow.status = 7 and urge_assign_time = '%s'", t0)).GroupExpr("urge_id").Scan(global.C.Ctx, &ts3)
+	for _, item := range ts3{
+		for k, it := range stats{
+			if item.UrgeId == it.UrgeId{
+				stats[k].BorrowNew = item.BorrowNew
+			}
+		}
+	}
+	var ts4 []model.StatUrge
+	global.C.DB.NewSelect().Model((*model.BorrowVisit)(nil)).
+		ColumnExpr("count(*) as borrow_new").
+		ColumnExpr("remind_id as urge_id").
+		Join("LEFT JOIN borrow").JoinOn("bv.borrow_id = borrow.id").
+		Where(fmt.Sprintf("urge_id = 0 and borrow.status = 5 and remind_assign_time = '%s'", t0)).GroupExpr("remind_id").Scan(global.C.Ctx, &ts4)
+	for _, item := range ts4{
+		for k, it := range stats{
+			if item.UrgeId == it.UrgeId{
+				stats[k].BorrowNew = item.BorrowNew
+			}
+		}
+	}
+	//完成案件数
+	var ts5 []model.StatUrge
+	global.C.DB.NewSelect().Model((*model.BorrowVisit)(nil)).
+		ColumnExpr("count(*) as urge_closed_count").ColumnExpr("urge_id").
+		Join("LEFT JOIN borrow").JoinOn("bv.borrow_id = borrow.id").
+		Where(fmt.Sprintf("urge_id > 0 and borrow.status = 9 and left(complete_time,10) = '%s'", t0)).GroupExpr("urge_id").Scan(global.C.Ctx, &ts5)
+	for _, item := range ts5{
+		for k, it := range stats{
+			if item.UrgeId == it.UrgeId{
+				stats[k].UrgeClosedCount = item.UrgeClosedCount
+			}
+		}
+	}
+	var ts6 []model.StatUrge
+	global.C.DB.NewSelect().Model((*model.BorrowVisit)(nil)).
+		ColumnExpr("count(*) as urge_closed_count").ColumnExpr("remind_id as urge_id").
+		Join("LEFT JOIN borrow").JoinOn("bv.borrow_id = borrow.id").
+		Where(fmt.Sprintf("urge_id = 0 and borrow.status = 8 and left(complete_time, 10) = '%s'", t0)).GroupExpr("remind_id").Scan(global.C.Ctx, &ts6)
+	for _, item := range ts6{
+		for k, it := range stats{
+			if item.UrgeId == it.UrgeId{
+				stats[k].UrgeClosedCount = item.UrgeClosedCount
+			}
+		}
+	}
+	//urge_closed_amount 回收金额
+	var ts7 []model.Orders
+	global.C.DB.NewSelect().Model((*model.Orders)(nil)).
+		ColumnExpr("sum(actual_amount) as actual_amount").
+		ColumnExpr("urge_id").
+		Where(fmt.Sprintf("repaid_status = 1 and left(create_time, 10) = '%s'", t0)).GroupExpr("urge_id").Scan(global.C.Ctx, &ts7)
+	for _, item := range ts7{
+		for k, it := range stats{
+			if item.UrgeId == it.UrgeId{
+				stats[k].UrgeClosedAmount = float64(item.ActualAmount)
+			}
+		}
+	}
+
+	//visit_count 跟进案件量
+	var ts9 []model.StatUrge
+	global.C.DB.NewSelect().Model((*model.BorrowVisit)(nil)).
+		ColumnExpr("count(*) as visit_count").ColumnExpr("urge_id").
+		Where(fmt.Sprintf("urge_id > 0 and left(urge_last_time,10) = '%s'", t0)).GroupExpr("urge_id").Scan(global.C.Ctx, &ts9)
+	for _, item := range ts9{
+		for k, it := range stats{
+			if item.UrgeId == it.UrgeId{
+				stats[k].VisitCount = item.VisitCount
+			}
+		}
+	}
+
+	var ts10 []model.StatUrge
+	global.C.DB.NewSelect().Model((*model.BorrowVisit)(nil)).
+		ColumnExpr("count(*) as visit_count").ColumnExpr("remind_id as urge_id").
+		Where(fmt.Sprintf("urge_id = 0 and left(remind_last_time,10) = '%s'", t0)).GroupExpr("remind_id").Scan(global.C.Ctx, &ts10)
+	for _, item := range ts10{
+		for k, it := range stats{
+			if item.UrgeId == it.UrgeId{
+				stats[k].VisitCount = item.VisitCount
+			}
+		}
+	}
+
+	//visit_detail_count 催记记录次数
+	var ts11 []model.StatUrge
+	global.C.DB.NewSelect().Model((*model.BorrowVisitDetail)(nil)).
+		ColumnExpr("count(*) as visit_detail_count").ColumnExpr("urge_id").
+		Where(fmt.Sprintf("left(create_time,10) = '%s'", t0)).GroupExpr("urge_id").Scan(global.C.Ctx, &ts11)
+	for _, item := range ts11{
+		for k, it := range stats{
+			if item.UrgeId == it.UrgeId{
+				stats[k].VisitDetailCount = item.VisitDetailCount
+			}
+		}
+	}
+	for _, item := range ts{
+		item.Insert()
+	}
+	global.Log.Info("催收业绩统计结束")
 }
