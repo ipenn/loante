@@ -18,13 +18,14 @@ type PaymentLittle struct {
 	IsOpenIn    int	`json:"is_open_in"`
 	LendingStartTime string	`json:"lending_start_time"`
 	LendingEndTime string	`json:"lending_end_time"`
+
 }
 type Payment struct {
 	bun.BaseModel `bun:"table:payment,alias:p"`
 	PaymentLittle
-	IsUtrQuery int	`json:"is_utr_query"`
-	IsUtrFill  int	`json:"is_utr_fill"`
-	Fields     string	`json:"fields"`
+	IsUtrQuery int    `json:"is_utr_query"`
+	IsUtrFill  int    `json:"is_utr_fill"`
+	Fields     string `json:"fields"`
 }
 
 func (a *Payment) Insert() {
@@ -53,6 +54,12 @@ func (a *Payment) One(where string) {
 	if err != nil {
 		global.Log.Error("%v err=%v", a, err.Error())
 	}
+}
+
+func (a *PaymentLittle) Gets() ([]PaymentLittle, int) {
+	var datas []PaymentLittle
+	count, _ := global.C.DB.NewSelect().Model(&datas).ScanAndCount(global.C.Ctx)
+	return datas, count
 }
 
 func (a *Payment) Page(where string, page, limit int) ([]Payment, int) {

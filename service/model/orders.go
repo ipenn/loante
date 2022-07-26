@@ -5,6 +5,7 @@ import (
 	"github.com/uptrace/bun"
 	"loante/global"
 	"loante/tools"
+	"time"
 )
 
 type Orders struct {
@@ -140,12 +141,17 @@ type ForStatistics struct {
 	SuccessCount int     `json:"success_count"`
 	SuccessRate  float64 `json:"success_rate"`
 	Payment      int     `json:"payment"`
-	CreateTime   string  `json:"create_time"`
 	Name         string  `json:"name"`
+	CreateTime   string  `json:"create_time"`
 	Type         int     `json:"type"`
 }
 
-func (a *Orders) ForStatistics(where string) []ForStatistics {
+type statistics struct {
+	Time        string          `json:"time"`
+	StatTraffic []ForStatistics `json:"stat_traffic"`
+}
+
+func (a *Orders) ForStatistics(where string) []statistics {
 	//var datas []Borrow
 	//count, _ := global.C.DB.NewSelect().Model(&Borrow{}).GroupExpr("HOUR(loan_time) desc").
 	//	GroupExpr("payment DESC").Where(where).Offset((page - 1) * limit).Limit(limit).ScanAndCount(global.C.Ctx)
@@ -154,7 +160,7 @@ func (a *Orders) ForStatistics(where string) []ForStatistics {
 	rows, _ := global.C.DB.QueryContext(global.C.Ctx, `SELECT
 	COUNT( o.id ) AS count,
 	o.payment,
-	date_format(o.create_time,'%y-%m-%d %H') as create_time,
+	date_format(o.create_time,'%Y-%m-%d %H') as create_time,
 	p.name,
 	0 AS type 
 FROM
@@ -169,7 +175,7 @@ GROUP BY
 SELECT
 	COUNT( o.id ) AS count,
 	o.payment,
-	date_format(o.create_time,'%y-%m-%d %H') as create_time,
+	date_format(o.create_time,'%Y-%m-%d %H') as create_time,
 	p.name,
 	1 AS type 
 FROM
@@ -185,32 +191,64 @@ GROUP BY
 	global.C.DB.ScanRows(global.C.Ctx, rows, &ordersForStatistics)
 	for _, statistic := range ordersForStatistics {
 		flag := true
+		//type=0全部订单,=1成功订单,不循环成功订单成功订单往全部订单对应数据里添加
 		if statistic.Type == 1 {
 			break
 		}
 		for _, forStatistic := range ordersForStatistics {
+			//有成功参数的订单
 			if statistic.Payment == forStatistic.Payment && statistic.Type == 0 && forStatistic.Type == 1 && statistic.CreateTime == forStatistic.CreateTime {
 				var r ForStatistics
+				r.Name = statistic.Name
 				r.Payment = statistic.Payment
 				r.Count = statistic.Count
 				r.SuccessCount = forStatistic.Count
 				r.SuccessRate = tools.ToFloat64(forStatistic.Count) / tools.ToFloat64(statistic.Count)
 				r.CreateTime = statistic.CreateTime
-				r.Name = statistic.Name
 				result = append(result, r)
 				flag = false
 			}
 		}
 		if flag {
+			//沒有成功參數的订单
 			var r ForStatistics
 			r.Payment = statistic.Payment
+			r.Name = statistic.Name
 			r.Count = statistic.Count
 			r.SuccessCount = 0
 			r.SuccessRate = 0
 			r.CreateTime = statistic.CreateTime
-			r.Name = statistic.Name
 			result = append(result, r)
 		}
 	}
-	return result
+	return AppendForStatistics(result)
+}
+
+// AppendForStatistics 解析成3天72条数据
+func AppendForStatistics(result []ForStatistics) []statistics {
+	p, _ := new(PaymentLittle).Gets()
+	var value []statistics
+	for i := 0; i < 72; i++ {
+		n := -1 - i
+		oneHour, _ := time.ParseDuration(tools.ToString(n) + "h")
+		t := time.Now().Add(oneHour).Format("2006-01-02 15")
+		var s statistics
+		s.Time = t
+		for _, payment := range p {
+			var f ForStatistics
+			f.Payment = payment.Id
+			f.Name = payment.Name
+			f.CreateTime = t
+			for _, forStatistics := range result {
+				if payment.Id == forStatistics.Payment && forStatistics.CreateTime == f.CreateTime {
+					f.SuccessCount = forStatistics.SuccessCount
+					f.Count = forStatistics.Count
+					f.SuccessRate = forStatistics.SuccessRate
+				}
+			}
+			s.StatTraffic = append(s.StatTraffic, f)
+		}
+		value = append(value, s)
+	}
+	return value
 }

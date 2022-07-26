@@ -233,3 +233,10 @@ func (a *statTraffic) MerchantStatisticsList(c *fiber.Ctx) error {
 		"count": count,
 	})
 }
+
+// HomepageData 首页数据
+func (a *statTraffic) HomepageData(c *fiber.Ctx) error {
+	return resp.OK(c, map[string]interface{}{
+		"list": model.Homepage(),
+	})
+}

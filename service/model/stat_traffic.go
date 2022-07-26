@@ -135,10 +135,31 @@ func (a *StatTraffic) Page(where, group string, page, limit int) ([]StatTrafficL
 	return datas, count
 }
 
-
 func (a *StatTraffic) Insert() {
 	_, err := global.C.DB.NewInsert().Model(a).Returning("*").Exec(global.C.Ctx)
 	if err != nil {
 		global.Log.Error("%v err=%v", a, err.Error())
 	}
+}
+
+type HomepageData struct {
+	Amount int    `json:"amount"`
+	Count  int    `json:"count"`
+	Type   string `json:"type"`
+}
+
+func Homepage() []HomepageData {
+	var homepageData []HomepageData
+	rows, _ := global.C.DB.QueryContext(global.C.Ctx, `
+SELECT SUM(actual_amount) amount,COUNT(id) count,'总计收款' as type FROM orders WHERE repaid_status=1
+UNION ALL 
+SELECT SUM(b.actual_amount) amount,COUNT(b.id) count,'总计放款' as type FROM borrow b WHERE b.status>4
+UNION ALL
+SELECT 0 as amount,COUNT(id) count,'总计进件' as type FROM borrow
+UNION ALL
+SELECT 0 as amount,COUNT(id) count,'今日进件' as type FROM borrow WHERE TO_DAYS(create_time)=to_days(now())
+UNION ALL 
+SELECT SUM(b.actual_amount) amount,COUNT(b.id) count,'当日放款' as type FROM borrow b WHERE b.status>4 and TO_DAYS(create_time)=to_days(now())`)
+	global.C.DB.ScanRows(global.C.Ctx, rows, &homepageData)
+	return homepageData
 }
