@@ -68,7 +68,7 @@ func (a *smsTemplate) SmsTemplateCreateOrUpdate(c *fiber.Ctx) error {
 		s.Insert()
 	} else {
 		s.Id = tools.ToInt(input.ID)
-		s.Update(fmt.Sprintf("id=%d", input.ID))
+		s.Update(fmt.Sprintf("id=%d", tools.ToInt(input.ID)))
 	}
 	return resp.OK(c, "")
 }

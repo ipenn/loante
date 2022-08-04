@@ -1,9 +1,9 @@
 [mysql]
-host="192.168.1.4"
+host="106.52.232.183"
 port=3306
-user="loante"
-password="12345678"
-dbName="loante_db"
+user="loa_db"
+password="tcj6era2RGJd5HcC"
+dbName="loa_db"
 
 [http]
 port=51111
